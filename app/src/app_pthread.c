@@ -37,10 +37,12 @@ int init_thread(bool terminate_flag)
 
 void *a2d_thread() 
 {
+    //while isTerminated == false => keep executing
     while(!isTerminated){
         long long currentTime;
         long long startTime = getTimeInMs();
 
+        //Keep reading data for 1000 ms
         while((currentTime = getTimeInMs() - startTime) < 1000) 
         {
             int reading = getVoltage0Read();
@@ -58,8 +60,7 @@ void *a2d_thread()
 
 void *shutdown_thread()
 {
-
-    //Receive is terminated signal => start cleanup
+    //sleep until isTerminated == true => start clean up
     while(!isTerminated)
     {
         sleepForMs(1);
