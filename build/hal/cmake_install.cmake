@@ -1,4 +1,4 @@
-# Install script for directory: /home/hcung/cmpt433/work/as2/hal
+# Install script for directory: /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

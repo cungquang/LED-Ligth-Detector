@@ -67,10 +67,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/hcung/cmpt433/work/as2
+CMAKE_SOURCE_DIR = /home/hcung/cmpt433/work/assignment2/cmpt433assignment2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/hcung/cmpt433/work/as2/build
+CMAKE_BINARY_DIR = /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -99,14 +99,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/hcung/cmpt433/work/as2/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/hcung/cmpt433/work/as2/build/CMakeFiles /home/hcung/cmpt433/work/as2/build/app//CMakeFiles/progress.marks
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hcung/cmpt433/work/as2/build/CMakeFiles 0
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app//CMakeFiles/progress.marks
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/clean
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/clean
 .PHONY : clean
 
 # The main clean target
@@ -116,22 +116,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/preinstall
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/preinstall
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/hcung/cmpt433/work/as2/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 app/CMakeFiles/assignment2.dir/rule:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/CMakeFiles/assignment2.dir/rule
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/CMakeFiles/assignment2.dir/rule
 .PHONY : app/CMakeFiles/assignment2.dir/rule
 
 # Convenience name for target.
@@ -141,7 +141,7 @@ assignment2: app/CMakeFiles/assignment2.dir/rule
 
 # fast build rule for target.
 assignment2/fast:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/build
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/build
 .PHONY : assignment2/fast
 
 src/app_helper.o: src/app_helper.c.o
@@ -150,7 +150,7 @@ src/app_helper.o: src/app_helper.c.o
 
 # target to build an object file
 src/app_helper.c.o:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_helper.c.o
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_helper.c.o
 .PHONY : src/app_helper.c.o
 
 src/app_helper.i: src/app_helper.c.i
@@ -159,7 +159,7 @@ src/app_helper.i: src/app_helper.c.i
 
 # target to preprocess a source file
 src/app_helper.c.i:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_helper.c.i
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_helper.c.i
 .PHONY : src/app_helper.c.i
 
 src/app_helper.s: src/app_helper.c.s
@@ -168,7 +168,7 @@ src/app_helper.s: src/app_helper.c.s
 
 # target to generate assembly for a file
 src/app_helper.c.s:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_helper.c.s
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_helper.c.s
 .PHONY : src/app_helper.c.s
 
 src/app_pthread.o: src/app_pthread.c.o
@@ -177,7 +177,7 @@ src/app_pthread.o: src/app_pthread.c.o
 
 # target to build an object file
 src/app_pthread.c.o:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.o
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.o
 .PHONY : src/app_pthread.c.o
 
 src/app_pthread.i: src/app_pthread.c.i
@@ -186,7 +186,7 @@ src/app_pthread.i: src/app_pthread.c.i
 
 # target to preprocess a source file
 src/app_pthread.c.i:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.i
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.i
 .PHONY : src/app_pthread.c.i
 
 src/app_pthread.s: src/app_pthread.c.s
@@ -195,7 +195,7 @@ src/app_pthread.s: src/app_pthread.c.s
 
 # target to generate assembly for a file
 src/app_pthread.c.s:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.s
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.s
 .PHONY : src/app_pthread.c.s
 
 src/main.o: src/main.c.o
@@ -204,7 +204,7 @@ src/main.o: src/main.c.o
 
 # target to build an object file
 src/main.c.o:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/main.c.o
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/main.c.o
 .PHONY : src/main.c.o
 
 src/main.i: src/main.c.i
@@ -213,7 +213,7 @@ src/main.i: src/main.c.i
 
 # target to preprocess a source file
 src/main.c.i:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/main.c.i
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/main.c.i
 .PHONY : src/main.c.i
 
 src/main.s: src/main.c.s
@@ -222,7 +222,7 @@ src/main.s: src/main.c.s
 
 # target to generate assembly for a file
 src/main.c.s:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/main.c.s
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/main.c.s
 .PHONY : src/main.c.s
 
 src/periodTimer.o: src/periodTimer.c.o
@@ -231,7 +231,7 @@ src/periodTimer.o: src/periodTimer.c.o
 
 # target to build an object file
 src/periodTimer.c.o:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/periodTimer.c.o
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/periodTimer.c.o
 .PHONY : src/periodTimer.c.o
 
 src/periodTimer.i: src/periodTimer.c.i
@@ -240,7 +240,7 @@ src/periodTimer.i: src/periodTimer.c.i
 
 # target to preprocess a source file
 src/periodTimer.c.i:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/periodTimer.c.i
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/periodTimer.c.i
 .PHONY : src/periodTimer.c.i
 
 src/periodTimer.s: src/periodTimer.c.s
@@ -249,7 +249,7 @@ src/periodTimer.s: src/periodTimer.c.s
 
 # target to generate assembly for a file
 src/periodTimer.c.s:
-	cd /home/hcung/cmpt433/work/as2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/periodTimer.c.s
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/periodTimer.c.s
 .PHONY : src/periodTimer.c.s
 
 # Help Target
@@ -284,6 +284,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/hcung/cmpt433/work/as2/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

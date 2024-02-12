@@ -6,11 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/home/hcung/cmpt433/work/as2/hal/src/a2d.c
+/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c
 stdlib.h
 -
 stdbool.h
 -
 stdio.h
+-
+
+/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c
+assert.h
+-
+stdio.h
+-
+stdlib.h
 -
 

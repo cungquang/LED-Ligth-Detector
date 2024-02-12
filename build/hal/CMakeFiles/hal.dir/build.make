@@ -62,10 +62,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/hcung/cmpt433/work/as2
+CMAKE_SOURCE_DIR = /home/hcung/cmpt433/work/assignment2/cmpt433assignment2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/hcung/cmpt433/work/as2/build
+CMAKE_BINARY_DIR = /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build
 
 # Include any dependencies generated for this target.
 include hal/CMakeFiles/hal.dir/depend.make
@@ -78,29 +78,29 @@ include hal/CMakeFiles/hal.dir/flags.make
 
 hal/CMakeFiles/hal.dir/src/a2d.c.o: hal/CMakeFiles/hal.dir/flags.make
 hal/CMakeFiles/hal.dir/src/a2d.c.o: ../hal/src/a2d.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/as2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object hal/CMakeFiles/hal.dir/src/a2d.c.o"
-	cd /home/hcung/cmpt433/work/as2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/hal.dir/src/a2d.c.o -c /home/hcung/cmpt433/work/as2/hal/src/a2d.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object hal/CMakeFiles/hal.dir/src/a2d.c.o"
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/hal.dir/src/a2d.c.o -c /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c
 
 hal/CMakeFiles/hal.dir/src/a2d.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/hal.dir/src/a2d.c.i"
-	cd /home/hcung/cmpt433/work/as2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hcung/cmpt433/work/as2/hal/src/a2d.c > CMakeFiles/hal.dir/src/a2d.c.i
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c > CMakeFiles/hal.dir/src/a2d.c.i
 
 hal/CMakeFiles/hal.dir/src/a2d.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/hal.dir/src/a2d.c.s"
-	cd /home/hcung/cmpt433/work/as2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/as2/hal/src/a2d.c -o CMakeFiles/hal.dir/src/a2d.c.s
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c -o CMakeFiles/hal.dir/src/a2d.c.s
 
 hal/CMakeFiles/hal.dir/src/hal_helper.c.o: hal/CMakeFiles/hal.dir/flags.make
 hal/CMakeFiles/hal.dir/src/hal_helper.c.o: ../hal/src/hal_helper.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/as2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object hal/CMakeFiles/hal.dir/src/hal_helper.c.o"
-	cd /home/hcung/cmpt433/work/as2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/hal.dir/src/hal_helper.c.o -c /home/hcung/cmpt433/work/as2/hal/src/hal_helper.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object hal/CMakeFiles/hal.dir/src/hal_helper.c.o"
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/hal.dir/src/hal_helper.c.o -c /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c
 
 hal/CMakeFiles/hal.dir/src/hal_helper.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/hal.dir/src/hal_helper.c.i"
-	cd /home/hcung/cmpt433/work/as2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hcung/cmpt433/work/as2/hal/src/hal_helper.c > CMakeFiles/hal.dir/src/hal_helper.c.i
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c > CMakeFiles/hal.dir/src/hal_helper.c.i
 
 hal/CMakeFiles/hal.dir/src/hal_helper.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/hal.dir/src/hal_helper.c.s"
-	cd /home/hcung/cmpt433/work/as2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/as2/hal/src/hal_helper.c -o CMakeFiles/hal.dir/src/hal_helper.c.s
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c -o CMakeFiles/hal.dir/src/hal_helper.c.s
 
 # Object files for target hal
 hal_OBJECTS = \
@@ -114,9 +114,9 @@ hal/libhal.a: hal/CMakeFiles/hal.dir/src/a2d.c.o
 hal/libhal.a: hal/CMakeFiles/hal.dir/src/hal_helper.c.o
 hal/libhal.a: hal/CMakeFiles/hal.dir/build.make
 hal/libhal.a: hal/CMakeFiles/hal.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hcung/cmpt433/work/as2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C static library libhal.a"
-	cd /home/hcung/cmpt433/work/as2/build/hal && $(CMAKE_COMMAND) -P CMakeFiles/hal.dir/cmake_clean_target.cmake
-	cd /home/hcung/cmpt433/work/as2/build/hal && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/hal.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C static library libhal.a"
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && $(CMAKE_COMMAND) -P CMakeFiles/hal.dir/cmake_clean_target.cmake
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/hal.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 hal/CMakeFiles/hal.dir/build: hal/libhal.a
@@ -124,10 +124,10 @@ hal/CMakeFiles/hal.dir/build: hal/libhal.a
 .PHONY : hal/CMakeFiles/hal.dir/build
 
 hal/CMakeFiles/hal.dir/clean:
-	cd /home/hcung/cmpt433/work/as2/build/hal && $(CMAKE_COMMAND) -P CMakeFiles/hal.dir/cmake_clean.cmake
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && $(CMAKE_COMMAND) -P CMakeFiles/hal.dir/cmake_clean.cmake
 .PHONY : hal/CMakeFiles/hal.dir/clean
 
 hal/CMakeFiles/hal.dir/depend:
-	cd /home/hcung/cmpt433/work/as2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hcung/cmpt433/work/as2 /home/hcung/cmpt433/work/as2/hal /home/hcung/cmpt433/work/as2/build /home/hcung/cmpt433/work/as2/build/hal /home/hcung/cmpt433/work/as2/build/hal/CMakeFiles/hal.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hcung/cmpt433/work/assignment2/cmpt433assignment2 /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal/CMakeFiles/hal.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : hal/CMakeFiles/hal.dir/depend
 

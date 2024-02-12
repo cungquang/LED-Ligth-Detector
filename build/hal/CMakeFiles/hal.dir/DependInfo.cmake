@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/hcung/cmpt433/work/as2/hal/src/a2d.c" "/home/hcung/cmpt433/work/as2/build/hal/CMakeFiles/hal.dir/src/a2d.c.o"
-  "/home/hcung/cmpt433/work/as2/hal/src/hal_helper.c" "/home/hcung/cmpt433/work/as2/build/hal/CMakeFiles/hal.dir/src/hal_helper.c.o"
+  "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c" "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal/CMakeFiles/hal.dir/src/a2d.c.o"
+  "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c" "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal/CMakeFiles/hal.dir/src/hal_helper.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

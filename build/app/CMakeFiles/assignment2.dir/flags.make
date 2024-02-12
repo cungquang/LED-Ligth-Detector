@@ -4,7 +4,7 @@
 # compile C with /usr/bin/arm-linux-gnueabihf-gcc
 C_DEFINES = 
 
-C_INCLUDES = -I/home/hcung/cmpt433/work/as2/app/include -I/home/hcung/cmpt433/work/as2/hal/include
+C_INCLUDES = -I/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include -I/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/include
 
 C_FLAGS = -g -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -std=gnu11
 

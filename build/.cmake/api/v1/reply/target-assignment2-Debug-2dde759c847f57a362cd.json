@@ -113,11 +113,11 @@
 			[
 				{
 					"backtrace" : 8,
-					"path" : "/home/hcung/cmpt433/work/as2/app/include"
+					"path" : "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "/home/hcung/cmpt433/work/as2/hal/include"
+					"path" : "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/include"
 				}
 			],
 			"language" : "C",

@@ -70,14 +70,14 @@
 				{
 					"directoryIndex" : 2,
 					"id" : "assignment2::@5f5a17c01335469806cb",
-					"jsonFile" : "target-assignment2-Debug-e88059810ab95c969a9f.json",
+					"jsonFile" : "target-assignment2-Debug-2dde759c847f57a362cd.json",
 					"name" : "assignment2",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "hal::@ad971efe0e95b39e260f",
-					"jsonFile" : "target-hal-Debug-71e0c5c525855cb2b40a.json",
+					"jsonFile" : "target-hal-Debug-75c5d27e4524216ab1e3.json",
 					"name" : "hal",
 					"projectIndex" : 0
 				}
@@ -87,8 +87,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/hcung/cmpt433/work/as2/build",
-		"source" : "/home/hcung/cmpt433/work/as2"
+		"build" : "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build",
+		"source" : "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2"
 	},
 	"version" : 
 	{

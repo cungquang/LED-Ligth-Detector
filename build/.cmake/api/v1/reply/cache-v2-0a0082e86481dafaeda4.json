@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/hcung/cmpt433/work/as2/build"
+			"value" : "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -463,7 +463,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/hcung/cmpt433/work/as2"
+			"value" : "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1059,7 +1059,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/hcung/cmpt433/work/as2/build"
+			"value" : "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build"
 		},
 		{
 			"name" : "assignment2_SOURCE_DIR",
@@ -1071,7 +1071,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/hcung/cmpt433/work/as2"
+			"value" : "/home/hcung/cmpt433/work/assignment2/cmpt433assignment2"
 		}
 	],
 	"kind" : "cache",
