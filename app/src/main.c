@@ -30,9 +30,8 @@ int main()
 		return 1;
 	}
 	
-
 	//init & run all slave threads
-	//init_thread(isStart);
+	init_thread(terminate_flag);
 
 	// main process
 	while(!terminate_flag)
