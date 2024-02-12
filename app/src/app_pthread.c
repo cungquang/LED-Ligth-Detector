@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <pthread.h>
 #include "../../hal/include/a2d.h"
 #include "../include/app_helper.h"
 
 static long long sample_size = 0;
 static bool isTerminated;
-static pthread_t a2d;
-static pthread_t shutdown;
+static pthread_t a2d_id;
+static pthread_t shutdown_id;
 
-static void *shutdown_thread(void);
-static void *a2d_thread(void);
+void *shutdown_thread();
+void *a2d_thread();
 
 void handle_shutdown(int signum) {
     if(signum == SIGINT) {
@@ -24,19 +25,19 @@ int init_thread(bool terminate_flag)
     isTerminated = terminate_flag;
 
     // Create & start shutdown thread
-    if(pthread_create(&shutdown, NULL, shutdown_thread, NULL) != 0){
+    if(pthread_create(&shutdown_id, NULL, shutdown_thread, NULL) != 0){
         return 1;
     }
 
     //Create & start a2d thread
-    if(pthread_create(&a2d, NULL, a2d_thread, NULL) != 0) {
+    if(pthread_create(&a2d_id, NULL, a2d_thread, NULL) != 0) {
         return 1;
     }
 
     return 0;
 }
 
-void *a2d_thread(void) 
+void *a2d_thread() 
 {
     while(!isTerminated){
         long long currentTime;
@@ -53,16 +54,22 @@ void *a2d_thread(void)
         //sleep for 1ms
         sleepForMs(1);
     }
+
+    return NULL;
 }
 
-void *shutdown_thread(void)
+void *shutdown_thread()
 {
+
     //Receive is terminated signal => start cleanup
-    while(!isTerminated){
+    while(!isTerminated)
+    {
         sleepForMs(1);
     }
 
     //shutdown everything
-    pthread_join(a2d, NULL);
-    pthread_join(shutdown, NULL);
+    pthread_join(a2d_id, NULL);
+    pthread_join(shutdown_id, NULL);
+
+    return NULL;
 }
