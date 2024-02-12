@@ -6,7 +6,13 @@
 
 #IncludeRegexTransform: 
 
+../hal/include/a2d.h
+
 /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include/app_helper.h
+
+/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include/app_pthread.h
+signal.h
+-
 
 /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/app_pthread.c
 stdio.h
@@ -19,6 +25,24 @@ pthread.h
 -
 ../../hal/include/a2d.h
 /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/include/a2d.h
+../include/app_helper.h
+/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include/app_helper.h
+
+/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/main.c
+stdio.h
+-
+stdlib.h
+-
+a2d.h
+-
+stdbool.h
+-
+signal.h
+-
+../include/app_helper.h
+/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include/app_helper.h
+../include/app_pthread.h
+/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include/app_pthread.h
 ../include/app_helper.h
 /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include/app_helper.h
 

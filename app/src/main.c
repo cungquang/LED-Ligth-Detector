@@ -13,29 +13,33 @@
 #include "../include/app_pthread.h"
 #include "../include/app_helper.h"
 
+bool terminate_flag = false;
 
-/*
- * Create two arrays; populate them; swap them; display them.
- */
+void trigger_shutdown(int signum){
+	if(signum == SIGINT) {
+        terminate_flag = true;
+		setTerminate(terminate_flag);
+    }
+}
+
 int main()
 {
-	bool isStart = true;
-
 	//Register signal handl shutdown
-	if(signal(SIGINT, handle_shutdown) == SIG_ERR) {
+	if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
 		fprintf(stderr, "Error: fail to register signal hanlder\n");
 		return 1;
 	}
+	
 
 	//init & run all slave threads
-	init_thread(isStart);
+	//init_thread(isStart);
 
 	// main process
-	while(isStart)
+	while(!terminate_flag)
 	{
 		//do some logic
+		sleepForMs(1000);
 		printf("main is sleep");
-		sleepForMs(1);
 	}
 
 	return 0;

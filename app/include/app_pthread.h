@@ -5,7 +5,7 @@
 
 void init_thread(bool terminate_flag);
 
-void handle_shutdown(int signum);
+void setTerminate();
 
 
 #endif

@@ -13,16 +13,14 @@ static pthread_t shutdown_id;
 void *shutdown_thread();
 void *a2d_thread();
 
-void handle_shutdown(int signum) {
-    if(signum == SIGINT) {
-        isTerminated = true;
-    }
+void setTerminate(bool terminate_flag) {
+    isTerminated = terminate_flag;
 }
 
 int init_thread(bool terminate_flag)
 {
     //Trigger the start of the program
-    isTerminated = terminate_flag;
+    setTerminate(terminate_flag);
 
     // Create & start shutdown thread
     if(pthread_create(&shutdown_id, NULL, shutdown_thread, NULL) != 0){
