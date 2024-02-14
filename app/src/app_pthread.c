@@ -5,7 +5,8 @@
 #include "../../hal/include/a2d.h"
 #include "../include/app_helper.h"
 
-static long long sample_size = 0;
+static long long count = 0;
+static long long prev_length = 0;
 static bool isTerminated;
 static pthread_t a2d_id;
 static pthread_t shutdown_id;
@@ -41,6 +42,7 @@ void *a2d_thread()
 {
     //while isTerminated == false => keep executing
     while(!isTerminated){
+        long long sample_size = 0;
         long long currentTime;
         long long startTime = getTimeInMs();
 
@@ -52,6 +54,10 @@ void *a2d_thread()
             sample_size++;
             printf("Time: %lld Sample size: %lld Value %5d ==> %5.3fV\n", currentTime, sample_size, reading, voltage);
         }
+
+        // Update prev_length & count
+        prev_length = sample_size;
+        count += sample_size;
 
         //sleep for 1ms
         sleepForMs(1);

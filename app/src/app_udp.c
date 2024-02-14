@@ -8,7 +8,7 @@
 #define MAX_BUFFER_SIZE 1024
 #define CLIENT_IP ""
 #define SERVER_IP "192.168.7.2"
-#define SERVER_PORT 3001
+#define SERVER_PORT 12345
 #define CLIENT_IP ""
 #define CLIENT_PORT ""
 
