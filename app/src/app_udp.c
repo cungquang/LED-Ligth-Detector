@@ -21,16 +21,17 @@ static pthread_t udpClient_id;
 void *udpServer_thread();
 void *udpClient_thread() ;
 
-void init_udp(char *udpType)
+void init_udpServer()
 {
-    if(udpType == "SERVER") {
-        if(pthread_create(&udpSever_id, NULL, udpServer_thread, NULL) != 0){
-            return 1;
-        }
-    } else {
-        if(pthread_create(&udpClient_id, NULL, udpServer_thread, NULL) != 0){
-            return 1;
-        }
+    if(pthread_create(&udpSever_id, NULL, udpServer_thread, NULL) != 0){
+        return 1;
+    }
+}
+
+void init_udpClient()
+{
+    if(pthread_create(&udpClient_id, NULL, udpServer_thread, NULL) != 0){
+        return 1;
     }
 }
 
@@ -39,8 +40,16 @@ void closeSocket() {
         close(udpSever_id);
     }
 
+    if(serverSock) {
+        close(serverSock);
+    }
+
     if(udpClient_id) {
         close(udpClient_id);
+    }
+
+    if(clientSock) {
+        close(clientSock);
     }
 }
 

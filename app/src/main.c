@@ -49,8 +49,12 @@ int operation(){
 
 int main(char *args)
 {
-	if(args == "HOST") {
-		
+	if(args == "CLIENT") {
+		init_udpClient();
+	} 
+	else
+	{
+		init_udpServer();
 	}
 
 	return 0;
