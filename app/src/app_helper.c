@@ -1,9 +1,8 @@
 #include <time.h>
 #include <assert.h>
-
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <errno.h>		// Errors
 #include <string.h>
 
@@ -31,4 +30,9 @@ void sleepForMs(long long delayInMs)
     int nanoseconds = delayNs % NS_PER_SECOND;
     struct timespec reqDelay = {seconds, nanoseconds};
     nanosleep(&reqDelay, (struct timespec *) NULL);
+}
+
+bool isEmptyString(const char *strToCheck)
+{
+    return strlen(strToCheck) == 0;
 }

@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 	} 
 	else
 	{	
-		printf("server starting\n");
+		printf("SERVER starting\n");
 		init_udpServer();
 	}
 
