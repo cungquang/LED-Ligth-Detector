@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <pthread.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
-#define SERVER_IP 192.168.7.2
+#define SERVER_IP "192.168.7.2"
 #define SERVER_PORT 12345
 #define MAX_BUFFER_SIZE 1024
 
@@ -21,14 +22,14 @@ void *udpClient_thread() ;
 void init_udpServer()
 {
     if(pthread_create(&udpSever_id, NULL, udpServer_thread, NULL) != 0){
-        return 1;
+        exit(EXIT_FAILURE);
     }
 }
 
 void init_udpClient()
 {
     if(pthread_create(&udpClient_id, NULL, udpServer_thread, NULL) != 0){
-        return 1;
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -66,8 +67,8 @@ void *udpServer_thread()
     // Setup receiver addr
     memset((char *)&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(SERVER_IP);
-    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    server_addr.sin_port = htons(SERVER_PORT);
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);            //receive from any ip - later need to specify with host IP
 
     // Bind the socket to Receiver address
     if (bind(serverSock, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1) {

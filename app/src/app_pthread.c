@@ -10,11 +10,9 @@ static long long prev_length = 0;
 static bool isTerminated;
 static pthread_t a2d_id;
 static pthread_t shutdown_id;
-static pthread_t udpIn_id;
 
 void *shutdown_thread();
 void *a2d_thread();
-void *udpIn_thread();
 
 void setTerminate(bool terminate_flag) {
     isTerminated = terminate_flag;

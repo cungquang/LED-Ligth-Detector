@@ -9,6 +9,8 @@
 #include <a2d.h>
 #include <stdbool.h>
 #include <signal.h>
+#include <unistd.h>
+#include <string.h>
 #include "../include/app_helper.h"
 #include "../include/app_pthread.h"
 #include "../include/app_helper.h"
