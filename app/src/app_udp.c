@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
-#define BUFFER_SIZE 1024
+#define MAX_BUFFER_SIZE 1024
 #define CLIENT_IP ""
 #define SERVER_IP "192.168.7.2"
 #define SERVER_PORT "3001"
@@ -15,31 +15,36 @@
 static int reciever_sock;
 static int sendTo_sock;
 
-static pthread_t udpIn_id;
-static pthread_t udpOut_id;
+static pthread_t udpSever_id;
+static pthread_t udpClient_id;
 
-void *udpIn_thread();
-void *udpOut_thread();
+void *udpServer_thread();
+void *udpClient_thread() ;
 
-void init_udp()
+void init_udp(char *udpType)
 {
-    // Create & start shutdown thread
-    if(pthread_create(&udpIn_id, NULL, udpIn_thread, NULL) != 0){
-        return 1;
+    if(udpType == "SERVER") {
+        if(pthread_create(&udpSever_id, NULL, udpServer_thread, NULL) != 0){
+            return 1;
+        }
+    } else {
+        if(pthread_create(&udpClient_id, NULL, udpServer_thread, NULL) != 0){
+            return 1;
+        }
     }
 }
 
 void closeSocket() {
-    if(reciever_sock) {
-        close(reciever_sock);
+    if(udpSever_id) {
+        close(udpSever_id);
     }
 
-    if(sendTo_sock) {
-        close(sendTo_sock);
+    if(udpClient_id) {
+        close(udpClient_id);
     }
 }
 
-void *udpIn_thread()
+void *udpServer_thread()
 {
     struct sockaddr_in receiver_addr, sender_addr;
     socklen_t addr_len = sizeof(sender_addr);
@@ -102,26 +107,31 @@ void *udpClient_thread()
     server_addr.sin_addr.s_addr = inet_addr(SERVER_IP);
     server_addr.sin_port = htons(SERVER_PORT);
 
-    // Send a message to the server
-    const char *message = "Hello from the client!";
-    if (sendto(sockfd, message, strlen(message), 0, (const struct sockaddr *)&server_addr, server_len) == -1) {
-        perror("Sendto failed");
-        exit(EXIT_FAILURE);
+    while (1)
+    {
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+            perror("Error reading input");
+            exit(EXIT_FAILURE);
+        }
+
+        if (sendto(sockfd, buffer, strlen(buffer), 0, (const struct sockaddr *)&server_addr, server_len) == -1) {
+            perror("Sendto failed");
+            exit(EXIT_FAILURE);
+        }
+
+
+        // Receive response from the server
+        ssize_t bytes_received = recvfrom(sockfd, (char *)buffer, MAX_BUFFER_SIZE, 0, (struct sockaddr *)&server_addr, &server_len);
+        if (bytes_received == -1) {
+            perror("Failed to receive message");
+            exit(EXIT_FAILURE);
+        }
+
+        buffer[bytes_received] = '\0'; // Null-terminate the received data
+        printf("Received response from server: %s\n", buffer);
+
     }
-
-    printf("Message sent to server: %s\n", message);
-
-    // Receive response from the server
-    ssize_t bytes_received = recvfrom(sockfd, (char *)buffer, MAX_BUFFER_SIZE, 0,
-                                       (struct sockaddr *)&server_addr, &server_len);
-    if (bytes_received == -1) {
-        perror("Failed to receive message");
-        exit(EXIT_FAILURE);
-    }
-
-    buffer[bytes_received] = '\0'; // Null-terminate the received data
-    printf("Received response from server: %s\n", buffer);
-
+    
     close(sockfd);
     return 0;
 }
