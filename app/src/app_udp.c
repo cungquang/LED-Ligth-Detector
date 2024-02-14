@@ -85,7 +85,7 @@ void *udpServer_thread()
             exit(EXIT_FAILURE);
         }
 
-        // If no previous command
+        // Message is not empty -> update previous; otherwise leave it as is
         if(recv_len != 1)
         {
             memset((char *)&previousMessage, 0, sizeof(previousMessage));
@@ -94,11 +94,15 @@ void *udpServer_thread()
             previousMessage[previousMessageSize - 1] = '\0';
         }
 
-        //Next is check list of command that program support -> print accordingly
+        // Verify & execute command accordingly
 
         // Print received message
-        receiv_buffer[recv_len] = '\0'; 
-        printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
+        //receiv_buffer[recv_len] = '\0'; 
+        //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
+
+
+
+
 
         // Reply to the sender
         if(sendto(serverSock, previousMessage, previousMessageSize, 0, (struct sockaddr *)&client_addr, client_len) == -1)
