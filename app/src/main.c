@@ -47,9 +47,10 @@ int operation(){
 }
 
 
-int main(char *args)
+int main(int argc, char *argv[])
 {
-	if(args == "CLIENT") {
+	if(argc >= 2 && strcmp(argv[1], "CLIENT") == 0)
+	{
 		init_udpClient();
 	} 
 	else
