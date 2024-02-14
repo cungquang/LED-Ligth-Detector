@@ -132,7 +132,7 @@ hal/clean: hal/CMakeFiles/hal.dir/clean
 hal/CMakeFiles/hal.dir/all:
 	$(MAKE) $(MAKESILENT) -f hal/CMakeFiles/hal.dir/build.make hal/CMakeFiles/hal.dir/depend
 	$(MAKE) $(MAKESILENT) -f hal/CMakeFiles/hal.dir/build.make hal/CMakeFiles/hal.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=6,7,8 "Built target hal"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=7,8,9 "Built target hal"
 .PHONY : hal/CMakeFiles/hal.dir/all
 
 # Build rule for subdir invocation for target.
@@ -159,12 +159,12 @@ hal/CMakeFiles/hal.dir/clean:
 app/CMakeFiles/assignment2.dir/all: hal/CMakeFiles/hal.dir/all
 	$(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/depend
 	$(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target assignment2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target assignment2"
 .PHONY : app/CMakeFiles/assignment2.dir/all
 
 # Build rule for subdir invocation for target.
 app/CMakeFiles/assignment2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles 9
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app/CMakeFiles/assignment2.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles 0
 .PHONY : app/CMakeFiles/assignment2.dir/rule

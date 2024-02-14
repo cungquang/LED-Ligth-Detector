@@ -3,5 +3,6 @@
 
 int getVoltage0Read();
 double getVoltageConvert(int reading);
+void closeFile();
 
 #endif

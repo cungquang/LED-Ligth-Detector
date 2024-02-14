@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/assignment2.dir/src/app_helper.c.o"
   "CMakeFiles/assignment2.dir/src/app_pthread.c.o"
+  "CMakeFiles/assignment2.dir/src/app_udp.c.o"
   "CMakeFiles/assignment2.dir/src/main.c.o"
   "CMakeFiles/assignment2.dir/src/periodTimer.c.o"
   "assignment2"

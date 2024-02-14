@@ -102,9 +102,22 @@ app/CMakeFiles/assignment2.dir/src/app_pthread.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment2.dir/src/app_pthread.c.s"
 	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/app_pthread.c -o CMakeFiles/assignment2.dir/src/app_pthread.c.s
 
+app/CMakeFiles/assignment2.dir/src/app_udp.c.o: app/CMakeFiles/assignment2.dir/flags.make
+app/CMakeFiles/assignment2.dir/src/app_udp.c.o: ../app/src/app_udp.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object app/CMakeFiles/assignment2.dir/src/app_udp.c.o"
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/assignment2.dir/src/app_udp.c.o -c /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/app_udp.c
+
+app/CMakeFiles/assignment2.dir/src/app_udp.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/assignment2.dir/src/app_udp.c.i"
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/app_udp.c > CMakeFiles/assignment2.dir/src/app_udp.c.i
+
+app/CMakeFiles/assignment2.dir/src/app_udp.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment2.dir/src/app_udp.c.s"
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/app_udp.c -o CMakeFiles/assignment2.dir/src/app_udp.c.s
+
 app/CMakeFiles/assignment2.dir/src/main.c.o: app/CMakeFiles/assignment2.dir/flags.make
 app/CMakeFiles/assignment2.dir/src/main.c.o: ../app/src/main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object app/CMakeFiles/assignment2.dir/src/main.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object app/CMakeFiles/assignment2.dir/src/main.c.o"
 	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/assignment2.dir/src/main.c.o -c /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/main.c
 
 app/CMakeFiles/assignment2.dir/src/main.c.i: cmake_force
@@ -117,7 +130,7 @@ app/CMakeFiles/assignment2.dir/src/main.c.s: cmake_force
 
 app/CMakeFiles/assignment2.dir/src/periodTimer.c.o: app/CMakeFiles/assignment2.dir/flags.make
 app/CMakeFiles/assignment2.dir/src/periodTimer.c.o: ../app/src/periodTimer.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object app/CMakeFiles/assignment2.dir/src/periodTimer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object app/CMakeFiles/assignment2.dir/src/periodTimer.c.o"
 	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/assignment2.dir/src/periodTimer.c.o -c /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/periodTimer.c
 
 app/CMakeFiles/assignment2.dir/src/periodTimer.c.i: cmake_force
@@ -132,6 +145,7 @@ app/CMakeFiles/assignment2.dir/src/periodTimer.c.s: cmake_force
 assignment2_OBJECTS = \
 "CMakeFiles/assignment2.dir/src/app_helper.c.o" \
 "CMakeFiles/assignment2.dir/src/app_pthread.c.o" \
+"CMakeFiles/assignment2.dir/src/app_udp.c.o" \
 "CMakeFiles/assignment2.dir/src/main.c.o" \
 "CMakeFiles/assignment2.dir/src/periodTimer.c.o"
 
@@ -140,12 +154,13 @@ assignment2_EXTERNAL_OBJECTS =
 
 app/assignment2: app/CMakeFiles/assignment2.dir/src/app_helper.c.o
 app/assignment2: app/CMakeFiles/assignment2.dir/src/app_pthread.c.o
+app/assignment2: app/CMakeFiles/assignment2.dir/src/app_udp.c.o
 app/assignment2: app/CMakeFiles/assignment2.dir/src/main.c.o
 app/assignment2: app/CMakeFiles/assignment2.dir/src/periodTimer.c.o
 app/assignment2: app/CMakeFiles/assignment2.dir/build.make
 app/assignment2: hal/libhal.a
 app/assignment2: app/CMakeFiles/assignment2.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable assignment2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable assignment2"
 	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/assignment2.dir/link.txt --verbose=$(VERBOSE)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Copying ARM executable to public NFS directory"
 	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app && /usr/bin/cmake -E copy /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/app/assignment2 ~/cmpt433/public/myApps/assignment2

@@ -198,6 +198,33 @@ src/app_pthread.c.s:
 	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.s
 .PHONY : src/app_pthread.c.s
 
+src/app_udp.o: src/app_udp.c.o
+
+.PHONY : src/app_udp.o
+
+# target to build an object file
+src/app_udp.c.o:
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_udp.c.o
+.PHONY : src/app_udp.c.o
+
+src/app_udp.i: src/app_udp.c.i
+
+.PHONY : src/app_udp.i
+
+# target to preprocess a source file
+src/app_udp.c.i:
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_udp.c.i
+.PHONY : src/app_udp.c.i
+
+src/app_udp.s: src/app_udp.c.s
+
+.PHONY : src/app_udp.s
+
+# target to generate assembly for a file
+src/app_udp.c.s:
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_udp.c.s
+.PHONY : src/app_udp.c.s
+
 src/main.o: src/main.c.o
 
 .PHONY : src/main.o
@@ -267,6 +294,9 @@ help:
 	@echo "... src/app_pthread.o"
 	@echo "... src/app_pthread.i"
 	@echo "... src/app_pthread.s"
+	@echo "... src/app_udp.o"
+	@echo "... src/app_udp.i"
+	@echo "... src/app_udp.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

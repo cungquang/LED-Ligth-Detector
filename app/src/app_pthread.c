@@ -9,9 +9,11 @@ static long long sample_size = 0;
 static bool isTerminated;
 static pthread_t a2d_id;
 static pthread_t shutdown_id;
+static pthread_t udpIn_id;
 
 void *shutdown_thread();
 void *a2d_thread();
+void *udpIn_thread();
 
 void setTerminate(bool terminate_flag) {
     isTerminated = terminate_flag;
@@ -60,7 +62,7 @@ void *a2d_thread()
 
 void *shutdown_thread()
 {
-    //sleep until isTerminated == true => start clean up
+    //sleep until isTerminated == true => start clean upcl
     while(!isTerminated)
     {
         sleepForMs(1);
@@ -69,6 +71,7 @@ void *shutdown_thread()
     //shutdown everything
     pthread_join(a2d_id, NULL);
     pthread_join(shutdown_id, NULL);
+    void closeFile();
 
     return NULL;
 }

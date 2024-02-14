@@ -7,9 +7,12 @@ app/CMakeFiles/assignment2.dir/src/app_pthread.c.o: ../app/include/app_helper.h
 app/CMakeFiles/assignment2.dir/src/app_pthread.c.o: ../app/src/app_pthread.c
 app/CMakeFiles/assignment2.dir/src/app_pthread.c.o: ../hal/include/a2d.h
 
+app/CMakeFiles/assignment2.dir/src/app_udp.c.o: ../app/src/app_udp.c
+
 app/CMakeFiles/assignment2.dir/src/main.c.o: ../hal/include/a2d.h
 app/CMakeFiles/assignment2.dir/src/main.c.o: ../app/include/app_helper.h
 app/CMakeFiles/assignment2.dir/src/main.c.o: ../app/include/app_pthread.h
+app/CMakeFiles/assignment2.dir/src/main.c.o: ../app/include/app_upd.h
 app/CMakeFiles/assignment2.dir/src/main.c.o: ../app/src/main.c
 
 app/CMakeFiles/assignment2.dir/src/periodTimer.c.o: ../app/include/periodTimer.h

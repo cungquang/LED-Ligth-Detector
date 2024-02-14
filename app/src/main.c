@@ -12,6 +12,9 @@
 #include "../include/app_helper.h"
 #include "../include/app_pthread.h"
 #include "../include/app_helper.h"
+#include "../include/app_upd.h"
+
+#define MAX_LENGTH 500
 
 bool terminate_flag = false;
 
@@ -22,8 +25,7 @@ void trigger_shutdown(int signum){
     }
 }
 
-int main()
-{
+int operation(){
 	//Register signal handl shutdown
 	if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
 		fprintf(stderr, "Error: fail to register signal hanlder\n");
@@ -43,4 +45,16 @@ int main()
 
 	return 0;
 }
+
+
+int main(char *args)
+{
+	if(args == "HOST") {
+		
+	}
+
+	return 0;
+}
+
+
 
