@@ -52,6 +52,10 @@ void *a2d_thread()
             int reading = getVoltage0Read();
             double voltage = getVoltageConvert(reading);
             sample_size++;
+
+            //Store sample of current second
+
+            //Add here function keep track of dip
             printf("Time: %lld Sample size: %lld Value %5d ==> %5.3fV\n", currentTime, sample_size, reading, voltage);
         }
 
