@@ -53,11 +53,18 @@ int main(int argc, char *argv[])
 {
 	if(argc >= 2 && strcmp(argv[1], "CLIENT") == 0)
 	{
+		printf("%s starting\n", argv[1]);
 		init_udpClient();
 	} 
 	else
-	{
+	{	
+		printf("server starting\n");
 		init_udpServer();
+	}
+
+	while(1)
+	{
+		sleep(1);
 	}
 
 	return 0;

@@ -34,21 +34,16 @@ void init_udpClient()
 }
 
 void closeSocket() {
-    if(udpSever_id) {
-        close(udpSever_id);
-    }
-
     if(serverSock) {
         close(serverSock);
-    }
-
-    if(udpClient_id) {
-        close(udpClient_id);
     }
 
     if(clientSock) {
         close(clientSock);
     }
+
+    pthread_join(udpSever_id, NULL);
+    pthread_join(udpClient_id, NULL);
 }
 
 void *udpServer_thread()
