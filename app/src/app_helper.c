@@ -45,7 +45,7 @@ double exponentSmoothAvg(double current_avg, double previous_avg)
     return current_avg*weighted + previous_avg*(1-weighted);
 }
 
-double calculateCurrentAvg(long current_size, double current_sum) 
+double calculateSimpleAvg(long current_size, double current_sum) 
 {
     return current_sum/current_size;
 }

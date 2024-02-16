@@ -1,32 +1,38 @@
-/*
- * noworky.c
- *
- * This program tries to create two arrays of data, and then swap their
- * contents. However, not all seems to go according to plan...
- */
 #include <stdio.h>
 #include <stdlib.h>
-#include <a2d.h>
 #include <stdbool.h>
 #include <signal.h>
 #include <unistd.h>
+#include <pthread.h>
 #include <string.h>
 #include "../include/app_helper.h"
 #include "../include/app_sampler.h"
 #include "../include/app_upd.h"
 
-#define MAX_LENGTH 500
-
 bool terminate_flag = false;
+static pthread_t programShutdown_id;
 
 void trigger_shutdown(int signum){
 	if(signum == SIGINT) {
         terminate_flag = true;
 
-		//Set terminate flag to each function
+		//Set terminate flag for all threads
 		Sampler_setTerminate(terminate_flag);
 		Udp_setTerminate(terminate_flag);
     }
+}
+
+void *Program_shutdown()
+{
+	while(!terminate_flag)
+	{
+		sleepForMs(1001);
+	}
+
+	//cleanup UDP
+	Udp_cleanup();
+	Sampler_cleanup();
+	return NULL;
 }
 
 int operation(){
@@ -37,25 +43,36 @@ int operation(){
 	}
 	
 	//init & run all slave threads
-	init_thread(terminate_flag);
+	Sampler_init(terminate_flag);
 
 	return 0;
 }
 
 
-int main(int argc, char *argv[])
+int network(int argc, char *argv[])
 {
 	// if client - no need other thread to be trigger
 	if(argc >= 2 && strcmp(argv[1], "CLIENT") == 0)
 	{
 		printf("%s starting\n", argv[1]);
-		init_udpClient();
+		Udp_initClient(terminate_flag);
 	} 
 	else
 	{	
 		printf("SERVER starting\n");
-		init_udpServer();
+		Udp_initServer(terminate_flag);
 	}
+
+	return 0;
+}
+
+//int main(int argc, char *argv[])
+int main()
+{
+	//Start thread Program_shutdown thread
+	if(pthread_create(&programShutdown_id, NULL, Program_shutdown, NULL) != 0){
+        return 1;
+    }
 
 	// main process - keep the prgram runing
 	while(!terminate_flag)

@@ -32,26 +32,6 @@ void *udpClient_thread() ;
 
 /*-------------------------- Public -----------------------------*/
 
-void Udp_initServer(bool terminate_flag)
-{
-    Udp_setTerminate(terminate_flag);
-
-    //Create thread
-    if(pthread_create(&udpSever_id, NULL, udpServer_thread, NULL) != 0){
-        exit(EXIT_FAILURE);
-    }
-}
-
-void Udp_initClient(bool terminate_flag)
-{
-    Udp_setTerminate(terminate_flag);
-
-    //Create thread
-    if(pthread_create(&udpClient_id, NULL, udpClient_thread, NULL) != 0){
-        exit(EXIT_FAILURE);
-    }
-}
-
 void Udp_cleanup() 
 {
     if(serverSock) {
@@ -75,6 +55,25 @@ void Udp_setTerminate(bool terminate_flag) {
     isTerminated = terminate_flag;
 }
 
+void Udp_initServer(bool terminate_flag)
+{
+    Udp_setTerminate(terminate_flag);
+
+    //Create thread
+    if(pthread_create(&udpSever_id, NULL, udpServer_thread, NULL) != 0){
+        exit(EXIT_FAILURE);
+    }
+}
+
+void Udp_initClient(bool terminate_flag)
+{
+    Udp_setTerminate(terminate_flag);
+
+    //Create thread
+    if(pthread_create(&udpClient_id, NULL, udpClient_thread, NULL) != 0){
+        exit(EXIT_FAILURE);
+    }
+}
 
 /*-------------------------- Private -----------------------------*/
 
@@ -139,6 +138,7 @@ void *udpServer_thread()
 
     // Close the socket
     close(serverSock);
+    return NULL;
 }
 
 //Client side, send: history, count, length, dips, help (or ?), stop, <Enter>
@@ -186,4 +186,5 @@ void *udpClient_thread()
     }
     
     close(clientSock);
+    return NULL;
 }

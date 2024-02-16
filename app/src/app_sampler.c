@@ -9,7 +9,7 @@
 
 //Trigger
 static bool isTerminated;
-static bool isDoneProduced;
+// static bool isDoneProduced;
 
 //Resources
 static long count = 0;
@@ -19,35 +19,24 @@ static double arr_rawData[1000];
 static double previous_avg;
 static double previous_sum;
 
-static double *arr_history;
-static long count_history;
+// static double *arr_history;
+// static long count_history;
 
 //Thread
 static pthread_t a2d_id;
 void *a2d_thread();
 
 /*-------------------------- Public -----------------------------*/
-
-//Init sampler thread
-void Sampler_init(bool terminate_flag)
-{
-    //Trigger the start of the program
-    setTerminate(terminate_flag);
-    
-    //Create & start a2d thread
-    if(pthread_create(&a2d_id, NULL, a2d_thread, NULL) != 0) {
-        exit(EXIT_FAILURE);
-    }
-}
-
 // Clean up function
 void Sampler_cleanup()
 {
     //shutdown everything
-    pthread_join(a2d_id, NULL);
-    void closeFile();
+    if(a2d_id) {
+        pthread_join(a2d_id, NULL);
+    }
 
-    return NULL;
+    //close GPIO file - if opened
+    void closeFile();
 }
 
 //Setter to set terminate_flag - end program
@@ -71,6 +60,18 @@ double Sampler_getAverageReading(void)
 long long Sampler_getNumSamplesTaken(void) 
 {
     return length;
+}
+
+//Init sampler thread
+void Sampler_init(bool terminate_flag)
+{
+    //Trigger the start of the program
+    Sampler_setTerminate(terminate_flag);
+    
+    //Create & start a2d thread
+    if(pthread_create(&a2d_id, NULL, a2d_thread, NULL) != 0) {
+        exit(EXIT_FAILURE);
+    }
 }
 
 /*-------------------------- Private -----------------------------*/
@@ -109,7 +110,7 @@ void *a2d_thread()
             }
 
             //Add here function keep track of dip
-            printf("Time: %lld Sample size: %lld Value %5d ==> %5.3fV\n", currentTime, batch_size, voltageToStore, previous_avg);
+            printf("Time: %lld Sample size: %lld Value %5.3f ==> %5.3fV\n", currentTime, batch_size, voltageToStore, previous_avg);
         }
         //create a copy - get history
 
