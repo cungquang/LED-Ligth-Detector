@@ -171,32 +171,32 @@ src/app_helper.c.s:
 	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_helper.c.s
 .PHONY : src/app_helper.c.s
 
-src/app_pthread.o: src/app_pthread.c.o
+src/app_sampler.o: src/app_sampler.c.o
 
-.PHONY : src/app_pthread.o
+.PHONY : src/app_sampler.o
 
 # target to build an object file
-src/app_pthread.c.o:
-	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.o
-.PHONY : src/app_pthread.c.o
+src/app_sampler.c.o:
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_sampler.c.o
+.PHONY : src/app_sampler.c.o
 
-src/app_pthread.i: src/app_pthread.c.i
+src/app_sampler.i: src/app_sampler.c.i
 
-.PHONY : src/app_pthread.i
+.PHONY : src/app_sampler.i
 
 # target to preprocess a source file
-src/app_pthread.c.i:
-	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.i
-.PHONY : src/app_pthread.c.i
+src/app_sampler.c.i:
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_sampler.c.i
+.PHONY : src/app_sampler.c.i
 
-src/app_pthread.s: src/app_pthread.c.s
+src/app_sampler.s: src/app_sampler.c.s
 
-.PHONY : src/app_pthread.s
+.PHONY : src/app_sampler.s
 
 # target to generate assembly for a file
-src/app_pthread.c.s:
-	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_pthread.c.s
-.PHONY : src/app_pthread.c.s
+src/app_sampler.c.s:
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build && $(MAKE) $(MAKESILENT) -f app/CMakeFiles/assignment2.dir/build.make app/CMakeFiles/assignment2.dir/src/app_sampler.c.s
+.PHONY : src/app_sampler.c.s
 
 src/app_udp.o: src/app_udp.c.o
 
@@ -291,9 +291,9 @@ help:
 	@echo "... src/app_helper.o"
 	@echo "... src/app_helper.i"
 	@echo "... src/app_helper.s"
-	@echo "... src/app_pthread.o"
-	@echo "... src/app_pthread.i"
-	@echo "... src/app_pthread.s"
+	@echo "... src/app_sampler.o"
+	@echo "... src/app_sampler.i"
+	@echo "... src/app_sampler.s"
 	@echo "... src/app_udp.o"
 	@echo "... src/app_udp.i"
 	@echo "... src/app_udp.s"

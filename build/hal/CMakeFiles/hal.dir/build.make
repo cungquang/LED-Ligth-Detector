@@ -79,28 +79,28 @@ include hal/CMakeFiles/hal.dir/flags.make
 hal/CMakeFiles/hal.dir/src/a2d.c.o: hal/CMakeFiles/hal.dir/flags.make
 hal/CMakeFiles/hal.dir/src/a2d.c.o: ../hal/src/a2d.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object hal/CMakeFiles/hal.dir/src/a2d.c.o"
-	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/hal.dir/src/a2d.c.o -c /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/hal.dir/src/a2d.c.o -c /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c
 
 hal/CMakeFiles/hal.dir/src/a2d.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/hal.dir/src/a2d.c.i"
-	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c > CMakeFiles/hal.dir/src/a2d.c.i
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c > CMakeFiles/hal.dir/src/a2d.c.i
 
 hal/CMakeFiles/hal.dir/src/a2d.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/hal.dir/src/a2d.c.s"
-	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c -o CMakeFiles/hal.dir/src/a2d.c.s
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/a2d.c -o CMakeFiles/hal.dir/src/a2d.c.s
 
 hal/CMakeFiles/hal.dir/src/hal_helper.c.o: hal/CMakeFiles/hal.dir/flags.make
 hal/CMakeFiles/hal.dir/src/hal_helper.c.o: ../hal/src/hal_helper.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object hal/CMakeFiles/hal.dir/src/hal_helper.c.o"
-	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/hal.dir/src/hal_helper.c.o -c /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/hal.dir/src/hal_helper.c.o -c /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c
 
 hal/CMakeFiles/hal.dir/src/hal_helper.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/hal.dir/src/hal_helper.c.i"
-	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c > CMakeFiles/hal.dir/src/hal_helper.c.i
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c > CMakeFiles/hal.dir/src/hal_helper.c.i
 
 hal/CMakeFiles/hal.dir/src/hal_helper.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/hal.dir/src/hal_helper.c.s"
-	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c -o CMakeFiles/hal.dir/src/hal_helper.c.s
+	cd /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/build/hal && /usr/bin/arm-linux-gnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/hal/src/hal_helper.c -o CMakeFiles/hal.dir/src/hal_helper.c.s
 
 # Object files for target hal
 hal_OBJECTS = \

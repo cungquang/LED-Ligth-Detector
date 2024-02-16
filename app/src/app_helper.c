@@ -10,6 +10,9 @@
 #include <fcntl.h>      // for open()
 #include <unistd.h>     // for close()
 
+
+static double weighted = 0.999;
+
 long long getTimeInMs(void)
 {
     struct timespec spec;
@@ -35,4 +38,14 @@ void sleepForMs(long long delayInMs)
 bool isEmptyString(const char *strToCheck)
 {
     return strlen(strToCheck) == 0;
+}
+
+double exponentSmoothAvg(double current_avg, double previous_avg)
+{
+    return current_avg*weighted + previous_avg*(1-weighted);
+}
+
+double calculateCurrentAvg(long current_size, double current_sum) 
+{
+    return current_sum/current_size;
 }

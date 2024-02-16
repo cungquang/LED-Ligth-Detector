@@ -196,7 +196,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "app/src/app_pthread.c",
+			"path" : "app/src/app_sampler.c",
 			"sourceGroupIndex" : 0
 		},
 		{

@@ -16,13 +16,17 @@ static int serverSock;
 static int clientSock;
 static char previousMessage[PREV_MESSAGE_SIZE];
 static int previousMessageSize;
-//static char *sharedContent;
+static bool isTerminated;
 
 static pthread_t udpSever_id;
 static pthread_t udpClient_id;
 
 void *udpServer_thread();
 void *udpClient_thread() ;
+
+void setTerminate(bool terminate_flag) {
+    isTerminated = terminate_flag;
+}
 
 void init_udpServer()
 {
@@ -39,7 +43,12 @@ void init_udpClient()
     }
 }
 
-void closeSocket() {
+void cleanUp_udp() 
+{
+    while(isTerminated) {
+        sleepForMs(1);
+    }
+
     if(serverSock) {
         close(serverSock);
     }
@@ -48,10 +57,17 @@ void closeSocket() {
         close(clientSock);
     }
 
-    pthread_join(udpSever_id, NULL);
-    pthread_join(udpClient_id, NULL);
+    if(udpSever_id) {
+        pthread_join(udpSever_id, NULL);
+    }
+
+    if(udpClient_id) {
+        pthread_join(udpClient_id, NULL);
+    }
 }
 
+
+//Server side, receive: history, count, length, dips, help (or ?), stop, <Enter>
 void *udpServer_thread()
 {
     struct sockaddr_in server_addr, client_addr;
@@ -77,7 +93,7 @@ void *udpServer_thread()
         exit(EXIT_FAILURE);
     }
 
-    while(1)
+    while(!isTerminated)
     {
         // Receive message
         if ((recv_len = recvfrom(serverSock, receiv_buffer, MAX_BUFFER_SIZE, 0, (struct sockaddr *)&client_addr, &client_len)) == -1) {
@@ -94,14 +110,13 @@ void *udpServer_thread()
             previousMessage[previousMessageSize - 1] = '\0';
         }
 
+        
+
         // Verify & execute command accordingly
 
         // Print received message
         //receiv_buffer[recv_len] = '\0'; 
         //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
-
-
-
 
 
         // Reply to the sender
@@ -116,6 +131,7 @@ void *udpServer_thread()
     close(serverSock);
 }
 
+//Client side, send: history, count, length, dips, help (or ?), stop, <Enter>
 void *udpClient_thread() 
 {
     struct sockaddr_in server_addr;
@@ -134,7 +150,7 @@ void *udpClient_thread()
     server_addr.sin_addr.s_addr = inet_addr(SERVER_IP);
     server_addr.sin_port = htons(SERVER_PORT);
 
-    while (1)
+    while (!isTerminated)
     {
         printf("me: ");
         if (fgets(buffer, sizeof(buffer), stdin) == NULL) {

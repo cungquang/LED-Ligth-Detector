@@ -10,5 +10,7 @@
 long long getTimeInMs(void);
 void sleepForMs(long long delayInMs);
 bool isEmptyString(const char *strToCheck);
+double exponentSmoothAvg(double current_avg, double previous_avg);
+double calculateCurrentAvg(long current_size, double current_sum);
 
 #endif
