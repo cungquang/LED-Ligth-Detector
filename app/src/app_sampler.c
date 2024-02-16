@@ -27,18 +27,6 @@ static pthread_t a2d_id;
 void *a2d_thread();
 
 /*-------------------------- Public -----------------------------*/
-// Clean up function
-void Sampler_cleanup()
-{
-    
-    //shutdown everything
-    if(a2d_id) {
-        a2d_id == NULL;
-    }
-    
-    //close GPIO file - if opened
-    void closeFile();
-}
 
 //Setter to set terminate_flag - end program
 void Sampler_setTerminate(bool terminate_flag) {
@@ -63,6 +51,12 @@ long long Sampler_getNumSamplesTaken(void)
     return length;
 }
 
+// Clean up function
+void Sampler_cleanup()
+{   
+    pthread_join(a2d_id, NULL);
+}
+
 //Init sampler thread
 void Sampler_init(bool terminate_flag)
 {
@@ -73,11 +67,6 @@ void Sampler_init(bool terminate_flag)
     if(pthread_create(&a2d_id, NULL, a2d_thread, NULL) != 0) {
         exit(EXIT_FAILURE);
     }
-}
-
-void Sampler_join() 
-{
-    pthread_join(a2d_id, NULL);
 }
 
 /*-------------------------- Private -----------------------------*/

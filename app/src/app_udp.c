@@ -17,13 +17,11 @@ static bool isTerminated;
 
 //Sokcet setup
 static int serverSock;
-static int clientSock;
 static char previousMessage[PREV_MESSAGE_SIZE];
 static int previousMessageSize;
 
 //Thread
 static pthread_t udpSever_id;
-static pthread_t udpClient_id;
 
 //Declare functions
 void *udpServer_thread();
@@ -34,20 +32,9 @@ void *udpClient_thread() ;
 
 void Udp_cleanup() 
 {
+    pthread_join(udpSever_id, NULL);
     if(serverSock) {
         close(serverSock);
-    }
-
-    if(clientSock) {
-        close(clientSock);
-    }
-
-    if(udpSever_id) {
-        pthread_join(udpSever_id, NULL);
-    }
-
-    if(udpClient_id) {
-        pthread_join(udpClient_id, NULL);
     }
 }
 
@@ -65,25 +52,6 @@ void Udp_initServer(bool terminate_flag)
     }
 }
 
-void Udp_initClient(bool terminate_flag)
-{
-    Udp_setTerminate(terminate_flag);
-
-    //Create thread
-    if(pthread_create(&udpClient_id, NULL, udpClient_thread, NULL) != 0){
-        exit(EXIT_FAILURE);
-    }
-}
-
-void Udp_joinServer()
-{
-    pthread_join(udpSever_id, NULL);
-}
-
-void Udp_joinClient()
-{
-    pthread_join(udpClient_id, NULL);
-}
 
 /*-------------------------- Private -----------------------------*/
 
@@ -113,6 +81,7 @@ void *udpServer_thread()
         exit(EXIT_FAILURE);
     }
 
+    printf("Server starting...");
     while(!isTerminated)
     {
         // Receive message
@@ -134,6 +103,7 @@ void *udpServer_thread()
         }
         
         // Execute command according to request from client
+        
 
         // Print received message
         //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
@@ -151,50 +121,50 @@ void *udpServer_thread()
     return NULL;
 }
 
-//Client side, send: history, count, length, dips, help (or ?), stop, <Enter>
-void *udpClient_thread() 
-{
-    struct sockaddr_in server_addr;
-    socklen_t server_len = sizeof(server_addr);
-    char buffer[MAX_BUFFER_SIZE];
+// //Client side, send: history, count, length, dips, help (or ?), stop, <Enter>
+// void *udpClient_thread() 
+// {
+//     struct sockaddr_in server_addr;
+//     socklen_t server_len = sizeof(server_addr);
+//     char buffer[MAX_BUFFER_SIZE];
 
-    // Create UDP socket
-    if ((clientSock = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
-        perror("Socket creation failed");
-        exit(EXIT_FAILURE);
-    }
+//     // Create UDP socket
+//     if ((clientSock = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
+//         perror("Socket creation failed");
+//         exit(EXIT_FAILURE);
+//     }
 
-    // Fill server information
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = inet_addr(SERVER_IP);
-    server_addr.sin_port = htons(SERVER_PORT);
+//     // Fill server information
+//     memset(&server_addr, 0, sizeof(server_addr));
+//     server_addr.sin_family = AF_INET;
+//     server_addr.sin_addr.s_addr = inet_addr(SERVER_IP);
+//     server_addr.sin_port = htons(SERVER_PORT);
 
-    while (!isTerminated)
-    {
-        printf("me: ");
-        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
-            perror("Error reading input");
-            exit(EXIT_FAILURE);
-        }
+//     while (!isTerminated)
+//     {
+//         printf("me: ");
+//         if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+//             perror("Error reading input");
+//             exit(EXIT_FAILURE);
+//         }
 
-        if (sendto(clientSock, buffer, strlen(buffer), 0, (const struct sockaddr *)&server_addr, server_len) == -1) {
-            perror("Sendto failed");
-            exit(EXIT_FAILURE);
-        }
+//         if (sendto(clientSock, buffer, strlen(buffer), 0, (const struct sockaddr *)&server_addr, server_len) == -1) {
+//             perror("Sendto failed");
+//             exit(EXIT_FAILURE);
+//         }
 
-        // Receive response from the server
-        ssize_t bytes_received = recvfrom(clientSock, (char *)buffer, MAX_BUFFER_SIZE, 0, (struct sockaddr *)&server_addr, &server_len);
-        if (bytes_received == -1) {
-            perror("Failed to receive message");
-            exit(EXIT_FAILURE);
-        }
+//         // Receive response from the server
+//         ssize_t bytes_received = recvfrom(clientSock, (char *)buffer, MAX_BUFFER_SIZE, 0, (struct sockaddr *)&server_addr, &server_len);
+//         if (bytes_received == -1) {
+//             perror("Failed to receive message");
+//             exit(EXIT_FAILURE);
+//         }
 
-        buffer[bytes_received] = '\0'; // Null-terminate the received data
-        printf("server: %s\n", buffer);
+//         buffer[bytes_received] = '\0'; // Null-terminate the received data
+//         printf("server: %s\n", buffer);
 
-    }
+//     }
     
-    close(clientSock);
-    return NULL;
-}
+//     close(clientSock);
+//     return NULL;
+// }

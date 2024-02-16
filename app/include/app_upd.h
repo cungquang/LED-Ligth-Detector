@@ -3,9 +3,6 @@
 
 // Thread
 void Udp_initServer(bool terminate_flag);
-void Udp_initClient(bool terminate_flag);
-void Udp_joinServer();
-void Udp_joinClient();
 
 //Clean up
 void Udp_cleanup();
