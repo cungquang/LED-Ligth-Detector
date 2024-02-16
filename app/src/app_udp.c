@@ -13,7 +13,7 @@
 #define PREV_MESSAGE_SIZE 200
 
 //flag
-static bool isTerminated;
+static bool *isTerminated;
 
 //Sokcet setup
 static int serverSock;
@@ -25,7 +25,6 @@ static pthread_t udpSever_id;
 
 //Declare functions
 void *udpServer_thread();
-void *udpClient_thread() ;
 
 
 /*-------------------------- Public -----------------------------*/
@@ -38,7 +37,7 @@ void Udp_cleanup()
     }
 }
 
-void Udp_setTerminate(bool terminate_flag) {
+void Udp_setTerminate(bool *terminate_flag) {
     isTerminated = terminate_flag;
 }
 
@@ -103,7 +102,14 @@ void *udpServer_thread()
         }
         
         // Execute command according to request from client
-        
+        if(strcmp("help", previousMessage) == 0)
+        {
+            command_help();
+        } 
+        else if (strcmp("stop", previousMessage) == 0)
+        {
+
+        } 
 
         // Print received message
         //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
@@ -121,50 +127,26 @@ void *udpServer_thread()
     return NULL;
 }
 
-// //Client side, send: history, count, length, dips, help (or ?), stop, <Enter>
-// void *udpClient_thread() 
-// {
-//     struct sockaddr_in server_addr;
-//     socklen_t server_len = sizeof(server_addr);
-//     char buffer[MAX_BUFFER_SIZE];
+const char *command_help()
+{
+    return "Accepted command examples:\n"
+           "count -- get the total number of samples taken.\n"
+           "length -- get the number of samples taken in the previously completed second.\n"
+           "dips -- get the number of dips in the previously completed second.\n"
+           "history -- get all the samples in the previously completed second.\n"
+           "stop -- cause the server program to end.\n"
+           "<enter> -- repeat last command.\n"
+           "?\n"
+           "Accepted command examples:\n"
+           "count -- get the total number of samples taken.\n"
+           "length -- get the number of samples taken in the previously completed second.\n"
+           "dips -- get the number of dips in the previously completed second.\n"
+           "history -- get all the samples in the previously completed second.\n"
+           "stop -- cause the server program to end.\n"
+           "<enter> -- repeat last command.";
+}
 
-//     // Create UDP socket
-//     if ((clientSock = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
-//         perror("Socket creation failed");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     // Fill server information
-//     memset(&server_addr, 0, sizeof(server_addr));
-//     server_addr.sin_family = AF_INET;
-//     server_addr.sin_addr.s_addr = inet_addr(SERVER_IP);
-//     server_addr.sin_port = htons(SERVER_PORT);
-
-//     while (!isTerminated)
-//     {
-//         printf("me: ");
-//         if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
-//             perror("Error reading input");
-//             exit(EXIT_FAILURE);
-//         }
-
-//         if (sendto(clientSock, buffer, strlen(buffer), 0, (const struct sockaddr *)&server_addr, server_len) == -1) {
-//             perror("Sendto failed");
-//             exit(EXIT_FAILURE);
-//         }
-
-//         // Receive response from the server
-//         ssize_t bytes_received = recvfrom(clientSock, (char *)buffer, MAX_BUFFER_SIZE, 0, (struct sockaddr *)&server_addr, &server_len);
-//         if (bytes_received == -1) {
-//             perror("Failed to receive message");
-//             exit(EXIT_FAILURE);
-//         }
-
-//         buffer[bytes_received] = '\0'; // Null-terminate the received data
-//         printf("server: %s\n", buffer);
-
-//     }
-    
-//     close(clientSock);
-//     return NULL;
-// }
+void command_stop()
+{
+    *isTerminated = true;
+}
