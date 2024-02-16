@@ -30,11 +30,12 @@ void *a2d_thread();
 // Clean up function
 void Sampler_cleanup()
 {
+    
     //shutdown everything
     if(a2d_id) {
-        pthread_join(a2d_id, NULL);
+        a2d_id == NULL;
     }
-
+    
     //close GPIO file - if opened
     void closeFile();
 }
@@ -74,6 +75,11 @@ void Sampler_init(bool terminate_flag)
     }
 }
 
+void Sampler_join() 
+{
+    pthread_join(a2d_id, NULL);
+}
+
 /*-------------------------- Private -----------------------------*/
 
 // thread to read input from A2D device
@@ -82,6 +88,7 @@ void *a2d_thread()
     long long batch_size;
     long long currentTime;
     long long startTime;
+
     //while isTerminated == false => keep executing
     while(!isTerminated){
         batch_size = 0;
@@ -91,6 +98,7 @@ void *a2d_thread()
         //Keep reading data for 1000 ms
         while((currentTime = getTimeInMs() - startTime) < 1000) 
         {
+            sleepForMs(200);
             int reading = getVoltage0Read();
             double voltageToStore = getVoltageConvert(reading);
 
@@ -101,6 +109,9 @@ void *a2d_thread()
             previous_sum += voltageToStore;
             batch_size++;
 
+            //length need continuously update
+            length++;       
+
             //Update previous average - this is overall average - not tight to the batch
             if(length == 1){
                 previous_avg = calculateSimpleAvg(length, previous_sum);
@@ -110,15 +121,13 @@ void *a2d_thread()
             }
 
             //Add here function keep track of dip
-            printf("Time: %lld Sample size: %lld Value %5.3f ==> %5.3fV\n", currentTime, batch_size, voltageToStore, previous_avg);
+            printf("Time: %lld Sample size: %lld Value %5.3f ==> sum:%5.3f avg:%5.3fV\n", currentTime, length, voltageToStore, previous_sum, previous_avg);
         }
         //create a copy - get history
 
+
         //Update count for this batch
         count = batch_size;
-
-        //Update length after this batch:
-        length += batch_size;
 
         //sleep for 1ms - before next iteration
         sleepForMs(1);

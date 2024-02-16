@@ -75,6 +75,16 @@ void Udp_initClient(bool terminate_flag)
     }
 }
 
+void Udp_joinServer()
+{
+    pthread_join(udpSever_id, NULL);
+}
+
+void Udp_joinClient()
+{
+    pthread_join(udpClient_id, NULL);
+}
+
 /*-------------------------- Private -----------------------------*/
 
 //Server side, receive: history, count, length, dips, help (or ?), stop, <Enter>

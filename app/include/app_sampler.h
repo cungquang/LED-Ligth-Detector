@@ -1,7 +1,11 @@
 #ifndef _APP_SAMPLER_H_
 #define _APP_SAMPLER_H_
 
+//Thread
 void Sampler_init(bool terminate_flag);
+void Sampler_join();
+
+//Cleanup
 void Sampler_cleanup();
 
 // Setter

@@ -9,8 +9,8 @@
 #include "../include/app_sampler.h"
 #include "../include/app_upd.h"
 
-bool terminate_flag = false;
-static pthread_t programShutdown_id;
+static bool terminate_flag = false;
+//static pthread_t programShutdown_id;
 
 void trigger_shutdown(int signum){
 	if(signum == SIGINT) {
@@ -18,36 +18,23 @@ void trigger_shutdown(int signum){
 
 		//Set terminate flag for all threads
 		Sampler_setTerminate(terminate_flag);
-		Udp_setTerminate(terminate_flag);
+		//Udp_setTerminate(terminate_flag);
     }
 }
 
+//Program shutdown got error
 void *Program_shutdown()
 {
 	while(!terminate_flag)
 	{
-		sleepForMs(1001);
+		sleepForMs(1);
 	}
 
 	//cleanup UDP
-	Udp_cleanup();
+	//Udp_cleanup();
 	Sampler_cleanup();
 	return NULL;
 }
-
-int operation(){
-	//Register signal handl shutdown
-	if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
-		fprintf(stderr, "Error: fail to register signal hanlder\n");
-		return 1;
-	}
-	
-	//init & run all slave threads
-	Sampler_init(terminate_flag);
-
-	return 0;
-}
-
 
 int network(int argc, char *argv[])
 {
@@ -69,19 +56,21 @@ int network(int argc, char *argv[])
 //int main(int argc, char *argv[])
 int main()
 {
-	//Start thread Program_shutdown thread
-	if(pthread_create(&programShutdown_id, NULL, Program_shutdown, NULL) != 0){
-        return 1;
-    }
-
-	// main process - keep the prgram runing
-	while(!terminate_flag)
-	{
-		//do some logic
-		sleepForMs(1001);
-		printf("main is sleep");
+	//Register signal handl shutdown
+	if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
+		fprintf(stderr, "Error: fail to register signal hanlder\n");
+		return 1;
 	}
 
+	//Initiate all programs
+	//pthread_create(&programShutdown_id, NULL, Program_shutdown, NULL);
+	Sampler_init(terminate_flag);
+
+
+	//Join
+	Sampler_join();
+	//pthread_join(programShutdown_id, NULL);
+	
 	return 0;
 }
 
