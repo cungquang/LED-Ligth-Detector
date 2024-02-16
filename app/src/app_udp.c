@@ -12,43 +12,48 @@
 #define MAX_BUFFER_SIZE 1500
 #define PREV_MESSAGE_SIZE 200
 
+//flag
+static bool isTerminated;
+
+//Sokcet setup
 static int serverSock;
 static int clientSock;
 static char previousMessage[PREV_MESSAGE_SIZE];
 static int previousMessageSize;
-static bool isTerminated;
 
+//Thread
 static pthread_t udpSever_id;
 static pthread_t udpClient_id;
 
+//Declare functions
 void *udpServer_thread();
 void *udpClient_thread() ;
 
-void setTerminate(bool terminate_flag) {
-    isTerminated = terminate_flag;
-}
 
-void init_udpServer()
+/*-------------------------- Public -----------------------------*/
+
+void Udp_initServer(bool terminate_flag)
 {
-    //sharedContent = sharedData;
+    Udp_setTerminate(terminate_flag);
+
+    //Create thread
     if(pthread_create(&udpSever_id, NULL, udpServer_thread, NULL) != 0){
         exit(EXIT_FAILURE);
     }
 }
 
-void init_udpClient()
+void Udp_initClient(bool terminate_flag)
 {
+    Udp_setTerminate(terminate_flag);
+
+    //Create thread
     if(pthread_create(&udpClient_id, NULL, udpClient_thread, NULL) != 0){
         exit(EXIT_FAILURE);
     }
 }
 
-void cleanUp_udp() 
+void Udp_cleanup() 
 {
-    while(isTerminated) {
-        sleepForMs(1);
-    }
-
     if(serverSock) {
         close(serverSock);
     }
@@ -66,6 +71,12 @@ void cleanUp_udp()
     }
 }
 
+void Udp_setTerminate(bool terminate_flag) {
+    isTerminated = terminate_flag;
+}
+
+
+/*-------------------------- Private -----------------------------*/
 
 //Server side, receive: history, count, length, dips, help (or ?), stop, <Enter>
 void *udpServer_thread()
@@ -101,6 +112,9 @@ void *udpServer_thread()
             exit(EXIT_FAILURE);
         }
 
+        //Add null terminate
+        receiv_buffer[recv_len] = '\0'; 
+        
         // Message is not empty -> update previous; otherwise leave it as is
         if(recv_len != 1)
         {
@@ -109,15 +123,11 @@ void *udpServer_thread()
             previousMessageSize = recv_len;
             previousMessage[previousMessageSize - 1] = '\0';
         }
-
         
-
-        // Verify & execute command accordingly
+        // Execute command according to request from client
 
         // Print received message
-        //receiv_buffer[recv_len] = '\0'; 
         //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
-
 
         // Reply to the sender
         if(sendto(serverSock, previousMessage, previousMessageSize, 0, (struct sockaddr *)&client_addr, client_len) == -1)

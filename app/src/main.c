@@ -12,8 +12,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "../include/app_helper.h"
-#include "../include/app_pthread.h"
-#include "../include/app_helper.h"
+#include "../include/app_sampler.h"
 #include "../include/app_upd.h"
 
 #define MAX_LENGTH 500
@@ -23,7 +22,10 @@ bool terminate_flag = false;
 void trigger_shutdown(int signum){
 	if(signum == SIGINT) {
         terminate_flag = true;
-		setTerminate(terminate_flag);
+
+		//Set terminate flag to each function
+		Sampler_setTerminate(terminate_flag);
+		Udp_setTerminate(terminate_flag);
     }
 }
 
@@ -37,20 +39,13 @@ int operation(){
 	//init & run all slave threads
 	init_thread(terminate_flag);
 
-	// main process
-	while(!terminate_flag)
-	{
-		//do some logic
-		sleepForMs(1000);
-		printf("main is sleep");
-	}
-
 	return 0;
 }
 
 
 int main(int argc, char *argv[])
 {
+	// if client - no need other thread to be trigger
 	if(argc >= 2 && strcmp(argv[1], "CLIENT") == 0)
 	{
 		printf("%s starting\n", argv[1]);
@@ -62,9 +57,12 @@ int main(int argc, char *argv[])
 		init_udpServer();
 	}
 
-	while(1)
+	// main process - keep the prgram runing
+	while(!terminate_flag)
 	{
-		sleep(1);
+		//do some logic
+		sleepForMs(1001);
+		printf("main is sleep");
 	}
 
 	return 0;
