@@ -2,14 +2,10 @@
 #define _APP_SAMPLER_H_
 
 //Thread
-void Sampler_init(bool terminate_flag);
-void Sampler_join();
+void Sampler_init(int *terminate_flag);
 
 //Cleanup
 void Sampler_cleanup();
-
-// Setter
-void Sampler_setTerminate(bool terminate_flag);
 
 // Getter
 int Sampler_getHistorySize(void);

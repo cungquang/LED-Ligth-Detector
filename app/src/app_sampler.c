@@ -28,11 +28,6 @@ void *a2d_thread();
 
 /*-------------------------- Public -----------------------------*/
 
-//Setter to set terminate_flag - end program
-void Sampler_setTerminate(bool terminate_flag) {
-    isTerminated = terminate_flag;
-}
-
 //Getter to get previous count
 int Sampler_getHistorySize(void)
 {
@@ -58,10 +53,10 @@ void Sampler_cleanup()
 }
 
 //Init sampler thread
-void Sampler_init(bool terminate_flag)
+void Sampler_init(int *terminate_flag)
 {
     //Trigger the start of the program
-    Sampler_setTerminate(terminate_flag);
+    isTerminated = terminate_flag;
     
     //Create & start a2d thread
     if(pthread_create(&a2d_id, NULL, a2d_thread, NULL) != 0) {
@@ -79,7 +74,7 @@ void *a2d_thread()
     long long startTime;
 
     //while isTerminated == false => keep executing
-    while(!isTerminated){
+    while(isTerminated == 0){
         batch_size = 0;
         currentTime = 0;
         startTime = getTimeInMs();
