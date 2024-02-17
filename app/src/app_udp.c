@@ -99,14 +99,26 @@ void *udpServer_thread()
         }
         
         // Execute command according to request from client
-        if(strcmp("help", previousMessage) == 0)
+        if(strcmp("help", previousMessage) == 0 || strcmp("?", previousMessage) == 0)
         {
             command_help();
         } 
         else if (strcmp("stop", previousMessage) == 0)
         {
-
-        } 
+            command_stop();
+        }
+        else if (strcmp("dips", previousMessage) == 0)
+        {
+            command_dips();
+        }
+        else if (strcmp("lenth", previousMessage) == 0)
+        {
+            command_length();
+        }
+        else if (strcmp("count", previousMessage) == 0)
+        {
+            command_count();
+        }
 
         // Print received message
         //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
