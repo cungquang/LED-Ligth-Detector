@@ -9,7 +9,7 @@
 #include "../include/app_sampler.h"
 #include "../include/app_upd.h"
 
-static bool terminate_flag = false;
+int terminate_flag = 0;
 
 void trigger_shutdown(int signum){
 	if(signum == SIGINT) {
@@ -17,19 +17,11 @@ void trigger_shutdown(int signum){
 
 		//Set terminate flag for all threads
 		Sampler_setTerminate(terminate_flag);
-		Udp_setTerminate(terminate_flag);
     }
 }
 
-//int main(int argc, char *argv[])
-int main()
+void operation()
 {
-	//Register signal handl shutdown
-	if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
-		fprintf(stderr, "Error: fail to register signal hanlder\n");
-		return 1;
-	}
-
 	//Initiate all programs
 	Sampler_init(terminate_flag);
 	Udp_initServer(terminate_flag);
@@ -37,6 +29,23 @@ int main()
 	//Join
 	Udp_cleanup();
 	Sampler_cleanup();
+}
+
+//int main(int argc, char *argv[])
+int main()
+{
+	//Register signal handl shutdown
+	// if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
+	// 	fprintf(stderr, "Error: fail to register signal hanlder\n");
+	// 	return 1;
+	// }
+	Udp_setTerminate(&terminate_flag);
+	
+	printf("before %d", terminate_flag);
+
+	command_stop();
+	printf("after %d", terminate_flag);
+
 	
 	return 0;
 }

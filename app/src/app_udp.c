@@ -13,7 +13,7 @@
 #define PREV_MESSAGE_SIZE 200
 
 //flag
-static bool *isTerminated;
+static int *isTerminated;
 
 //Sokcet setup
 static int serverSock;
@@ -25,7 +25,7 @@ static pthread_t udpSever_id;
 
 //Declare functions
 void *udpServer_thread();
-
+const char *command_help();
 
 /*-------------------------- Public -----------------------------*/
 
@@ -37,13 +37,13 @@ void Udp_cleanup()
     }
 }
 
-void Udp_setTerminate(bool *terminate_flag) {
+void Udp_setTerminate(int *terminate_flag) {
     isTerminated = terminate_flag;
 }
 
-void Udp_initServer(bool terminate_flag)
+void Udp_initServer(int *terminate_flag)
 {
-    Udp_setTerminate(terminate_flag);
+    isTerminated = terminate_flag;
 
     //Create thread
     if(pthread_create(&udpSever_id, NULL, udpServer_thread, NULL) != 0){
@@ -81,7 +81,7 @@ void *udpServer_thread()
     }
 
     printf("Server starting...");
-    while(!isTerminated)
+    while(isTerminated == 0)
     {
         // Receive message
         if ((recv_len = recvfrom(serverSock, receiv_buffer, MAX_BUFFER_SIZE, 0, (struct sockaddr *)&client_addr, &client_len)) == -1) {
@@ -148,5 +148,5 @@ const char *command_help()
 
 void command_stop()
 {
-    *isTerminated = true;
+    *isTerminated = 1;
 }
