@@ -7,9 +7,4 @@ void Udp_initServer(int *terminate_flag);
 //Clean up
 void Udp_cleanup();
 
-// Setter
-void Udp_setTerminate(int *terminate_flag);
-
-void command_stop();
-
 #endif

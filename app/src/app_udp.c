@@ -26,6 +26,7 @@ static pthread_t udpSever_id;
 //Declare functions
 void *udpServer_thread();
 const char *command_help();
+void command_stop();
 
 /*-------------------------- Public -----------------------------*/
 
@@ -35,10 +36,6 @@ void Udp_cleanup()
     if(serverSock) {
         close(serverSock);
     }
-}
-
-void Udp_setTerminate(int *terminate_flag) {
-    isTerminated = terminate_flag;
 }
 
 void Udp_initServer(int *terminate_flag)

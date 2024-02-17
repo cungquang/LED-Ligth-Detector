@@ -8,7 +8,7 @@
 #include "../include/app_helper.h"
 
 //Trigger
-static bool isTerminated;
+static int *isTerminated;
 // static bool isDoneProduced;
 
 //Resources
