@@ -150,12 +150,12 @@ void *udpServer_thread()
 const char *command_help(void)
 {
     return "Accepted command examples:\n"
-           "count -- get the total number of samples taken.\n"
-           "length -- get the number of samples taken in the previously completed second.\n"
-           "dips -- get the number of dips in the previously completed second.\n"
-           "history -- get all the samples in the previously completed second.\n"
-           "stop -- cause the server program to end.\n"
-           "<enter> -- repeat last command.\n";
+           "count\t\t-- get the total number of samples taken.\n"
+           "length\t\t-- get the number of samples taken in the previously completed second.\n"
+           "dips\t\t-- get the number of dips in the previously completed second.\n"
+           "history\t\t-- get all the samples in the previously completed second.\n"
+           "stop\t\t-- cause the server program to end.\n"
+           "<enter>\t\t-- repeat last command.\n";
 }
 
 void command_stop(void)
