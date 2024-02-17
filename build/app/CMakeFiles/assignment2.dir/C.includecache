@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../app/include/app_helper.h
-stdbool.h
--
-
 /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include/app_helper.h
 stdbool.h
 -
@@ -17,24 +13,6 @@ stdbool.h
 /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include/app_sampler.h
 
 /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/include/app_upd.h
-
-/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/app_udp.c
-stdio.h
--
-stdlib.h
--
-string.h
--
-unistd.h
--
-pthread.h
--
-arpa/inet.h
--
-sys/socket.h
--
-app_helper.h
-/home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/app_helper.h
 
 /home/hcung/cmpt433/work/assignment2/cmpt433assignment2/app/src/main.c
 stdio.h

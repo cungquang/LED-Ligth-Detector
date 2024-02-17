@@ -24,7 +24,7 @@ void operation()
 {
 	//Initiate all programs
 	Sampler_init(terminate_flag);
-	Udp_initServer(terminate_flag);
+	Udp_initServer(&terminate_flag);
 
 	//Join
 	Udp_cleanup();
@@ -41,10 +41,10 @@ int main()
 	// }
 	Udp_setTerminate(&terminate_flag);
 	
-	printf("before %d", terminate_flag);
+	printf("before %d\n", terminate_flag);
 
 	command_stop();
-	printf("after %d", terminate_flag);
+	printf("after %d\n", terminate_flag);
 
 	
 	return 0;
