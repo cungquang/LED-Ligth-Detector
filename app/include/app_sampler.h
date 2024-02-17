@@ -9,6 +9,7 @@ void Sampler_cleanup();
 
 // Getter
 int Sampler_getHistorySize(void);
+long Sampler_getDips(void);
 double Sampler_getAverageReading(void);
 long long Sampler_getNumSamplesTaken(void); 
 //double *Sampler_getHistory(int *size);

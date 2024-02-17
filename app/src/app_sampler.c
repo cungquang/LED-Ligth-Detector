@@ -13,6 +13,7 @@ static int *isTerminated;
 
 //Resources
 static long count = 0;
+static long dips = 0;
 static long long length = 0;
 
 static double arr_rawData[1000];
@@ -29,21 +30,27 @@ void *a2d_thread();
 /*-------------------------- Public -----------------------------*/
 
 //Getter to get previous count
-int Sampler_getHistorySize(void)
+long Sampler_getHistorySize(void)
 {
     return count;
+}
+
+//Getter to get dips
+long Sampler_getDips(void)
+{
+    return dips;
+}
+
+//Getter to get length
+long long Sampler_getNumSamplesTaken(void) 
+{
+    return length;
 }
 
 //Getter to get previous avg
 double Sampler_getAverageReading(void)
 {
     return previous_avg;
-}
-
-//Setter to get length
-long long Sampler_getNumSamplesTaken(void) 
-{
-    return length;
 }
 
 // Clean up function

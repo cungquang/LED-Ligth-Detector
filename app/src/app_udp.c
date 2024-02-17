@@ -133,17 +133,24 @@ const char *command_help()
            "history -- get all the samples in the previously completed second.\n"
            "stop -- cause the server program to end.\n"
            "<enter> -- repeat last command.\n"
-           "?\n"
-           "Accepted command examples:\n"
-           "count -- get the total number of samples taken.\n"
-           "length -- get the number of samples taken in the previously completed second.\n"
-           "dips -- get the number of dips in the previously completed second.\n"
-           "history -- get all the samples in the previously completed second.\n"
-           "stop -- cause the server program to end.\n"
-           "<enter> -- repeat last command.";
 }
 
 void command_stop()
 {
     *isTerminated = 1;
+}
+
+long command_count()
+{
+    return Sampler_getHistorySize();
+}
+
+long command_dips()
+{
+    return Sampler_getDips();
+}
+
+long long command_length() 
+{
+    return Sampler_getNumSamplesTaken();
 }
