@@ -5,9 +5,11 @@
 void Udp_initServer(int *terminate_flag);
 
 //Clean up
-void Udp_cleanup();
+void Udp_cleanup(void);
 
 //Join
 void Udp_join(void);
+
+const char *command_help(void);
 
 #endif

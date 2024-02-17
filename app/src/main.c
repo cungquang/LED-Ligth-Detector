@@ -16,32 +16,25 @@ void trigger_shutdown(int signum){
         terminate_flag = true;
 
 		//Set terminate flag for all threads
-		Sampler_setTerminate(terminate_flag);
+		Udp_cleanup();
+		Sampler_cleanup();
     }
 }
 
-void operation()
-{
-	//Initiate all programs
-	Sampler_init(terminate_flag);
-	Udp_initServer(&terminate_flag);
-
-	//Join
-	Udp_cleanup();
-	Sampler_cleanup();
-}
 
 //int main(int argc, char *argv[])
 int main()
 {
 	//Register signal handle shutdown
-	if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
-		fprintf(stderr, "Error: fail to register signal hanlder\n");
-		return 1;
-	}
+	// if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
+	// 	fprintf(stderr, "Error: fail to register signal hanlder\n");
+	// 	return 1;
+	// }
 
-	operation();
+	//operation();
 	
+	printf("%s", command_help());
+
 	return 0;
 }
 

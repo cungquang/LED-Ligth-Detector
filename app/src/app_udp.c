@@ -6,6 +6,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include "app_helper.h"
+#include "app_sampler.h"
 
 #define SERVER_IP "192.168.7.2"
 #define SERVER_PORT 12345
