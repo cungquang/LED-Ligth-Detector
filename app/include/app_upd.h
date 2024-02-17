@@ -10,6 +10,4 @@ void Udp_cleanup(void);
 //Join
 void Udp_join(void);
 
-const char *command_help(void);
-
 #endif

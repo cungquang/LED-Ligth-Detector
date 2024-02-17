@@ -26,11 +26,12 @@ static pthread_t udpSever_id;
 
 //Declare functions
 void *udpServer_thread();
-const char *command_help();
-void command_stop();
-long command_count();
-long command_dips();
-long long command_length();
+const char *command_help(void);
+const char *command_unsupport(void);
+void command_stop(void);
+long command_count(void);
+long command_dips(void);
+long long command_length(void);
 
 /*-------------------------- Public -----------------------------*/
 
@@ -39,7 +40,7 @@ void Udp_join(void)
     pthread_join(udpSever_id, NULL);
 }
 
-void Udp_cleanup() 
+void Udp_cleanup(void) 
 {
     if(serverSock) {
         close(serverSock);
@@ -130,6 +131,10 @@ void *udpServer_thread()
         {
             command_count();
         }
+        else
+        {
+            command_unsupport();
+        }
 
         // Print received message
         //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
@@ -156,6 +161,11 @@ const char *command_help(void)
            "history\t\t-- get all the samples in the previously completed second.\n"
            "stop\t\t-- cause the server program to end.\n"
            "<enter>\t\t-- repeat last command.\n";
+}
+
+const char *command_unsupport(void)
+{
+    return "Command is unsupported. Please type \"help\" or \"?\" for supporting command\n";
 }
 
 void command_stop(void)
