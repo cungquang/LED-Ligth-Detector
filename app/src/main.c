@@ -34,18 +34,13 @@ void operation()
 //int main(int argc, char *argv[])
 int main()
 {
-	//Register signal handl shutdown
-	// if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
-	// 	fprintf(stderr, "Error: fail to register signal hanlder\n");
-	// 	return 1;
-	// }
-	Udp_setTerminate(&terminate_flag);
-	
-	printf("before %d\n", terminate_flag);
+	//Register signal handle shutdown
+	if(signal(SIGINT, trigger_shutdown) == SIG_ERR) {
+		fprintf(stderr, "Error: fail to register signal hanlder\n");
+		return 1;
+	}
 
-	command_stop();
-	printf("after %d\n", terminate_flag);
-
+	operation();
 	
 	return 0;
 }

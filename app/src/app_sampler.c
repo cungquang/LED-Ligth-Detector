@@ -54,8 +54,18 @@ double Sampler_getAverageReading(void)
 }
 
 // Clean up function
-void Sampler_cleanup()
+void Sampler_cleanup(void)
 {   
+    isTerminated = NULL;
+    for(int i = 0; i < 1000; i++)
+    {
+        arr_rawData[i] = 0;
+    }
+}
+
+//Join
+void Sampler_join(void)
+{
     pthread_join(a2d_id, NULL);
 }
 

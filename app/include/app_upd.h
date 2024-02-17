@@ -7,4 +7,7 @@ void Udp_initServer(int *terminate_flag);
 //Clean up
 void Udp_cleanup();
 
+//Join
+void Udp_join(void);
+
 #endif

@@ -5,7 +5,10 @@
 void Sampler_init(int *terminate_flag);
 
 //Cleanup
-void Sampler_cleanup();
+void Sampler_cleanup(void);
+
+//Join
+void Sampler_join(void);
 
 // Getter
 int Sampler_getHistorySize(void);

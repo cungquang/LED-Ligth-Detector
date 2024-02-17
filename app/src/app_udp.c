@@ -27,15 +27,25 @@ static pthread_t udpSever_id;
 void *udpServer_thread();
 const char *command_help();
 void command_stop();
+long command_count();
+long command_dips();
+long long command_length();
 
 /*-------------------------- Public -----------------------------*/
 
-void Udp_cleanup() 
+void Udp_join(void)
 {
     pthread_join(udpSever_id, NULL);
+}
+
+void Udp_cleanup() 
+{
     if(serverSock) {
         close(serverSock);
     }
+
+    isTerminated = NULL;
+    memset(previousMessage, 0, sizeof(previousMessage));
 }
 
 void Udp_initServer(int *terminate_flag)
@@ -136,7 +146,7 @@ void *udpServer_thread()
     return NULL;
 }
 
-const char *command_help()
+const char *command_help(void)
 {
     return "Accepted command examples:\n"
            "count -- get the total number of samples taken.\n"
@@ -144,25 +154,25 @@ const char *command_help()
            "dips -- get the number of dips in the previously completed second.\n"
            "history -- get all the samples in the previously completed second.\n"
            "stop -- cause the server program to end.\n"
-           "<enter> -- repeat last command.\n"
+           "<enter> -- repeat last command.\n";
 }
 
-void command_stop()
+void command_stop(void)
 {
     *isTerminated = 1;
 }
 
-long command_count()
+long command_count(void)
 {
     return Sampler_getHistorySize();
 }
 
-long command_dips()
+long command_dips(void)
 {
     return Sampler_getDips();
 }
 
-long long command_length() 
+long long command_length(void) 
 {
     return Sampler_getNumSamplesTaken();
 }
