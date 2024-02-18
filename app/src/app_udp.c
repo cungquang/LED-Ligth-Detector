@@ -238,6 +238,7 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
 
         //free each time complete
         free((void *)temp_response);
+        temp_response = NULL;
     }
 
     //Set history = NULL
