@@ -184,7 +184,7 @@ const char *command_stop(void)
 const char *command_count(void)
 {
     //Sampler_getHistorySize();
-    static command_buffer[MAX_BUFFER_SIZE];             //declare static to keep memory for command buffer
+    static char command_buffer[MAX_BUFFER_SIZE];             //declare static to keep memory for command buffer
     double num = 1423.4314;
     snprintf(command_buffer, sizeof(command_buffer), "%5.3f\n", num);
     return command_buffer;
@@ -193,7 +193,7 @@ const char *command_count(void)
 const char *command_dips(void)
 {
     //Sampler_getDips();
-    static command_buffer[MAX_BUFFER_SIZE];
+    static char command_buffer[MAX_BUFFER_SIZE];
     int dips = 15;
     snprintf(command_buffer, sizeof(command_buffer), "%d\n", dips);
     return command_buffer;
@@ -202,7 +202,7 @@ const char *command_dips(void)
 const char *command_length(void) 
 {
     //Sampler_getNumSamplesTaken();
-    static command_buffer[MAX_BUFFER_SIZE];     
+    static char command_buffer[MAX_BUFFER_SIZE];     
     long long length = 1293871927364817;
     snprintf(command_buffer, sizeof(command_buffer), "%lld\n", length);
     return command_buffer;
