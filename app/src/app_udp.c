@@ -21,6 +21,9 @@ static int serverSock;
 static char previousMessage[PREV_MESSAGE_SIZE];
 static int previousMessageSize;
 
+//Response message
+static const char *responseMessage;
+
 //Thread
 static pthread_t udpSever_id;
 
@@ -64,6 +67,7 @@ void Udp_initServer(int *terminate_flag)
 //Server side, receive: history, count, length, dips, help (or ?), stop, <Enter>
 void *udpServer_thread()
 {
+    printf("Setup server...\n");
     struct sockaddr_in server_addr, client_addr;
     socklen_t client_len = sizeof(client_addr);
     int recv_len;
@@ -88,7 +92,7 @@ void *udpServer_thread()
     }
 
     //Print server start
-    printf("Server starting...");
+    printf("Server starting...\n");
 
     while(*isTerminated == 0)
     {
@@ -113,34 +117,34 @@ void *udpServer_thread()
         // Execute command according to request from client
         if(strcmp("help", previousMessage) == 0 || strcmp("?", previousMessage) == 0)
         {
-            command_help();
+            responseMessage = command_help();
         } 
         else if (strcmp("stop", previousMessage) == 0)
         {
             command_stop();
         }
-        else if (strcmp("dips", previousMessage) == 0)
-        {
-            command_dips();
-        }
-        else if (strcmp("lenth", previousMessage) == 0)
-        {
-            command_length();
-        }
-        else if (strcmp("count", previousMessage) == 0)
-        {
-            command_count();
-        }
+        // else if (strcmp("dips", previousMessage) == 0)
+        // {
+        //     command_dips();
+        // }
+        // else if (strcmp("lenth", previousMessage) == 0)
+        // {
+        //     command_length();
+        // }
+        // else if (strcmp("count", previousMessage) == 0)
+        // {
+        //     command_count();
+        // }
         else
         {
-            command_unsupport();
+            responseMessage = command_unsupport();
         }
 
         // Print received message
         //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
 
         // Reply to the sender
-        if(sendto(serverSock, previousMessage, previousMessageSize, 0, (struct sockaddr *)&client_addr, client_len) == -1)
+        if(sendto(serverSock, responseMessage, strlen(responseMessage), 0, (struct sockaddr *)&client_addr, client_len) == -1)
         {
             perror("Fail to send");
             exit(EXIT_FAILURE);
