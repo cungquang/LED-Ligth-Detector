@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <errno.h>		// Errors
 #include <string.h>
-
 #include <sys/epoll.h>  // for epoll()
 #include <fcntl.h>      // for open()
 #include <unistd.h>     // for close()
@@ -48,4 +47,34 @@ double exponentSmoothAvg(double current_avg, double previous_avg)
 double calculateSimpleAvg(long current_size, double current_sum) 
 {
     return current_sum/current_size;
+}
+
+const char *convertDataToString(int *char_size, double data) 
+{
+    //pre-calculate the length need for data
+    *char_size = snprintf(NULL, 0, "%5.3f", data);
+    char *number = (char *)malloc(*char_size + 1);      //add null pointer at the end
+
+    if(number == NULL) 
+    {
+        perror("Fail to allocate memory");
+        exit(EXIT_FAILURE);
+    }
+
+    //transfer data into number (str)
+    snprintf(number, *char_size + 1, "%5.3f", number);
+    return number;
+}
+
+//Source: ChatGPT
+void mergeToBuffer(char *buffer, int *buffer_size, char *number, int number_size)
+{
+    //Copy char in number into buffer (with number_size) - buffer + *buffer_size - memory address where to start writting
+    memcpy(buffer + *buffer_size, number, number_size);
+
+    //update buffer size
+    *buffer_size += number_size;
+
+    //Add null-terminate
+    buffer[*buffer_size] = '\0';
 }

@@ -135,6 +135,10 @@ void *udpServer_thread()
         {
             responseMessage = command_count();
         }
+        else if (strcmp("history", previousMessage) == 0)
+        {
+            responseMessage = command_history();
+        }
         else
         {
             responseMessage = command_unsupport();
@@ -202,7 +206,7 @@ const char *command_length(void)
     return command_buffer;
 }
 
-const char *command_history(void)
+const char *command_history(struct sockaddr *client_addr,socklen_t *client_len)
 {
     static char command_buffer[MAX_BUFFER_SIZE];
     int history_size;
@@ -215,42 +219,28 @@ const char *command_history(void)
         int temp_size;
         char *temp = convertDataToString(&temp_size, history[i]);
 
-        //if over the size 
+        //if fit into current size 
         if(current_buffer_size + temp_size <= MAX_BUFFER_SIZE)
         {
             mergeToBuffer(command_buffer, current_buffer_size, temp, temp_size);
+        }
+        //if oversize -> send data
+        else
+        {
+            sendto(serverSock, command_buffer, strlen(command_buffer), 0, client_addr, client_len);
+
+            //reset data
+            memset(command_buffer, 0, sizeof(command_buffer));
+            current_buffer_size = 0;
         }
 
         //free each time complete
         free(temp);
     }
 
+    //Set history = NULL
     history = NULL;
-}
 
-const char *convertDataToString(int *char_size, double data) 
-{
-    *char_size = snprintf(NULL, 0, "%5.3f", data);
-    char *number = (char *)malloc(*char_size + 1);      //add null pointer at the end
-
-    if(number == NULL) 
-    {
-        perror("Fail to allocate memory");
-        exit(EXIT_FAILURE);
-    }
-
-    snprintf(number, *char_size + 1, "%5.3f", number);
-    return number;
-}
-
-void mergeToBuffer(char *buffer, int *buffer_size, char *number, int number_size)
-{
-    //Copy char in number into buffer (with number_size)
-    memcpy(buffer + *buffer_size, number, number_size);
-
-    //update buffer size
-    *buffer_size += number_size;
-
-    //Add null-terminate
-    buffer[*buffer_size] = '\0';
+    //Return the last string -> to send to user
+    return command_buffer;
 }
