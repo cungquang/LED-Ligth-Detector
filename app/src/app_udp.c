@@ -209,19 +209,21 @@ const char *command_length(void)
 
 const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_len)
 {
-    static char command_buffer[MAX_BUFFER_SIZE];
+    int temp_size;
     int history_size;
     int current_buffer_size;
+    const char *temp_response;
+    static char command_buffer[MAX_BUFFER_SIZE];
     double *history = Sampler_getHistory(&history_size);
 
     for(int i = 0; i < history_size; i++)
     {
         //Convert doubles -> string
-        int temp_size;
-        const char *temp_response = convertDataToString(&temp_size, history[i]);
+        temp_size = 0;
+        temp_response = convertDataToString(&temp_size, history[i]);
 
         //if fit into current size - need to + 1 for ','
-        if(current_buffer_size + temp_size + 1 <= MAX_BUFFER_SIZE)
+        if(current_buffer_size + temp_size + 1 < MAX_BUFFER_SIZE)
         {
             mergeToBuffer(command_buffer, &current_buffer_size, temp_response, temp_size);
         }
@@ -234,6 +236,9 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
             //reset data
             memset(command_buffer, 0, sizeof(command_buffer));
             current_buffer_size = 0;
+
+            //merge to buffer 
+			mergeToBuffer(command_buffer, &current_buffer_size, temp_response, temp_size);
         }
 
         //free each time complete
