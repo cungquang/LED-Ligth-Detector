@@ -114,6 +114,10 @@ void *a2d_thread()
         currentTime = 0;
         startTime = getTimeInMs();
 
+        //Wait for sem_empty -> 1 -> obtain -> decrement
+        sem_wait(&sem_empty);
+        pthread_mutex_lock(&mutex);
+
         //Keep reading data for 1000 ms
         while((currentTime = getTimeInMs() - startTime) < 1000) 
         {
@@ -142,8 +146,9 @@ void *a2d_thread()
             //Add here function keep track of dip
             printf("Time: %lld Sample size: %lld Value %5.3f ==> sum:%5.3f avg:%5.3fV\n", currentTime, length, voltageToStore, previous_sum, previous_avg);
         }
-        //create a copy - get history
 
+        pthread_mutex_unlock(&mutex);
+        sem_post(&sem_full);
 
         //Update count for this batch
         count = batch_size;
