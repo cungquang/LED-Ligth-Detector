@@ -29,8 +29,8 @@ void *udpServer_thread();
 const char *command_help(void);
 const char *command_unsupport(void);
 void command_stop(void);
-long command_count(void);
-long command_dips(void);
+int command_count(void);
+int command_dips(void);
 long long command_length(void);
 
 /*-------------------------- Public -----------------------------*/
@@ -173,12 +173,12 @@ void command_stop(void)
     *isTerminated = 1;
 }
 
-long command_count(void)
+int command_count(void)
 {
     return Sampler_getHistorySize();
 }
 
-long command_dips(void)
+int command_dips(void)
 {
     return Sampler_getDips();
 }

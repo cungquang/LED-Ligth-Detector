@@ -132,9 +132,9 @@ void setInteger(int *size)
 int main()
 {	
 	int batch_size = 0;
-	printf("before - %d", batch_size);
+	printf("before - %d\n", batch_size);
 	setInteger(&batch_size);
-	printf("after - %d", batch_size);
+	printf("after - %d\n", batch_size);
 
 	return 0;
 }

@@ -19,7 +19,7 @@ static int batch_size;
 //Resources - history
 static double *arr_historyData;
 static int count = 0;
-static long dips = 0;
+static int dips = 0;
 static long long length = 0;
 
 //Resources - send
@@ -43,13 +43,13 @@ void *consumer_thread();
 /*-------------------------- Public -----------------------------*/
 
 //Getter to get previous count
-long Sampler_getHistorySize(void)
+int Sampler_getHistorySize(void)
 {
     return count;
 }
 
 //Getter to get dips
-long Sampler_getDips(void)
+int Sampler_getDips(void)
 {
     return dips;
 }
