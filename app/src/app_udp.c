@@ -10,8 +10,9 @@
 
 #define SERVER_IP "192.168.7.2"
 #define SERVER_PORT 12345
-#define MAX_BUFFER_SIZE 67            // 1500 bytes and 1 bytes for null pointer
 #define PREV_MESSAGE_SIZE 200
+#define MAX_BUFFER_SIZE 12                          // 1500 bytes and 1 bytes for null pointer
+#define WRITE_UP_TO (MAX_BUFFER_SIZE - 2)           // Last - \0 & second last - \n
 
 //flag
 static int *isTerminated;
@@ -235,7 +236,7 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
         temp_response = convertDataToString(&temp_size, history[i]);
 
         //if fit into current size - need to + 1 for ','
-        if(current_buffer_size + temp_size + 1 < MAX_BUFFER_SIZE)
+        if(current_buffer_size + temp_size + 1 < WRITE_UP_TO)
         {
             mergeToBuffer(command_buffer, &current_buffer_size, temp_response, temp_size);
         }
@@ -243,6 +244,7 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
         else
         {
             //need to cast type (struct sockaddr *) for client_addr
+            command_buffer[current_buffer_size] = '\n';
             sendto(serverSock, command_buffer, strlen(command_buffer), 0, (struct sockaddr *)client_addr, *client_len);
 
             //reset data
@@ -263,5 +265,6 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
     history = NULL;
 
     //Return the last string -> to send to user
+    command_buffer[current_buffer_size] = '\n';
     return command_buffer;
 }
