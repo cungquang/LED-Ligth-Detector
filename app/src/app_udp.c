@@ -11,7 +11,7 @@
 #define SERVER_IP "192.168.7.2"
 #define SERVER_PORT 12345
 #define PREV_MESSAGE_SIZE 200
-#define MAX_BUFFER_SIZE 12                          // 1500 bytes and 1 bytes for null pointer
+#define MAX_BUFFER_SIZE 1501                        // 1500 bytes and 1 bytes for null pointer
 #define WRITE_UP_TO (MAX_BUFFER_SIZE - 2)           // Last - \0 & second last - \n
 
 //flag
