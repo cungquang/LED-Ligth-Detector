@@ -70,10 +70,16 @@ void Sampler_cleanup(void)
         arr_rawData[i] = 0;
     }
 
+    //free arr_historyData
     if(arr_historyData) {
         free(arr_historyData);
         arr_historyData = NULL;
     }
+
+    //destroy mutex & semaphore
+	pthread_mutex_destroy(&mutex);
+    sem_destroy(&sem_full);
+	sem_destroy(&sem_empty);
 }
 
 double *Sampler_getHistory(int *size)
@@ -103,7 +109,7 @@ void Sampler_init(int *terminate_flag)
 /*-------------------------- Private -----------------------------*/
 
 // thread to read input from A2D device
-void *a2d_thread() 
+void *producer_thread() 
 {
     long long currentTime;
     long long startTime;
@@ -121,6 +127,7 @@ void *a2d_thread()
         //Keep reading data for 1000 ms
         while((currentTime = getTimeInMs() - startTime) < 1000) 
         {
+            //Produce new data here
             sleepForMs(200);
             int reading = getVoltage0Read();
             double voltageToStore = getVoltageConvert(reading);
@@ -147,12 +154,10 @@ void *a2d_thread()
             printf("Time: %lld Sample size: %lld Value %5.3f ==> sum:%5.3f avg:%5.3fV\n", currentTime, length, voltageToStore, previous_sum, previous_avg);
         }
 
+        //Unlock thread & increment sem_full -> ready to transfer
         pthread_mutex_unlock(&mutex);
         sem_post(&sem_full);
-
-        //Update count for this batch
-        count = batch_size;
-
+        
         //sleep for 1ms - before next iteration
         sleepForMs(1);
     }
@@ -161,20 +166,35 @@ void *a2d_thread()
 }
 
 
-double *Sampler_CopyHistory(int *size)
+void *consumer_thread()
 {
-    sem_wait(&sem_empty);
-    pthread_mutex_lock(&mutex);
-
-    //free previous array
-    count = batch_size;
-    if(arr_historyData)
+    while(isTerminated == 0)
     {
-        free(arr_historyData);
-        arr_historyData = NULL;
-    }
-    arr_historyData = (int *) malloc((count) * sizeof(int));
+        //Wait sem_full > 0 -> obtain -> decrement & lock mutex to access resource
+        sem_wait(&sem_full);
+        pthread_mutex_lock(&mutex);
 
-    pthread_mutex_unlock(&mutex);
-    sem_post(&sem_full);
+        //Update the batch size for the completed iteration
+        count = batch_size;
+        
+        //free previous array - deallocate & allocate new memory
+        if(arr_historyData)
+        {
+            free(arr_historyData);
+            arr_historyData = NULL;
+        }
+        arr_historyData = (int *) malloc((count) * sizeof(int));
+        
+        //Transfer data
+        for(int i = 0; i < count; i++)
+        {
+            arr_historyData[i] = arr_rawData[i];
+        }
+
+        //Unlock mutex -> increment sem_empty -> allow producer to generate 
+        pthread_mutex_unlock(&mutex);
+        sem_post(&sem_empty);
+    }
+
+    return NULL;
 }
