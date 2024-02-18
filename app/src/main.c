@@ -12,7 +12,7 @@
 
 #define MAX_PRODUCTS 1000
 
-// int terminate_flag = 0;
+int terminate_flag = 99;
 
 pthread_mutex_t mutex;
 sem_t sem_full;
@@ -123,11 +123,18 @@ void testMutexSemaphore(void)
 	}
 }
 
+void setInteger(int *size)
+{
+	*size = terminate_flag;
+}
 
 //int main(int argc, char *argv[])
 int main()
 {	
-	testMutexSemaphore();
+	int batch_size = 0;
+	printf("before - %d", batch_size);
+	setInteger(&batch_size);
+	printf("after - %d", batch_size);
 
 	return 0;
 }

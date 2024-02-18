@@ -16,11 +16,14 @@ static double previous_avg;
 static double previous_sum;
 static int batch_size;
 
-//Resources - for user
+//Resources - history
 static double *arr_historyData;
 static int count = 0;
 static long dips = 0;
 static long long length = 0;
+
+//Resources - send
+static double *arr_historyToSend;
 
 //Thread
 static pthread_t producer_id;
@@ -66,8 +69,17 @@ double Sampler_getAverageReading(void)
 //Getter to get history data
 double *Sampler_getHistory(int *size)
 {
-    size = &count;
-    return arr_historyData;
+    pthread_mutex_lock(&mutex);
+    *size = count;
+    arr_historyToSend = (int *) malloc((*size) * sizeof(int));
+
+    for(int i = 0; i < *size; i++)
+    {
+        arr_historyToSend[i] = arr_historyData[i];
+    }
+
+    pthread_mutex_unlock(&mutex);
+    return arr_historyToSend;
 }
 
 // Clean up function
@@ -200,7 +212,7 @@ void *consumer_thread()
             arr_historyData[i] = arr_rawData[i];
         }
 
-        //Unlock mutex -> increment sem_empty -> allow producer to generate 
+        //Unlock mutex -> increment sem_empty -> allow producer to generate more products
         pthread_mutex_unlock(&mutex);
         sem_post(&sem_empty);
     }
