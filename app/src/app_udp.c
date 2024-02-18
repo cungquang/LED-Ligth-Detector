@@ -22,7 +22,6 @@ static char previousMessage[PREV_MESSAGE_SIZE];
 static int previousMessageSize;
 
 //Response message
-static char response_buffer[MAX_BUFFER_SIZE];
 static const char *responseMessage;
 
 //Thread
@@ -126,15 +125,15 @@ void *udpServer_thread()
         }
         else if (strcmp("dips", previousMessage) == 0)
         {
-            response_buffer = command_dips();
+            responseMessage = command_dips();
         }
         else if (strcmp("lenth", previousMessage) == 0)
         {
-            command_length();
+            responseMessage = command_length();
         }
         else if (strcmp("count", previousMessage) == 0)
         {
-            command_count();
+            responseMessage = command_count();
         }
         else
         {
@@ -185,23 +184,26 @@ const char *command_stop(void)
 const char *command_count(void)
 {
     //Sampler_getHistorySize();
+    static command_buffer[MAX_BUFFER_SIZE];             //declare static to keep memory for command buffer
     double num = 123.4;
-    snprintf(response_buffer, sizeof(response_buffer), "%5.3f\n", num);
-    return &response_buffer;
+    snprintf(command_buffer, sizeof(command_buffer), "%5.3f\n", num);
+    return command_buffer;
 }
 
 const char *command_dips(void)
 {
     //Sampler_getDips();
+    static command_buffer[MAX_BUFFER_SIZE];
     int dips = 15;
-    snprintf(response_buffer, sizeof(response_buffer), "%d\n", dips);
-    return &response_buffer;
+    snprintf(command_buffer, sizeof(command_buffer), "%d\n", dips);
+    return command_buffer;
 }
 
 const char *command_length(void) 
 {
     //Sampler_getNumSamplesTaken();
+    static command_buffer[MAX_BUFFER_SIZE];     
     long long length = 1293871927364817;
-    snprintf(response_buffer, sizeof(response_buffer), "%lld\n", length);
-    return &response_buffer;
+    snprintf(command_buffer, sizeof(command_buffer), "%lld\n", length);
+    return command_buffer;
 }
