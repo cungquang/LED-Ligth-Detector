@@ -23,6 +23,7 @@ static int previousMessageSize;
 
 //Response message
 static const char *responseMessage;
+static char *temp;
 
 //Thread
 static pthread_t udpSever_id;
@@ -52,6 +53,11 @@ void Udp_cleanup(void)
 
     isTerminated = NULL;
     memset(previousMessage, 0, sizeof(previousMessage));
+    if(temp)
+    {
+        free(temp);
+        temp = NULL;
+    }
 }
 
 void Udp_initServer(int *terminate_flag)
@@ -218,7 +224,7 @@ const char *command_history(struct sockaddr *client_addr, socklen_t *client_len)
     {
         //Convert doubles -> string
         int temp_size;
-        char *temp = convertDataToString(&temp_size, history[i]);
+        temp = convertDataToString(&temp_size, history[i]);
 
         //if fit into current size 
         if(current_buffer_size + temp_size <= MAX_BUFFER_SIZE)
