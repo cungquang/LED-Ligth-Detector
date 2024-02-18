@@ -49,11 +49,11 @@ double calculateSimpleAvg(long current_size, double current_sum)
     return current_sum/current_size;
 }
 
-const char *convertDataToString(int *char_size, double data) 
+char *convertDataToString(int *char_size, double data) 
 {
     //pre-calculate the length need for data
     *char_size = snprintf(NULL, 0, "%5.3f", data);
-    char *number = (char *)malloc(*char_size + 1);      //add null pointer at the end
+    char *number = (char *)malloc((*char_size + 1)*sizeof(char));      //add null pointer at the end
 
     if(number == NULL) 
     {
@@ -62,12 +62,12 @@ const char *convertDataToString(int *char_size, double data)
     }
 
     //transfer data into number (str)
-    snprintf(number, *char_size + 1, "%5.3f", number);
+    snprintf(number, *char_size + 1, "%5.3f", data);
     return number;
 }
 
 //Source: ChatGPT
-void mergeToBuffer(char *buffer, int *buffer_size, char *number, int number_size)
+void mergeToBuffer(char *buffer, int *buffer_size, const char *number, int number_size)
 {
     //Copy char in number into buffer (with number_size) - buffer + *buffer_size - memory address where to start writting
     memcpy(buffer + *buffer_size, number, number_size);

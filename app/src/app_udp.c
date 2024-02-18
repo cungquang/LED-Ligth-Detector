@@ -23,7 +23,6 @@ static int previousMessageSize;
 
 //Response message
 static const char *responseMessage;
-static char *temp;
 
 //Thread
 static pthread_t udpSever_id;
@@ -36,7 +35,7 @@ const char *command_stop(void);
 const char *command_count(void);
 const char *command_dips(void);
 const char *command_length(void);
-const char *command_history(struct sockaddr *client_addr, socklen_t *client_len);
+const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_len);
 
 /*-------------------------- Public -----------------------------*/
 
@@ -53,11 +52,6 @@ void Udp_cleanup(void)
 
     isTerminated = NULL;
     memset(previousMessage, 0, sizeof(previousMessage));
-    if(temp)
-    {
-        free(temp);
-        temp = NULL;
-    }
 }
 
 void Udp_initServer(int *terminate_flag)
@@ -213,7 +207,7 @@ const char *command_length(void)
     return command_buffer;
 }
 
-const char *command_history(struct sockaddr *client_addr, socklen_t *client_len)
+const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_len)
 {
     static char command_buffer[MAX_BUFFER_SIZE];
     int history_size;
@@ -224,17 +218,18 @@ const char *command_history(struct sockaddr *client_addr, socklen_t *client_len)
     {
         //Convert doubles -> string
         int temp_size;
-        temp = convertDataToString(&temp_size, history[i]);
+        const char *temp_response = convertDataToString(&temp_size, history[i]);
 
         //if fit into current size 
         if(current_buffer_size + temp_size <= MAX_BUFFER_SIZE)
         {
-            mergeToBuffer(command_buffer, current_buffer_size, temp, temp_size);
+            mergeToBuffer(command_buffer, &current_buffer_size, temp_response, temp_size);
         }
         //if oversize -> send data
         else
         {
-            sendto(serverSock, command_buffer, strlen(command_buffer), 0, client_addr, *client_len);
+            //need to cast type (struct sockaddr *) for client_addr
+            sendto(serverSock, command_buffer, strlen(command_buffer), 0, (struct sockaddr *)client_addr, *client_len);
 
             //reset data
             memset(command_buffer, 0, sizeof(command_buffer));
@@ -242,7 +237,7 @@ const char *command_history(struct sockaddr *client_addr, socklen_t *client_len)
         }
 
         //free each time complete
-        free(temp);
+        free((void *)temp_response);
     }
 
     //Set history = NULL
