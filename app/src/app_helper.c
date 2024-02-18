@@ -69,12 +69,15 @@ char *convertDataToString(int *char_size, double data)
 //Source: ChatGPT
 void mergeToBuffer(char *buffer, int *buffer_size, const char *number, int number_size)
 {
+    //Copy char in number into buffer (with number_size) - buffer + *buffer_size - memory address where to start writting
+    //first to buffer
     if(*buffer_size == 0)
     {
-        //Copy char in number into buffer (with number_size) - buffer + *buffer_size - memory address where to start writting
         memcpy(buffer + *buffer_size, number, number_size);
     }
+    //all number after the first 
     else{
+        //add ',' between number
         buffer[(*buffer_size)++] = ',';
         memcpy(buffer + *buffer_size, number, number_size);
     }

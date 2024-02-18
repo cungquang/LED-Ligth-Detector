@@ -220,8 +220,8 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
         int temp_size;
         const char *temp_response = convertDataToString(&temp_size, history[i]);
 
-        //if fit into current size 
-        if(current_buffer_size + temp_size <= MAX_BUFFER_SIZE)
+        //if fit into current size - need to + 1 for ','
+        if(current_buffer_size + temp_size + 1 <= MAX_BUFFER_SIZE)
         {
             mergeToBuffer(command_buffer, &current_buffer_size, temp_response, temp_size);
         }
