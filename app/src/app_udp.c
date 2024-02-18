@@ -10,7 +10,7 @@
 
 #define SERVER_IP "192.168.7.2"
 #define SERVER_PORT 12345
-#define MAX_BUFFER_SIZE 1501            // 1500 bytes and 1 bytes for null pointer
+#define MAX_BUFFER_SIZE 67            // 1500 bytes and 1 bytes for null pointer
 #define PREV_MESSAGE_SIZE 200
 
 //flag
@@ -23,6 +23,7 @@ static int previousMessageSize;
 
 //Response message
 static const char *responseMessage;
+static char command_buffer[MAX_BUFFER_SIZE];
 
 //Thread
 static pthread_t udpSever_id;
@@ -154,6 +155,9 @@ void *udpServer_thread()
                 perror("Fail to send");
                 exit(EXIT_FAILURE);
             }
+
+            //reset responseMessage
+            responseMessage = NULL;
         }
     }
 
@@ -186,7 +190,8 @@ const char *command_stop(void)
 
 const char *command_count(void)
 {
-    static char command_buffer[MAX_BUFFER_SIZE];             //declare static to keep memory for command buffer
+    //Clear data from previous call
+    memset(command_buffer, 0, sizeof(command_buffer));
     double num = Sampler_getHistorySize();
     snprintf(command_buffer, sizeof(command_buffer), "%5.3f\n", num);
     return command_buffer;
@@ -194,7 +199,8 @@ const char *command_count(void)
 
 const char *command_dips(void)
 {
-    static char command_buffer[MAX_BUFFER_SIZE];
+    //Clear data from previous call
+    memset(command_buffer, 0, sizeof(command_buffer));
     int dips = Sampler_getDips();
     snprintf(command_buffer, sizeof(command_buffer), "%d\n", dips);
     return command_buffer;
@@ -202,7 +208,8 @@ const char *command_dips(void)
 
 const char *command_length(void) 
 {
-    static char command_buffer[MAX_BUFFER_SIZE];     
+    //Clear data from previous call
+    memset(command_buffer, 0, sizeof(command_buffer)); 
     long long length = Sampler_getNumSamplesTaken();
     snprintf(command_buffer, sizeof(command_buffer), "%lld\n", length);
     return command_buffer;
@@ -212,9 +219,11 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
 {
     int temp_size;
     int history_size;
-    int current_buffer_size;
+    int current_buffer_size = 0;
     const char *temp_response;
-    static char command_buffer[MAX_BUFFER_SIZE];
+
+    //Clear data from previous call
+    memset(command_buffer, 0, sizeof(command_buffer));
     
     //double *history = Sampler_getHistory(&history_size);
     double *history = Sampler_testHistory(&history_size);
@@ -250,6 +259,7 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
     }
 
     //Set history = NULL
+    free((void *) history);
     history = NULL;
 
     //Return the last string -> to send to user

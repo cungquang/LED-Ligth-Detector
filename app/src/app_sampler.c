@@ -46,8 +46,22 @@ void *consumer_thread();
 
 double * Sampler_testHistory(int *size)
 {
-    double strNum[] = {123.3425, 3431.1234, 23123.3416, 7778.96, 233.397, 897.3416, 7873.123, 721.345};
+    // Dynamically allocate memory for the array
+    double *strNum = malloc(8 * sizeof(double));
+
+    // Initialize the array
+    strNum[0] = 123.3425;
+    strNum[1] = 3431.1234;
+    strNum[2] = 23123.3416;
+    strNum[3] = 7778.96;
+    strNum[4] = 233.397;
+    strNum[5] = 897.3416;
+    strNum[6] = 7873.123;
+    strNum[7] = 721.345;
+
+    // Update the size
     *size = 8;
+
     return strNum;
 }
 
@@ -101,9 +115,17 @@ void Sampler_cleanup(void)
     }
 
     //free arr_historyData
-    if(arr_historyData) {
+    if(arr_historyData) 
+    {
         free(arr_historyData);
         arr_historyData = NULL;
+    }
+
+    //free arr_historyToSend
+    if(arr_historyToSend) 
+    {
+        free(arr_historyToSend);
+        arr_historyToSend = NULL;
     }
 
     //destroy mutex & semaphore
