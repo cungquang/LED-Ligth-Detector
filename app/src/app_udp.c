@@ -185,7 +185,7 @@ const char *command_count(void)
 {
     //Sampler_getHistorySize();
     static command_buffer[MAX_BUFFER_SIZE];             //declare static to keep memory for command buffer
-    double num = 123.4;
+    double num = 1423.4314;
     snprintf(command_buffer, sizeof(command_buffer), "%5.3f\n", num);
     return command_buffer;
 }
