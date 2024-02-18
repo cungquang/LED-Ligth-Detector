@@ -9,22 +9,30 @@
 
 //Trigger
 static int *isTerminated;
-// static bool isDoneProduced;
 
-//Resources
-static long count = 0;
-static long dips = 0;
-static long long length = 0;
-
+//Resources - calculation
 static double arr_rawData[1000];
 static double previous_avg;
 static double previous_sum;
+static int batch_size;
 
-// static double *arr_history;
-// static long count_history;
+//Resources - for user
+static double *arr_historyData;
+static int count = 0;
+static long dips = 0;
+static long long length = 0;
 
 //Thread
 static pthread_t a2d_id;
+
+//Mutex
+pthread_mutex_t mutex;
+
+//Semaphore
+sem_t sem_full;
+sem_t sem_empty;
+
+//Initiate function
 void *a2d_thread();
 
 /*-------------------------- Public -----------------------------*/
@@ -61,6 +69,17 @@ void Sampler_cleanup(void)
     {
         arr_rawData[i] = 0;
     }
+
+    if(arr_historyData) {
+        free(arr_historyData);
+        arr_historyData = NULL;
+    }
+}
+
+double *Sampler_getHistory(int *size)
+{
+    size = &count;
+    return arr_historyData;
 }
 
 //Join
@@ -86,7 +105,6 @@ void Sampler_init(int *terminate_flag)
 // thread to read input from A2D device
 void *a2d_thread() 
 {
-    long long batch_size;
     long long currentTime;
     long long startTime;
 
@@ -138,7 +156,20 @@ void *a2d_thread()
 }
 
 
-// double *Sampler_getHistory(int *size)
-// {
+double *Sampler_CopyHistory(int *size)
+{
+    sem_wait(&sem_empty);
+    pthread_mutex_lock(&mutex);
 
-// }
+    //free previous array
+    count = batch_size;
+    if(arr_historyData)
+    {
+        free(arr_historyData);
+        arr_historyData = NULL;
+    }
+    arr_historyData = (int *) malloc((count) * sizeof(int));
+
+    pthread_mutex_unlock(&mutex);
+    sem_post(&sem_full);
+}
