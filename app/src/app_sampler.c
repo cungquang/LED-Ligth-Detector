@@ -23,7 +23,8 @@ static long dips = 0;
 static long long length = 0;
 
 //Thread
-static pthread_t a2d_id;
+static pthread_t producer_id;
+static pthread_t consumer_id;
 
 //Mutex
 pthread_mutex_t mutex;
@@ -33,7 +34,8 @@ sem_t sem_full;
 sem_t sem_empty;
 
 //Initiate function
-void *a2d_thread();
+void *producer_thread();
+void *consumer_thread();
 
 /*-------------------------- Public -----------------------------*/
 
@@ -61,6 +63,13 @@ double Sampler_getAverageReading(void)
     return previous_avg;
 }
 
+//Getter to get history data
+double *Sampler_getHistory(int *size)
+{
+    size = &count;
+    return arr_historyData;
+}
+
 // Clean up function
 void Sampler_cleanup(void)
 {   
@@ -82,16 +91,11 @@ void Sampler_cleanup(void)
 	sem_destroy(&sem_empty);
 }
 
-double *Sampler_getHistory(int *size)
-{
-    size = &count;
-    return arr_historyData;
-}
-
 //Join
 void Sampler_join(void)
 {
-    pthread_join(a2d_id, NULL);
+    pthread_join(producer_id, NULL);
+    pthread_join(consumer_id, NULL);
 }
 
 //Init sampler thread
@@ -100,8 +104,13 @@ void Sampler_init(int *terminate_flag)
     //Trigger the start of the program
     isTerminated = terminate_flag;
     
-    //Create & start a2d thread
-    if(pthread_create(&a2d_id, NULL, a2d_thread, NULL) != 0) {
+    //Create & start producer_thread
+    if(pthread_create(&producer_id, NULL, producer_thread, NULL) != 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    //Create & start consumer_thread
+    if(pthread_create(&consumer_id, NULL, consumer_thread, NULL) != 0) {
         exit(EXIT_FAILURE);
     }
 }
