@@ -15,6 +15,6 @@ int Sampler_getHistorySize(void);
 int Sampler_getDips(void);
 double Sampler_getAverageReading(void);
 long long Sampler_getNumSamplesTaken(void); 
-//double *Sampler_getHistory(int *size);
+double *Sampler_getHistory(int *size);
 
 #endif

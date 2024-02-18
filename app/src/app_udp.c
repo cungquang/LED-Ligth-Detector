@@ -10,7 +10,7 @@
 
 #define SERVER_IP "192.168.7.2"
 #define SERVER_PORT 12345
-#define MAX_BUFFER_SIZE 1500
+#define MAX_BUFFER_SIZE 1501            // 1500 bytes and 1 bytes for null pointer
 #define PREV_MESSAGE_SIZE 200
 
 //flag
@@ -127,7 +127,7 @@ void *udpServer_thread()
         {
             responseMessage = command_dips();
         }
-        else if (strcmp("lenth", previousMessage) == 0)
+        else if (strcmp("length", previousMessage) == 0)
         {
             responseMessage = command_length();
         }
@@ -139,9 +139,6 @@ void *udpServer_thread()
         {
             responseMessage = command_unsupport();
         }
-
-        // Print received message
-        //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
 
         // Reply to the sender
         if(responseMessage)
@@ -183,27 +180,77 @@ const char *command_stop(void)
 
 const char *command_count(void)
 {
-    //Sampler_getHistorySize();
     static char command_buffer[MAX_BUFFER_SIZE];             //declare static to keep memory for command buffer
-    double num = 1423.4314;
+    double num = Sampler_getHistorySize();
     snprintf(command_buffer, sizeof(command_buffer), "%5.3f\n", num);
     return command_buffer;
 }
 
 const char *command_dips(void)
 {
-    //Sampler_getDips();
     static char command_buffer[MAX_BUFFER_SIZE];
-    int dips = 15;
+    int dips = Sampler_getDips();
     snprintf(command_buffer, sizeof(command_buffer), "%d\n", dips);
     return command_buffer;
 }
 
 const char *command_length(void) 
 {
-    //Sampler_getNumSamplesTaken();
     static char command_buffer[MAX_BUFFER_SIZE];     
-    long long length = 1293871927364817;
+    long long length = Sampler_getNumSamplesTaken();
     snprintf(command_buffer, sizeof(command_buffer), "%lld\n", length);
     return command_buffer;
+}
+
+const char *command_history(void)
+{
+    static char command_buffer[MAX_BUFFER_SIZE];
+    int history_size;
+    int current_buffer_size;
+    double *history = Sampler_getHistory(&history_size);
+
+    for(int i = 0; i < history_size; i++)
+    {
+        //Convert doubles -> string
+        int temp_size;
+        char *temp = convertDataToString(&temp_size, history[i]);
+
+        //if over the size 
+        if(current_buffer_size + temp_size <= MAX_BUFFER_SIZE)
+        {
+            mergeToBuffer(command_buffer, current_buffer_size, temp, temp_size);
+        }
+
+        //free each time complete
+        free(temp);
+    }
+
+    history = NULL;
+}
+
+const char *convertDataToString(int *char_size, double data) 
+{
+    *char_size = snprintf(NULL, 0, "%5.3f", data);
+    char *number = (char *)malloc(*char_size + 1);      //add null pointer at the end
+
+    if(number == NULL) 
+    {
+        perror("Fail to allocate memory");
+        exit(EXIT_FAILURE);
+    }
+
+    snprintf(number, *char_size + 1, "%5.3f", number);
+    return number;
+}
+
+void mergeToBuffer(char *buffer, int *buffer_size, char *number, int number_size)
+{
+    //Copy char in number into buffer (with number_size)
+    memcpy(buffer + *buffer_size, number, number_size);
+
+    //update buffer size
+    *buffer_size += number_size;
+
+    //Add null-terminate
+    buffer[*buffer_size] = '\0';
 }
