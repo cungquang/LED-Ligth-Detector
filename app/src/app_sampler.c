@@ -7,11 +7,13 @@
 #include "../../hal/include/a2d.h"
 #include "../include/app_helper.h"
 
+#define MAX_BUFFER_SIZE 1000
+
 //Trigger
 static int *isTerminated;
 
 //Resources - current
-static double arr_rawData[1000];
+static double arr_rawData[MAX_BUFFER_SIZE];
 static double previous_avg;
 static double previous_sum;
 static int batch_size;
@@ -71,7 +73,7 @@ double *Sampler_getHistory(int *size)
 {
     pthread_mutex_lock(&sampler_mutex);
     *size = count;
-    arr_historyToSend = (double *) malloc((*size) * sizeof(double));
+    arr_historyToSend = (double *)malloc((*size) * sizeof(double));
 
     for(int i = 0; i < *size; i++)
     {
@@ -146,7 +148,7 @@ void *producer_thread()
     long long startTime;
 
     //while isTerminated == false => keep executing
-    while(isTerminated == 0){
+    while(*isTerminated == 0){
         batch_size = 0;
         currentTime = 0;
         startTime = getTimeInMs();

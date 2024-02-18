@@ -55,9 +55,7 @@ void Udp_initServer(int *terminate_flag)
     isTerminated = terminate_flag;
 
     //Create thread
-    if(pthread_create(&udpSever_id, NULL, udpServer_thread, NULL) != 0){
-        exit(EXIT_FAILURE);
-    }
+    pthread_create(&udpSever_id, NULL, udpServer_thread, NULL);
 }
 
 
@@ -89,8 +87,10 @@ void *udpServer_thread()
         exit(EXIT_FAILURE);
     }
 
+    //Print server start
     printf("Server starting...");
-    while(isTerminated == 0)
+
+    while(*isTerminated == 0)
     {
         // Receive message
         if ((recv_len = recvfrom(serverSock, receiv_buffer, MAX_BUFFER_SIZE, 0, (struct sockaddr *)&client_addr, &client_len)) == -1) {
