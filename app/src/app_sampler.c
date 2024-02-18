@@ -10,7 +10,7 @@
 //Trigger
 static int *isTerminated;
 
-//Resources - calculation
+//Resources - current
 static double arr_rawData[1000];
 static double previous_avg;
 static double previous_sum;
@@ -30,11 +30,11 @@ static pthread_t producer_id;
 static pthread_t consumer_id;
 
 //Mutex
-pthread_mutex_t mutex;
+pthread_mutex_t sampler_mutex;
 
 //Semaphore
-sem_t sem_full;
-sem_t sem_empty;
+sem_t sampler_full;
+sem_t sampler_empty;
 
 //Initiate function
 void *producer_thread();
@@ -69,16 +69,16 @@ double Sampler_getAverageReading(void)
 //Getter to get history data
 double *Sampler_getHistory(int *size)
 {
-    pthread_mutex_lock(&mutex);
+    pthread_mutex_lock(&sampler_mutex);
     *size = count;
-    arr_historyToSend = (int *) malloc((*size) * sizeof(int));
+    arr_historyToSend = (double *) malloc((*size) * sizeof(double));
 
     for(int i = 0; i < *size; i++)
     {
         arr_historyToSend[i] = arr_historyData[i];
     }
 
-    pthread_mutex_unlock(&mutex);
+    pthread_mutex_unlock(&sampler_mutex);
     return arr_historyToSend;
 }
 
@@ -98,9 +98,9 @@ void Sampler_cleanup(void)
     }
 
     //destroy mutex & semaphore
-	pthread_mutex_destroy(&mutex);
-    sem_destroy(&sem_full);
-	sem_destroy(&sem_empty);
+	pthread_mutex_destroy(&sampler_mutex);
+    sem_destroy(&sampler_full);
+	sem_destroy(&sampler_empty);
 }
 
 //Join
@@ -116,6 +116,16 @@ void Sampler_init(int *terminate_flag)
     //Trigger the start of the program
     isTerminated = terminate_flag;
     
+    //init mutex & semaphore
+	pthread_mutex_init(&sampler_mutex, NULL);
+
+	//1st para: address to semaphore
+	//2nd para: number of process sharing this semaphore
+	//3rd para: initial value
+	sem_init(&sampler_empty, 0, 1);
+    sem_init(&sampler_full, 0, 0); 
+
+
     //Create & start producer_thread
     if(pthread_create(&producer_id, NULL, producer_thread, NULL) != 0) {
         exit(EXIT_FAILURE);
@@ -142,8 +152,8 @@ void *producer_thread()
         startTime = getTimeInMs();
 
         //Wait for sem_empty -> 1 -> obtain -> decrement
-        sem_wait(&sem_empty);
-        pthread_mutex_lock(&mutex);
+        sem_wait(&sampler_empty);
+        pthread_mutex_lock(&sampler_mutex);
 
         //Keep reading data for 1000 ms
         while((currentTime = getTimeInMs() - startTime) < 1000) 
@@ -176,8 +186,8 @@ void *producer_thread()
         }
 
         //Unlock thread & increment sem_full -> ready to transfer
-        pthread_mutex_unlock(&mutex);
-        sem_post(&sem_full);
+        pthread_mutex_unlock(&sampler_mutex);
+        sem_post(&sampler_full);
         
         //sleep for 1ms - before next iteration
         sleepForMs(1);
@@ -192,8 +202,8 @@ void *consumer_thread()
     while(isTerminated == 0)
     {
         //Wait sem_full > 0 -> obtain -> decrement & lock mutex to access resource
-        sem_wait(&sem_full);
-        pthread_mutex_lock(&mutex);
+        sem_wait(&sampler_full);
+        pthread_mutex_lock(&sampler_mutex);
 
         //Update the batch size for the completed iteration
         count = batch_size;
@@ -204,7 +214,7 @@ void *consumer_thread()
             free(arr_historyData);
             arr_historyData = NULL;
         }
-        arr_historyData = (int *) malloc((count) * sizeof(int));
+        arr_historyData = (double *) malloc((count) * sizeof(double));
         
         //Transfer data
         for(int i = 0; i < count; i++)
@@ -213,8 +223,8 @@ void *consumer_thread()
         }
 
         //Unlock mutex -> increment sem_empty -> allow producer to generate more products
-        pthread_mutex_unlock(&mutex);
-        sem_post(&sem_empty);
+        pthread_mutex_unlock(&sampler_mutex);
+        sem_post(&sampler_empty);
     }
 
     return NULL;
