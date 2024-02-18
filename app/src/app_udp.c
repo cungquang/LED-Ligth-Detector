@@ -22,6 +22,7 @@ static char previousMessage[PREV_MESSAGE_SIZE];
 static int previousMessageSize;
 
 //Response message
+static char response_buffer[MAX_BUFFER_SIZE];
 static const char *responseMessage;
 
 //Thread
@@ -31,10 +32,10 @@ static pthread_t udpSever_id;
 void *udpServer_thread();
 const char *command_help(void);
 const char *command_unsupport(void);
-void command_stop(void);
-int command_count(void);
-int command_dips(void);
-long long command_length(void);
+const char *command_stop(void);
+const char *command_count(void);
+const char *command_dips(void);
+const char *command_length(void);
 
 /*-------------------------- Public -----------------------------*/
 
@@ -121,20 +122,20 @@ void *udpServer_thread()
         } 
         else if (strcmp("stop", previousMessage) == 0)
         {
-            command_stop();
+            responseMessage = command_stop();
         }
-        // else if (strcmp("dips", previousMessage) == 0)
-        // {
-        //     command_dips();
-        // }
-        // else if (strcmp("lenth", previousMessage) == 0)
-        // {
-        //     command_length();
-        // }
-        // else if (strcmp("count", previousMessage) == 0)
-        // {
-        //     command_count();
-        // }
+        else if (strcmp("dips", previousMessage) == 0)
+        {
+            response_buffer = command_dips();
+        }
+        else if (strcmp("lenth", previousMessage) == 0)
+        {
+            command_length();
+        }
+        else if (strcmp("count", previousMessage) == 0)
+        {
+            command_count();
+        }
         else
         {
             responseMessage = command_unsupport();
@@ -144,10 +145,13 @@ void *udpServer_thread()
         //printf("%s:%d - say with %d: %s\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port), recv_len, receiv_buffer);
 
         // Reply to the sender
-        if(sendto(serverSock, responseMessage, strlen(responseMessage), 0, (struct sockaddr *)&client_addr, client_len) == -1)
+        if(responseMessage)
         {
-            perror("Fail to send");
-            exit(EXIT_FAILURE);
+            if(sendto(serverSock, responseMessage, strlen(responseMessage), 0, (struct sockaddr *)&client_addr, client_len) == -1)
+            {
+                perror("Fail to send");
+                exit(EXIT_FAILURE);
+            }
         }
     }
 
@@ -172,22 +176,32 @@ const char *command_unsupport(void)
     return "Command is unsupported. Please type \"help\" or \"?\" for supporting command\n";
 }
 
-void command_stop(void)
+const char *command_stop(void)
 {
     *isTerminated = 1;
+    return NULL;
 }
 
-int command_count(void)
+const char *command_count(void)
 {
-    return Sampler_getHistorySize();
+    //Sampler_getHistorySize();
+    double num = 123.4;
+    snprintf(response_buffer, sizeof(response_buffer), "%5.3f\n", num);
+    return &response_buffer;
 }
 
-int command_dips(void)
+const char *command_dips(void)
 {
-    return Sampler_getDips();
+    //Sampler_getDips();
+    int dips = 15;
+    snprintf(response_buffer, sizeof(response_buffer), "%d\n", dips);
+    return &response_buffer;
 }
 
-long long command_length(void) 
+const char *command_length(void) 
 {
-    return Sampler_getNumSamplesTaken();
+    //Sampler_getNumSamplesTaken();
+    long long length = 1293871927364817;
+    snprintf(response_buffer, sizeof(response_buffer), "%lld\n", length);
+    return &response_buffer;
 }
