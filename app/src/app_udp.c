@@ -35,6 +35,7 @@ const char *command_stop(void);
 const char *command_count(void);
 const char *command_dips(void);
 const char *command_length(void);
+const char *command_history(struct sockaddr *client_addr, socklen_t *client_len);
 
 /*-------------------------- Public -----------------------------*/
 
@@ -137,7 +138,7 @@ void *udpServer_thread()
         }
         else if (strcmp("history", previousMessage) == 0)
         {
-            responseMessage = command_history();
+            responseMessage = command_history(&client_addr, &client_len);
         }
         else
         {
@@ -206,7 +207,7 @@ const char *command_length(void)
     return command_buffer;
 }
 
-const char *command_history(struct sockaddr *client_addr,socklen_t *client_len)
+const char *command_history(struct sockaddr *client_addr, socklen_t *client_len)
 {
     static char command_buffer[MAX_BUFFER_SIZE];
     int history_size;
@@ -227,7 +228,7 @@ const char *command_history(struct sockaddr *client_addr,socklen_t *client_len)
         //if oversize -> send data
         else
         {
-            sendto(serverSock, command_buffer, strlen(command_buffer), 0, client_addr, client_len);
+            sendto(serverSock, command_buffer, strlen(command_buffer), 0, client_addr, *client_len);
 
             //reset data
             memset(command_buffer, 0, sizeof(command_buffer));
