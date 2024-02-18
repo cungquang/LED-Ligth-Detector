@@ -138,6 +138,7 @@ void *udpServer_thread()
         }
         else if (strcmp("history", previousMessage) == 0)
         {
+            //Send the remaining message
             responseMessage = command_history(&client_addr, &client_len);
         }
         else
@@ -214,7 +215,9 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
     int current_buffer_size;
     const char *temp_response;
     static char command_buffer[MAX_BUFFER_SIZE];
-    double *history = Sampler_getHistory(&history_size);
+    
+    //double *history = Sampler_getHistory(&history_size);
+    double *history = Sampler_testHistory(&history_size);
 
     for(int i = 0; i < history_size; i++)
     {

@@ -44,6 +44,13 @@ void *consumer_thread();
 
 /*-------------------------- Public -----------------------------*/
 
+double * Sampler_testHistory(int *size)
+{
+    double strNum[] = {123.3425, 3431.1234, 23123.3416, 7778.96, 233.397, 897.3416, 7873.123, 721.345};
+    *size = 8;
+    return strNum;
+}
+
 //Getter to get previous count
 int Sampler_getHistorySize(void)
 {

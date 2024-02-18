@@ -17,4 +17,7 @@ double Sampler_getAverageReading(void);
 long long Sampler_getNumSamplesTaken(void); 
 double *Sampler_getHistory(int *size);
 
+//test
+double * Sampler_testHistory(int *size);
+
 #endif
