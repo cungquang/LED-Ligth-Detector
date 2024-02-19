@@ -26,7 +26,9 @@ int getVoltage0Read()
     }
 
     // Close file
-    fclose(fileToRead);
+    if(fileToRead){
+        fclose(fileToRead);
+    }
     return a2dReading;
 }
 

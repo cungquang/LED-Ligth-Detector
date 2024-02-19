@@ -1,11 +1,10 @@
 #ifndef _LED_P921_H_
 #define _LED_P921_H_
 
+void led_configure();
 int led_getPeriod();
-int let_getDutyCycle();
-void led_init();
-void led_enable();
-void led_disable();
+int led_getDutyCycle();
+void led_writeToEnable(int value);
 void led_writeToDutyCycle(int value);
 void led_writeToPeriod(int value);
 

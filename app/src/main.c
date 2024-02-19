@@ -6,7 +6,7 @@
 #include "../include/app_sampler.h"
 #include "../include/app_upd.h"
 #include "../include/app_helper.h"
-#include "../../hal/include/led_P921.h"
+#include "../include/app_ledP921.h"
 
 int terminate_flag;
 
@@ -22,24 +22,15 @@ void operation()
 
 void testLed()
 {
-	led_init();
-	int duty_cycle = let_getDutyCycle();
-	led_enable();
-	
-	while(1)
-	{
-		led_writeToDutyCycle(duty_cycle);
-		sleepForMs(500);
+	terminate_flag = 0;
+	Led_init(&terminate_flag);
 
-		led_writeToDutyCycle(0);
-		sleepForMs(500);
-	}
-
-	led_disable();
+	Led_joinThreads();
+	Led_cleanUp();
 }
 
 int main()
 {	
-	operation();
+	testLed();
 	return 0;
 }

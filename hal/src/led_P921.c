@@ -1,10 +1,13 @@
-#include <stdlib.h>
-#include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
 
 #define MAX_PATH_LENGTH 1024
 
-#define CONFIGURE_PIN_COMMAND "sudo config-pin p9_21 pwm"
+#define CONFIGURE_PIN_COMMAND "echo \"temppwd\" | sudo -S config-pin p9_21 pwm"
 #define P9_21_PATH "/dev/bone/pwm/0/b"
 #define ENABLE_FILE "/enable"
 #define DUTY_CYCLE_FILE "/duty_cycle"
@@ -16,45 +19,25 @@ static int period;
 static int dutyCycle;
 
 void constructPathToWrite(const char* filePath);
-void writeToPwmFile(const char *filePath, int value);
+void writeToPwmFile(int value);
 
 int led_getPeriod()
 {
     return period;
 }
 
-int let_getDutyCycle()
+int led_getDutyCycle()
 {
     return dutyCycle;
 }
 
-void led_init() 
-{
-    system(CONFIGURE_PIN_COMMAND);
-    period = (int)(1000000000/DESIRED_FREQUENCY);
-    dutyCycle = (int)period/2;
-    
-    //Set period
-    led_writeToPeriod(period);
-    led_writeToDutyCycle(dutyCycle);
-}
-
-void led_enable()
+void led_writeToEnable(int value)
 {
     //Prepare command
     constructPathToWrite(ENABLE_FILE);
 
     //Execute command
-    writeToPwmFile(absolutePath, 1);
-}
-
-void led_disable()
-{
-    //Prepare command
-    constructPathToWrite(ENABLE_FILE);
-
-    //Execute command
-    writeToPwmFile(absolutePath, 0);
+    writeToPwmFile(value);
 }
 
 void led_writeToDutyCycle(int value)
@@ -63,7 +46,7 @@ void led_writeToDutyCycle(int value)
     constructPathToWrite(DUTY_CYCLE_FILE);
 
     //Execute command
-    writeToPwmFile(absolutePath, value);
+    writeToPwmFile(value);
 }
 
 void led_writeToPeriod(int value)
@@ -72,8 +55,16 @@ void led_writeToPeriod(int value)
     constructPathToWrite(PEROID_FILE);
 
     //Execute command
-    writeToPwmFile(absolutePath, value);
+    writeToPwmFile(value);
 }
+
+void led_configure() 
+{
+    system(CONFIGURE_PIN_COMMAND);
+    period = (int)(1000000000/DESIRED_FREQUENCY);
+    dutyCycle = (int)period/2;
+}
+
 
 //////////////////////////////////////// PRIVATE ////////////////////////////////////////
 
@@ -81,24 +72,25 @@ void constructPathToWrite(const char* filePath)
 {
     //Prepare command
     memset(absolutePath, 0, sizeof(absolutePath));
-    snprintf(absolutePath, sizeof(absolutePath), "%s%s", absolutePath, P9_21_PATH, PEROID_FILE);
+    snprintf(absolutePath, sizeof(absolutePath), "%s%s", P9_21_PATH, filePath);
 }
 
-void writeToPwmFile(const char *filePath, int value) 
+void writeToPwmFile(int value) 
 {
     char buffer[1024];
-    int openedFile = open(filePath, "w");
+    int openedFile = open(absolutePath, O_WRONLY);
     if(openedFile == -1){
-        perror("Failed to open file");
+        fprintf(stderr, "Failed to open %s: %s\n", absolutePath, strerror(errno));
         exit(EXIT_FAILURE);
     }
 
     int bytesToWrite = snprintf(buffer, sizeof(buffer), "%d", value);
     
     //write to file
-    ssize_t byteIsWritten = snprintf(openedFile, buffer, bytesToWrite);
+    ssize_t byteIsWritten = write(openedFile, buffer, bytesToWrite);
     if(byteIsWritten == -1) {
-        perror("Fail to write");
+        fprintf(stderr, "Failed to write to %s: %s\n", absolutePath, strerror(errno));
+        close(openedFile);
         exit(EXIT_FAILURE);
     } 
 
