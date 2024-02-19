@@ -195,12 +195,13 @@ void *producer_thread()
             double voltageToStore = getVoltageConvert(reading);
 
             //Store sample of current second
+            //This only need store single value -> each time write => move immediately into the buffer
             arr_rawData[batch_size] = voltageToStore;
 
             //Update sum & sample_size - need to do before calculate average           
             previous_sum += voltageToStore;
             batch_size++;
-
+            //bring data to buffer
             //length need continuously update
             length++;       
 
@@ -215,7 +216,7 @@ void *producer_thread()
             //Add here function keep track of dip
             printf("Time: %lld Sample size: %lld Value %5.3f ==> sum:%5.3f avg:%5.3fV\n", currentTime, length, voltageToStore, previous_sum, previous_avg);
         }
-
+        
         //Unlock thread & increment sem_full -> ready to transfer
         pthread_mutex_unlock(&sampler_mutex);
         sem_post(&sampler_full);
