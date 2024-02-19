@@ -9,8 +9,11 @@
 #define ENABLE_FILE "/enable"
 #define DUTY_CYCLE_FILE "/duty_cycle"
 #define PEROID_FILE "/period"
+#define DESIRED_FREQUENCY 500           //Hz
 
 static char absolutePath[MAX_PATH_LENGTH];
+static int period;
+static int dutyCycle;
 
 void constructPathToWrite(const char* filePath);
 void writeToPwmFile(const char *filePath, int value);
@@ -18,15 +21,30 @@ void writeToPwmFile(const char *filePath, int value);
 void led_init() 
 {
     system(CONFIGURE_PIN_COMMAND);
+    period = (int)(1000000000/DESIRED_FREQUENCY);
+    dutyCycle = (int)period/2;
+    
+    //Set period
+    led_writeToPeriod(period);
+    led_writeToDutyCycle(dutyCycle);
 }
 
-void led_writeToEnable(int value)
+void led_enable()
 {
     //Prepare command
     constructPathToWrite(ENABLE_FILE);
 
     //Execute command
-    writeToPwmFile(absolutePath, value);
+    writeToPwmFile(absolutePath, 1);
+}
+
+void led_disable()
+{
+    //Prepare command
+    constructPathToWrite(ENABLE_FILE);
+
+    //Execute command
+    writeToPwmFile(absolutePath, 0);
 }
 
 void led_writeToDutyCycle(int value)

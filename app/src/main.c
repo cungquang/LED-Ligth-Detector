@@ -6,8 +6,7 @@
 #include "../include/app_sampler.h"
 #include "../include/app_upd.h"
 #include "../include/app_helper.h"
-
-#define MAX_BUFFER_SIZE 26
+#include "../../hal/include/led_P921.h"
 
 int terminate_flag;
 
@@ -19,6 +18,16 @@ void operation()
 	Udp_join();
 
 	Udp_cleanup();
+}
+
+void testLed()
+{
+	led_init();
+	
+	while(1)
+	{
+
+	}
 }
 
 int main()

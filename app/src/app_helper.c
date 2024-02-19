@@ -88,8 +88,3 @@ void mergeToBuffer(char *buffer, int *buffer_size, const char *number, int numbe
     //Add null-terminate
     buffer[*buffer_size] = '\0';
 }
-
-double convertToPwmFrequency(double rawData)
-{
-    return rawData/40;
-}

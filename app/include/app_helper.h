@@ -14,6 +14,5 @@ double exponentSmoothAvg(double current_avg, double previous_avg);
 double calculateSimpleAvg(long current_size, double current_sum);
 const char *convertDataToString(int *char_size, double data);
 void mergeToBuffer(char *buffer, int *buffer_size, const char *number, int number_size);
-double convertToPwmFrequency(double rawData);
 
 #endif
