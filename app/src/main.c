@@ -23,11 +23,19 @@ void operation()
 void testLed()
 {
 	led_init();
+	int duty_cycle = let_getDutyCycle();
+	led_enable();
 	
 	while(1)
 	{
+		led_writeToDutyCycle(duty_cycle);
+		sleepForMs(500);
 
+		led_writeToDutyCycle(0);
+		sleepForMs(500);
 	}
+
+	led_disable();
 }
 
 int main()

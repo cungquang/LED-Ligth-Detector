@@ -18,6 +18,16 @@ static int dutyCycle;
 void constructPathToWrite(const char* filePath);
 void writeToPwmFile(const char *filePath, int value);
 
+int led_getPeriod()
+{
+    return period;
+}
+
+int let_getDutyCycle()
+{
+    return dutyCycle;
+}
+
 void led_init() 
 {
     system(CONFIGURE_PIN_COMMAND);
@@ -65,7 +75,7 @@ void led_writeToPeriod(int value)
     writeToPwmFile(absolutePath, value);
 }
 
-
+//////////////////////////////////////// PRIVATE ////////////////////////////////////////
 
 void constructPathToWrite(const char* filePath)
 {
