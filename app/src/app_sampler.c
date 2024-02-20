@@ -13,6 +13,7 @@
 static int *isTerminated;
 
 //Resources - current
+static double rawData;
 static double arr_rawData[MAX_BUFFER_SIZE];
 static double previous_avg;
 static double previous_sum;
@@ -190,28 +191,20 @@ void *producer_thread()
         while((currentTime = getTimeInMs() - startTime) < 1000) 
         {
             //Produce new data here
-            sleepForMs(200);
             int reading = getVoltage0Read();
             double voltageToStore = getVoltageConvert(reading);
 
             //Store sample of current second
             //This only need store single value -> each time write => move immediately into the buffer
-            arr_rawData[batch_size] = voltageToStore;
-
+            rawData = voltageToStore;
+        
             //Update sum & sample_size - need to do before calculate average           
             previous_sum += voltageToStore;
             batch_size++;
+            
             //bring data to buffer
             //length need continuously update
             length++;       
-
-            //Update previous average - this is overall average - not tight to the batch
-            if(length == 1){
-                previous_avg = calculateSimpleAvg(length, previous_sum);
-            }
-            else{
-                previous_avg = exponentSmoothAvg(calculateSimpleAvg(length, previous_sum), previous_avg);   
-            }
 
             //Add here function keep track of dip
             printf("Time: %lld Sample size: %lld Value %5.3f ==> sum:%5.3f avg:%5.3fV\n", currentTime, length, voltageToStore, previous_sum, previous_avg);
@@ -260,4 +253,15 @@ void *consumer_thread()
     }
 
     return NULL;
+}
+
+void calculateAvg()
+{
+    //Update previous average - this is overall average - not tight to the batch
+    if(length == 1){
+        previous_avg = calculateSimpleAvg(length, previous_sum);
+    }
+    else{
+        previous_avg = exponentSmoothAvg(calculateSimpleAvg(length, previous_sum), previous_avg);   
+    }
 }
