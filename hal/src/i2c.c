@@ -47,6 +47,8 @@
 #define OXOO_9 "0x00 0x58"
 #define OXO1_9 "0x01 0xa3"
 
+
+
 //Initiate function
 void constructCommand(char command[], const char *bus_addr, const char *register_value);
 
