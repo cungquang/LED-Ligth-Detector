@@ -9,7 +9,6 @@
 #include "../../hal/include/led_P921.h"
 #include "../../hal/include/i2c.h"
 
-
 int terminate_flag;
 
 void operation()

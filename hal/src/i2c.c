@@ -8,6 +8,8 @@
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
 
+#define COMMAND_SIZE 500
+
 //Configure command
 #define CONFIGURE_PIN_18 "config-pin p9_18 i2c"
 #define CONFIGURE_PIN_17 "config-pin p9_17 i2c"
@@ -48,9 +50,11 @@
 #define OXO1_9 "0x01 0xa3"
 
 
+static char command_1[COMMAND_SIZE];
+static char command_2[COMMAND_SIZE]; 
 
 //Initiate function
-void constructCommand(char command[], const char *bus_addr, const char *register_value);
+void constructCommand(char *command, const char *bus_addr, const char *register_value);
 
 void i2c_init() 
 {
@@ -82,8 +86,6 @@ void i2c_disableRightDigit()
 
 void i2c_set0() 
 {
-    char command_1[500];
-    char command_2[500]; 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_0);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_0);
     system(command_1);
@@ -93,8 +95,6 @@ void i2c_set0()
 //Display number 1
 void i2c_set1()
 {
-    char command_1[500];
-    char command_2[500]; 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_1);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_1);
     system(command_1);
@@ -104,8 +104,6 @@ void i2c_set1()
 //Display number 2
 void i2c_set2()
 {
-    char command_1[500];
-    char command_2[500]; 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_2);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_2);
     system(command_1);
@@ -114,8 +112,6 @@ void i2c_set2()
 
 void i2c_set3()
 {
-    char command_1[500];
-    char command_2[500]; 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_3);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_3);
     system(command_1);
@@ -123,9 +119,7 @@ void i2c_set3()
 }
 
 void i2c_set4()
-{
-    char command_1[500];
-    char command_2[500]; 
+{ 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_4);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_4);
     system(command_1);
@@ -134,8 +128,6 @@ void i2c_set4()
 
 void i2c_set5()
 {
-    char command_1[500];
-    char command_2[500]; 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_5);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_5);
     system(command_1);
@@ -144,8 +136,6 @@ void i2c_set5()
 
 void i2c_set6()
 {
-    char command_1[500];
-    char command_2[500]; 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_6);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_6);
     system(command_1);
@@ -154,8 +144,6 @@ void i2c_set6()
 
 void i2c_set7()
 {
-    char command_1[500];
-    char command_2[500]; 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_7);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_7);
     system(command_1);
@@ -164,8 +152,6 @@ void i2c_set7()
 
 void i2c_set8()
 {
-    char command_1[500];
-    char command_2[500]; 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_8);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_8);
     system(command_1);
@@ -174,8 +160,6 @@ void i2c_set8()
 
 void i2c_set9()
 {
-    char command_1[500];
-    char command_2[500]; 
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_9);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_9);
     system(command_1);
@@ -186,9 +170,9 @@ void i2c_set9()
 
 ////////////////////////////////////////// PRIVATE ////////////////////////////////////////// 
 
-void constructCommand(char command[], const char *bus_addr, const char *register_value)
+void constructCommand(char *command, const char *bus_addr, const char *register_value)
 {
     //Prepare command
-    memset(command, 0, sizeof(command));
-    snprintf(command, sizeof(command), "%s %s", bus_addr, register_value);
+    memset(command, 0, COMMAND_SIZE);
+    snprintf(command, COMMAND_SIZE, "%s %s", bus_addr, register_value);
 }
