@@ -11,8 +11,12 @@
 #define COMMAND_SIZE 500
 
 //Configure command
-#define CONFIGURE_PIN_18 "config-pin p9_18 i2c"
-#define CONFIGURE_PIN_17 "config-pin p9_17 i2c"
+#define CONFIGURE_PIN_18 "config-pin p9_18 i2c > /dev/null"
+#define CONFIGURE_PIN_17 "config-pin p9_17 i2c > /dev/null"
+#define SET_0x02_0  "i2cset -y 1 0x20 0x02 0x00"
+#define SET_0x03_0  "i2cset -y 1 0x20 0x03 0x00"
+#define SET_0x08_0  "i2cset -y 1 0x20 0x08 0x00"
+#define SET_0x09_0  "i2cset -y 1 0x20 0x09 0x00"
 
 //GPIO61 - right digit
 #define DIRECTION_61_OUT "echo out > /sys/class/gpio/gpio61/direction"
@@ -62,6 +66,10 @@ void i2c_init()
     system(CONFIGURE_PIN_18);
     system(DIRECTION_44_OUT);
     system(DIRECTION_61_OUT); 
+    system(SET_0x02_0);
+    system(SET_0x03_0);
+    system(SET_0x08_0);
+    system(SET_0x09_0);
 }
 
 void i2c_enableLeftDigit()
@@ -106,6 +114,8 @@ void i2c_set2()
 {
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_2);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_2);
+    printf("%s\n", command_1);
+    printf("%s\n", command_2);
     system(command_1);
     system(command_2);
 }
@@ -170,9 +180,9 @@ void i2c_set9()
 
 ////////////////////////////////////////// PRIVATE ////////////////////////////////////////// 
 
-void constructCommand(char *command, const char *bus_addr, const char *register_value)
+void constructCommand(char *command, const char *i2cset, const char *register_value)
 {
     //Prepare command
     memset(command, 0, COMMAND_SIZE);
-    snprintf(command, COMMAND_SIZE, "%s %s", bus_addr, register_value);
+    snprintf(command, COMMAND_SIZE, "%s %s", i2cset, register_value);
 }

@@ -6,14 +6,14 @@
 #include "../include/app_sampler.h"
 #include "../include/app_upd.h"
 #include "../include/app_helper.h"
-#include "../../hal/include/led_P921.h"
-#include "../../hal/include/i2c.h"
+#include "../include/app_ledP921.h"
+#include "../include/app_i2c.h"
 
-int terminate_flag;
+
+int terminate_flag = 0;
 
 void operation()
 {
-	terminate_flag = 0;
 	Udp_initServer(&terminate_flag);
 
 	Udp_join();
@@ -23,17 +23,21 @@ void operation()
 
 void testLed()
 {
-	terminate_flag = 0;
 	Led_init(&terminate_flag);
 
 	Led_joinThreads();
 	Led_cleanUp();
 }
 
+void testI2C()
+{
+	I2C_init(&terminate_flag);
+
+	I2C_join();
+}
+
 int main()
 {	
-	i2c_init();
-	i2c_enableRightDigit();
-	i2c_set2();
+	testI2C();
 	return 0;
 }
