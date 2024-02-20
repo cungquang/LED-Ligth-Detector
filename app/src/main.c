@@ -7,6 +7,8 @@
 #include "../include/app_upd.h"
 #include "../include/app_helper.h"
 #include "../include/app_ledP921.h"
+#include "../../hal/include/i2c.h"
+
 
 int terminate_flag;
 
@@ -31,6 +33,8 @@ void testLed()
 
 int main()
 {	
-	testLed();
+	i2c_init();
+	i2c_enableRightDigit();
+	i2c_set2;
 	return 0;
 }
