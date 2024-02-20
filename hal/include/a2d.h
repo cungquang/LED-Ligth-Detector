@@ -1,8 +1,9 @@
 #ifndef _A2D_H_
 #define _A2D_H_
 
-int getVoltage0Read();
-double getVoltageConvert(int reading);
 void closeFile();
+int A2D_readFromVoltage0();
+int A2D_readFromVoltage1();
+double A2D_convertVoltage(int reading);
 
 #endif

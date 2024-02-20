@@ -40,12 +40,13 @@ sem_t sampler_full;
 sem_t sampler_empty;
 
 //Initiate function
-void *producer_thread();
-void *consumer_thread();
+void *SAMPLER_producerThread();
+void *SAMPLER_consumerThread();
+void SAMPLER_calculateAvg();
 
-/*-------------------------- Public -----------------------------*/
+/////////////////////////////////////////// PUBLIC ///////////////////////////////////////////
 
-double * Sampler_testHistory(int *size)
+double * SAMPLER_testHistory(int *size)
 {
     // Dynamically allocate memory for the array
     double *strNum = malloc(8 * sizeof(double));
@@ -67,31 +68,31 @@ double * Sampler_testHistory(int *size)
 }
 
 //Getter to get previous count
-int Sampler_getHistorySize(void)
+int SAMPLER_getHistorySize(void)
 {
     return count;
 }
 
 //Getter to get dips
-int Sampler_getDips(void)
+int SAMPLER_getDips(void)
 {
     return dips;
 }
 
 //Getter to get length
-long long Sampler_getNumSamplesTaken(void) 
+long long SAMPLER_getNumSamplesTaken(void) 
 {
     return length;
 }
 
 //Getter to get previous avg
-double Sampler_getAverageReading(void)
+double SAMPLER_getAverageReading(void)
 {
     return previous_avg;
 }
 
 //Getter to get history data
-double *Sampler_getHistory(int *size)
+double *SAMPLER_getHistory(int *size)
 {
     pthread_mutex_lock(&sampler_mutex);
     *size = count;
@@ -107,7 +108,7 @@ double *Sampler_getHistory(int *size)
 }
 
 // Clean up function
-void Sampler_cleanup(void)
+void SAMPLER_cleanup(void)
 {   
     isTerminated = NULL;
     for(int i = 0; i < 1000; i++)
@@ -136,14 +137,14 @@ void Sampler_cleanup(void)
 }
 
 //Join
-void Sampler_join(void)
+void SAMPLER_join(void)
 {
     pthread_join(producer_id, NULL);
     pthread_join(consumer_id, NULL);
 }
 
 //Init sampler thread
-void Sampler_init(int *terminate_flag)
+void SAMPLER_init(int *terminate_flag)
 {
     //Trigger the start of the program
     isTerminated = terminate_flag;
@@ -159,20 +160,20 @@ void Sampler_init(int *terminate_flag)
 
 
     //Create & start producer_thread
-    if(pthread_create(&producer_id, NULL, producer_thread, NULL) != 0) {
+    if(pthread_create(&producer_id, NULL, SAMPLER_producerThread, NULL) != 0) {
         exit(EXIT_FAILURE);
     }
 
     //Create & start consumer_thread
-    if(pthread_create(&consumer_id, NULL, consumer_thread, NULL) != 0) {
+    if(pthread_create(&consumer_id, NULL, SAMPLER_consumerThread, NULL) != 0) {
         exit(EXIT_FAILURE);
     }
 }
 
-/*-------------------------- Private -----------------------------*/
+/////////////////////////////////////////// Private ///////////////////////////////////////////
 
 // thread to read input from A2D device
-void *producer_thread() 
+void *SAMPLER_producerThread() 
 {
     long long currentTime;
     long long startTime;
@@ -191,8 +192,8 @@ void *producer_thread()
         while((currentTime = getTimeInMs() - startTime) < 1000) 
         {
             //Produce new data here
-            int reading = getVoltage0Read();
-            double voltageToStore = getVoltageConvert(reading);
+            int reading = A2D_readFromVoltage1();
+            double voltageToStore = A2D_convertVoltage(reading);
 
             //Store sample of current second
             //This only need store single value -> each time write => move immediately into the buffer
@@ -205,6 +206,7 @@ void *producer_thread()
             //bring data to buffer
             //length need continuously update
             length++;       
+            calculateAvg();
 
             //Add here function keep track of dip
             printf("Time: %lld Sample size: %lld Value %5.3f ==> sum:%5.3f avg:%5.3fV\n", currentTime, length, voltageToStore, previous_sum, previous_avg);
@@ -222,7 +224,7 @@ void *producer_thread()
 }
 
 
-void *consumer_thread()
+void *SAMPLER_consumerThread()
 {
     while(isTerminated == 0)
     {
@@ -255,7 +257,7 @@ void *consumer_thread()
     return NULL;
 }
 
-void calculateAvg()
+void SAMPLER_calculateAvg()
 {
     //Update previous average - this is overall average - not tight to the batch
     if(length == 1){

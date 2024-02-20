@@ -2,22 +2,22 @@
 #define _APP_SAMPLER_H_
 
 //Thread
-void Sampler_init(int *terminate_flag);
+void SAMPLER_init(int *terminate_flag);
 
 //Cleanup
-void Sampler_cleanup(void);
+void SAMPLER_cleanup(void);
 
 //Join
-void Sampler_join(void);
+void SAMPLER_join(void);
 
 // Getter
-int Sampler_getHistorySize(void);
-int Sampler_getDips(void);
-double Sampler_getAverageReading(void);
-long long Sampler_getNumSamplesTaken(void); 
-double *Sampler_getHistory(int *size);
+int SAMPLER_getHistorySize(void);
+int SAMPLER_getDips(void);
+double SAMPLER_getAverageReading(void);
+long long SAMPLER_getNumSamplesTaken(void); 
+double *SAMPLER_getHistory(int *size);
 
 //test
-double * Sampler_testHistory(int *size);
+double * SAMPLER_testHistory(int *size);
 
 #endif
