@@ -38,6 +38,5 @@ void testI2C()
 
 int main()
 {	
-	testI2C();
 	return 0;
 }

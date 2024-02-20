@@ -3,5 +3,6 @@
 
 void I2C_init(int *terminate_flag);
 void I2C_join();
+void I2C_setDipsToDisplay(int dipsValue);
 
 #endif
