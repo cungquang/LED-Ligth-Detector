@@ -35,6 +35,6 @@ int main()
 {	
 	i2c_init();
 	i2c_enableRightDigit();
-	i2c_set2;
+	i2c_set2();
 	return 0;
 }

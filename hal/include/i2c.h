@@ -15,5 +15,12 @@ void i2c_disableRightDigit();
 void i2c_set0();
 void i2c_set1();
 void i2c_set2();
+void i2c_set3();
+void i2c_set4();
+void i2c_set5();
+void i2c_set6();
+void i2c_set7();
+void i2c_set8();
+void i2c_set9();
 
 #endif
