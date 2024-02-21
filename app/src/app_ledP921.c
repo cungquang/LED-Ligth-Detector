@@ -13,6 +13,11 @@ static int gapTimeInBetween;
 //Thread
 static pthread_t led_flash_id;
 
+//Initiate function
+void *LED_flashLed();
+
+//////////////////////////////////////////// PUBLIC ////////////////////////////////////////////
+
 void LED_init(int *terminate_flag)
 {   
     isTerminated = terminate_flag;
@@ -59,4 +64,6 @@ void *LED_flashLed()
         led_writeToDutyCycle(0);
         sleepForMs(gapTimeInBetween);
     }
+
+    return NULL;
 }
