@@ -213,7 +213,7 @@ void *SAMPLER_producerThread()
         //Produce new data here
         rawData = A2D_convertVoltage(A2D_readFromVoltage1());
 
-        sleepForMs(60);
+        sleepForMs(20);
 
         //Unlock thread & increment sem_full -> ready to transfer
         pthread_mutex_unlock(&sampler_mutex);
@@ -330,7 +330,7 @@ void SAMPLER_calculateAverage()
 void SAMPLER_calculateDip()
 {
     //Update the dips
-    if((previous_avg - previous_voltage) < 0.03 && (current_avg - current_voltage) >= 0.1)
+    if((previous_avg - previous_voltage) <= 0.03 && (current_avg - current_voltage) >= 0.1)
     {
         batch_dips += 1;
     }
