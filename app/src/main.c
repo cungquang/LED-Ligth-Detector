@@ -13,21 +13,6 @@
 
 int terminate_flag = 0;
 
-void testLed()
-{
-	Led_init(&terminate_flag);
-
-	Led_joinThreads();
-	Led_cleanUp();
-}
-
-void testI2C()
-{
-	I2C_init(&terminate_flag);
-
-	I2C_join();
-}
-
 void testSampler()
 {
 	I2C_init(&terminate_flag);
@@ -36,7 +21,7 @@ void testSampler()
 	SAMPLER_init(&terminate_flag);
 
 	I2C_join();
-	LED_init();
+	LED_join();
 	UDP_join();
 	SAMPLER_join();
 
