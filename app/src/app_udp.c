@@ -228,7 +228,9 @@ const char *UDP_commandHistory(struct sockaddr_in *client_addr, socklen_t *clien
     
     //double *history = Sampler_getHistory(&history_size);
     double *history = SAMPLER_testHistory(&history_size);
+    int itemPerLine = 0;
 
+    //UDP Packet should include 20 number per line
     for(int i = 0; i < history_size; i++)
     {
         //Convert doubles -> string
@@ -236,9 +238,10 @@ const char *UDP_commandHistory(struct sockaddr_in *client_addr, socklen_t *clien
         temp_response = convertDataToString(&temp_size, history[i]);
 
         //if fit into current size - need to + 1 for ','
-        if(current_buffer_size + temp_size + 1 < WRITE_UP_TO)
+        if(itemPerLine < 20)
         {
             mergeToBuffer(command_buffer, &current_buffer_size, temp_response, temp_size);
+            itemPerLine++;
         }
         //if oversize -> send data
         else
@@ -253,9 +256,10 @@ const char *UDP_commandHistory(struct sockaddr_in *client_addr, socklen_t *clien
 
             //merge to buffer 
 			mergeToBuffer(command_buffer, &current_buffer_size, temp_response, temp_size);
+            itemPerLine = 1;
         }
 
-        //free each time complete
+        //free temp_response each time completing merge
         free((void *)temp_response);
         temp_response = NULL;
     }
@@ -264,7 +268,7 @@ const char *UDP_commandHistory(struct sockaddr_in *client_addr, socklen_t *clien
     free((void *) history);
     history = NULL;
 
-    //Return the last string -> to send to user
+    //Return the remaining string -> to send to user
     command_buffer[current_buffer_size] = '\n';
     return command_buffer;
 }
