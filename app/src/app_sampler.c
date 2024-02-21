@@ -16,7 +16,7 @@ static int *isTerminated;
 
 //Resources - current
 static Period_statistics_t stats;
-static double rawPot;
+static double rawPot = 0;
 static double rawData;
 static double arr_rawData[MAX_BUFFER_SIZE];
 static double arr_historyData[MAX_BUFFER_SIZE];
@@ -221,7 +221,7 @@ void *SAMPLER_producerThread()
         //Produce new data here
         rawData = A2D_convertVoltage(A2D_readFromVoltage1());
 
-        //sleepForMs(40);
+        sleepForMs(2);
 
         //Unlock thread & increment sem_full -> ready to transfer
         pthread_mutex_unlock(&sampler_mutex);
@@ -328,6 +328,7 @@ void *SAMPLER_analyzerThread()
 
         //Print line 1
         printf("Smpl/s = %d\tPOT @ %.3f => %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, pot, potToHz, current_avg, dips, min_period, max_period, avg_period, count);
+        //printf("Smpl/s = %d\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, current_avg, dips, min_period, max_period, avg_period, count);
 
         //Print line 2
         SAMPLER_compose2ndLine();
