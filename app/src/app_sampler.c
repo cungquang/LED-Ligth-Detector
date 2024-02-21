@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include "../../hal/include/a2d.h"
+#include "../include/periodTimer.h"
 #include "../include/app_helper.h"
 
 #define MAX_BUFFER_SIZE 1000
@@ -13,16 +14,20 @@
 static int *isTerminated;
 
 //Resources - current
+static Period_statistics_t stats;
 static double rawData;
 static double arr_rawData[MAX_BUFFER_SIZE];
 static double previous_avg;
 static double previous_sum;
 static int batch_size;
 
-//Resources - history
+//Resources - for accessing
 static int count = 0;
 static int dips = 0;
 static long long length = 0;
+static double min_period = 0;
+static double max_period = 0;
+static double avg_period = 0;
 
 //Resources - send
 static double *arr_historyToSend;
@@ -122,10 +127,14 @@ void SAMPLER_cleanup(void)
         arr_historyToSend = NULL;
     }
 
+    //Delete or clean period
+    Period_cleanup();
+
     //destroy mutex & semaphore
 	pthread_mutex_destroy(&sampler_mutex);
     sem_destroy(&sampler_full);
 	sem_destroy(&sampler_empty);
+
 }
 
 //Join
@@ -150,6 +159,8 @@ void SAMPLER_init(int *terminate_flag)
 	sem_init(&sampler_empty, 0, 1);
     sem_init(&sampler_full, 0, 0); 
 
+    //Initiate Period Timer
+    Period_init();
 
     //Create & start producer_thread
     if(pthread_create(&producer_id, NULL, SAMPLER_producerThread, NULL) != 0) {
@@ -164,7 +175,7 @@ void SAMPLER_init(int *terminate_flag)
 
 /////////////////////////////////////////// Private ///////////////////////////////////////////
 
-// thread to read input from A2D device
+//Produce (read) data from A2D
 void *SAMPLER_producerThread() 
 {
     //while isTerminated == false => keep executing
@@ -174,6 +185,9 @@ void *SAMPLER_producerThread()
         sem_wait(&sampler_empty);
         pthread_mutex_lock(&sampler_mutex);
 
+        //Mark statistic event
+        Period_markEvent(PERIOD_EVENT_SAMPLE_LIGHT);
+        
         //Produce new data here
         rawData = A2D_convertVoltage(A2D_readFromVoltage1());
 
@@ -185,7 +199,7 @@ void *SAMPLER_producerThread()
     return NULL;
 }
 
-
+//Consume data from Producer
 void *SAMPLER_consumerThread()
 {
     long long currentTime;
@@ -205,15 +219,17 @@ void *SAMPLER_consumerThread()
             pthread_mutex_lock(&sampler_mutex);
             
             //Transfer data
-            arr_rawData[batch_size++] = rawData;
+            arr_rawData[batch_size] = rawData;
+            previous_sum += rawData;
+            
+            //Update length & batch_size
+            batch_size++;
             length++;       
 
             //Unlock mutex -> increment sem_empty -> allow producer to generate more products
             pthread_mutex_unlock(&sampler_mutex);
             sem_post(&sampler_empty);
 
-            //Update sum & sample_size - need to do before calculate average           
-            previous_sum += arr_rawData[batch_size - 1];
 
             //length need continuously update
             SAMPLER_calculateAverage();
@@ -221,9 +237,13 @@ void *SAMPLER_consumerThread()
             //Add here function keep track of dip
             //printf("Time: %lld Sample size: %d Raw Data: %5.3f ==> sum: %5.3f avg: %5.3fV\n", currentTime, batch_size, arr_rawData[batch_size - 1], previous_sum, previous_avg);
         }
-        
-        //Update count
-        count = batch_size;
+
+        //Collect statistic
+        Period_getStatisticsAndClear(PERIOD_EVENT_SAMPLE_LIGHT, &stats);
+        min_period = stats.minPeriodInMs;
+        max_period = stats.maxPeriodInMs;
+        avg_period = stats.avgPeriodInMs;
+        count = stats.numSamples;
 
         //sleep for 1ms - before next iteration
         sleepForMs(1);
@@ -231,6 +251,12 @@ void *SAMPLER_consumerThread()
 
     return NULL;
 }
+
+void *SAMPLER_analyzeData()
+{
+
+}
+
 
 void SAMPLER_calculateAverage()
 {

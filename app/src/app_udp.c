@@ -61,7 +61,7 @@ void UDP_initServer(int *terminate_flag)
     isTerminated = terminate_flag;
 
     //Create thread
-    pthread_create(&udpSever_id, NULL, udpServer_thread, NULL);
+    pthread_create(&udpSever_id, NULL, UDP_serverThread, NULL);
 }
 
 
