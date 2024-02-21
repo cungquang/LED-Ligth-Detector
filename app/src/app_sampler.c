@@ -273,8 +273,8 @@ void *SAMPLER_analyzerThread()
         I2C_setDipsToDisplay(dips);
 
         //Print message to screen
-        //printf("Smpl/s = %d\tPOT @ %.3f => %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, pot, potToHz, current_avg, dips, min_period, max_period, avg_period, count);
-        printf("Smpl/s = %d\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, current_avg, dips, min_period, max_period, avg_period, count);
+        //printf("Smpl/s = %d\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, current_avg, dips, min_period, max_period, avg_period, count);
+        printf("Smpl/s = %d\tPOT @ %.3f => %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, pot, potToHz, current_avg, dips, min_period, max_period, avg_period, count);
         SAMPLER_print2ndLine();
     }
 
