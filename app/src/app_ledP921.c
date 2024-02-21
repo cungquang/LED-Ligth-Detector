@@ -53,6 +53,7 @@ int LED_getPotHz()
 
 void LED_join()
 {
+    pthread_join(pot_read_id, NULL);
     pthread_join(led_flash_id, NULL);
 }
 
@@ -74,11 +75,11 @@ void *LED_flashLedThread()
     {        
         //turn on the led
         led_writeToDutyCycle(led_getDutyCycle());
-        sleepForMs(potRaw);
+        sleepForMs(potHz);
 
         //turn off the led
         led_writeToDutyCycle(0);
-        sleepForMs(potRaw);
+        sleepForMs(potHz);
     }
 
     return NULL;
