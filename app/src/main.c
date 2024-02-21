@@ -6,6 +6,7 @@
 #include "../include/app_i2c.h"
 
 int terminate_flag = 0;
+int cleanUp_flag = 0;
 
 void operation()
 {
@@ -13,20 +14,21 @@ void operation()
 	LED_init(&terminate_flag);
 	UDP_initServer(&terminate_flag);
 	SAMPLER_init(&terminate_flag);
+	SHUTDOWN_init(&cleanUp_flag);
 
+	//Terminate all main threads
 	I2C_join();
 	LED_join();
 	UDP_join();
 	SAMPLER_join();
 
-	I2C_cleanUp();
-	LED_cleanUp();
-	UDP_cleanup();
-	SAMPLER_cleanup();
+	//Trigger shutdown thread -> clean up
+	cleanUp_flag = 1;
+	
 }
 
 int main() 
 {
-	Operation();
+	operation();
     return 0;
 }
