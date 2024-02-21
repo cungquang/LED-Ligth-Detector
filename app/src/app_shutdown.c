@@ -6,9 +6,16 @@
 #include "../include/app_ledP921.h"
 #include "../include/app_i2c.h"
 
+//Clean up flag
 static int *isTimeToCleanUp;
 
+//Thread
 static pthread_t shutdown_id;
+
+//Initiate function
+static void *SHUTDOWN_cleanUpThread();
+
+////////////////////////////////////////////// PUBLIC //////////////////////////////////////////////
 
 void SHUTDOWN_init(int cleanUpFlag)
 {

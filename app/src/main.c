@@ -24,6 +24,7 @@ void operation()
 
 	//Trigger shutdown thread -> clean up
 	cleanUp_flag = 1;
+	SHUTDOWN_join();
 	
 }
 
