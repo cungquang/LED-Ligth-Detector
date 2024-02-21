@@ -10,7 +10,7 @@
 static FILE *voltage0File;
 static FILE *voltage1File;
 
-int A2D_readFromVoltage0()
+int a2d_readFromVoltage0()
 {
     voltage0File = fopen(A2D_FILE_VOLTAGE0, "r");
     if (!voltage0File) {
@@ -32,7 +32,7 @@ int A2D_readFromVoltage0()
     return a2dReading;
 }
 
-int A2D_readFromVoltage1()
+int a2d_readFromVoltage1()
 {
     voltage1File = fopen(A2D_FILE_VOLTAGE1, "r");
     if (!voltage1File) {
@@ -54,7 +54,7 @@ int A2D_readFromVoltage1()
     return a2dReading;
 }
 
-double A2D_convertVoltage(int reading)
+double a2d_convertVoltage(int reading)
 {
     double voltage = ((double)reading / A2D_MAX_READING) * A2D_VOLTAGE_REF_V;
     return voltage;

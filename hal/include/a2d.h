@@ -6,8 +6,8 @@
 // - Support read from voltage1
 // - Support convert raw data to voltage value
 
-int A2D_readFromVoltage0();
-int A2D_readFromVoltage1();
-double A2D_convertVoltage(int reading);
+int a2d_readFromVoltage0();
+int a2d_readFromVoltage1();
+double a2d_convertVoltage(int reading);
 
 #endif
