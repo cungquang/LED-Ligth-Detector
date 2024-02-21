@@ -202,11 +202,6 @@ void *SAMPLER_consumerThread()
 
     while(!*isTerminated)
     {
-        // currentTime = 0;
-        // startTime = getTimeInMs();
-        //Consume data within 1000 ms OR 1 second
-        // while((currentTime = getTimeInMs() - startTime) < 1000) 
-
         //Update previous value
         previous_voltage = current_voltage;
         previous_avg = current_avg;
@@ -231,8 +226,6 @@ void *SAMPLER_consumerThread()
         //Unlock mutex -> increment sem_empty -> allow producer to generate more products
         pthread_mutex_unlock(&sampler_mutex);
         sem_post(&sampler_empty);
-
-        //printf("dips-%d\t\tCurr_Raw-%.3f\t\tCurr_Avg-%.3f\t\tPrev_Raw-%.3f\t\tPrev_Avg-%.3f\n", batch_dips, current_voltage, current_avg, previous_voltage, previous_avg);
     }
 
     return NULL;
@@ -305,7 +298,7 @@ void SAMPLER_calculateDip()
     //Update the dips - when at least 2 data points && previous already rise && current reduce by 0.1
     //printf("prev_vol:%.3f\t\tprev_avg:%.3f\t\tcurr_vol:%.3f\t\tcurr_avg:%.3f\n", previous_voltage, previous_avg,current_voltage, current_avg);
     //printf("previous:%.3f - %.3f = %.3f \t\t\t current: %.3f - %.3f = %.3f\n", previous_avg, previous_voltage, previous_avg - previous_voltage, current_avg, current_voltage, current_avg - current_voltage);
-    if((batch_size > 1) && (previous_avg - previous_voltage <= 0.07) && (current_avg - current_voltage >= 0.1))
+    if((batch_size > 1) && (previous_avg - previous_voltage <= 0.03) && (current_avg - current_voltage >= 0.1))
     {   
         batch_dips += 1;
     }
