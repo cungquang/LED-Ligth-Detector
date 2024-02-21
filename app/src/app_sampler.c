@@ -107,19 +107,9 @@ double *SAMPLER_getHistory(int *size)
 // Clean up function
 void SAMPLER_cleanup(void)
 {   
-    isTerminated = NULL;
-    
-    //Clear data
-    for(int i = 0; i < MAX_BUFFER_SIZE; i++)
-    {
-        arr_rawData[i] = 0;
-        arr_historyData[i] = 0;
-    }
-
     //Free arr_historyToSend
     if(arr_historyToSend) 
     {
-        free(arr_historyToSend);
         arr_historyToSend = NULL;
     }
 
@@ -193,6 +183,9 @@ void *SAMPLER_producerThread()
         //Produce new data here
         rawData = A2D_convertVoltage(A2D_readFromVoltage1());
 
+        //sleep for 1ms - before next iteration
+        sleepForMs(50);
+
         //Unlock thread & increment sem_full -> ready to transfer
         pthread_mutex_unlock(&sampler_mutex);
         sem_post(&sampler_full);
@@ -234,9 +227,6 @@ void *SAMPLER_consumerThread()
         //length need continuously update
         SAMPLER_calculateAverage();
         SAMPLER_calculateDip();
-
-        //sleep for 1ms - before next iteration
-        sleepForMs(1);
 
         //Unlock mutex -> increment sem_empty -> allow producer to generate more products
         pthread_mutex_unlock(&sampler_mutex);
@@ -313,8 +303,10 @@ void SAMPLER_calculateAverage()
 void SAMPLER_calculateDip()
 {
     //Update the dips - when at least 2 data points && previous already rise && current reduce by 0.1
-    if(batch_size > 1 && (previous_avg - previous_voltage) <= 0.03 && (current_avg - current_voltage) >= 0.1)
-    {
+    printf("prev_vol:%.3f\t\tprev_avg:%.3f\t\tcurr_vol:%.3f\t\tcurr_avg:%.3f\n", previous_voltage, previous_avg,current_voltage, current_avg);
+    printf("previous:%.3f - %.3f = %.3f \t\t\t current: %.3f - %.3f = %.3f\n", previous_avg, previous_voltage, previous_avg - previous_voltage, current_avg, current_voltage, current_avg - current_voltage);
+    if((batch_size > 1) && (previous_avg - previous_voltage <= 0.03) && (current_avg - current_voltage >= 0.1))
+    {   
         batch_dips += 1;
     }
 }

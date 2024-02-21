@@ -30,19 +30,16 @@ void testI2C()
 
 void testSampler()
 {
-	SAMPLER_init(&terminate_flag);
 	I2C_init(&terminate_flag);
 	UDP_initServer(&terminate_flag);
+	SAMPLER_init(&terminate_flag);
 
 	I2C_join();
-	SAMPLER_join();
 	UDP_join();
+	SAMPLER_join();
 
-	printf("Start clean up\n");
-	printf("Cleanup SAMPLER");
-	SAMPLER_cleanup();
-	printf("Cleanup UDP");
 	UDP_cleanup();
+	SAMPLER_cleanup();
 }
 
 int main() 
