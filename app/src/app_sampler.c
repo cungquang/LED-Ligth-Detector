@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <signal.h>
-#include <stdbool.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include "../../hal/include/a2d.h"
+#include "../include/app_ledP921.h"
 #include "../include/app_i2c.h"
 #include "../include/periodTimer.h"
 #include "../include/app_helper.h"
@@ -29,8 +28,8 @@ static int batch_dips = 0;
 static int batch_size;
 
 //Resources - for accessing
-static double pot = 0;
-static int potToHz = 0;
+static int potRaw = 0;
+static int potHz = 0;
 static int count = 0;
 static int dips = 0;
 static long long length = 0;
@@ -265,16 +264,18 @@ void *SAMPLER_analyzerThread()
         avg_period = stats.avgPeriodInMs;
 
         //Update key data
-        potToHz = (pot + rawPot)/40;
+        potRaw = LED_getPot();
+        potHz = LED_getPotHz();
 
         //Create one new old stats
         pthread_mutex_unlock(&stats_mutex);
+
 
         I2C_setDipsToDisplay(dips);
 
         //Print message to screen
         //printf("Smpl/s = %d\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, current_avg, dips, min_period, max_period, avg_period, count);
-        printf("Smpl/s = %d\tPOT @ %.3f => %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, pot, potToHz, current_avg, dips, min_period, max_period, avg_period, count);
+        printf("Smpl/s = %d\tPOT @ %.3f => %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, potRaw, potHz, current_avg, dips, min_period, max_period, avg_period, count);
         SAMPLER_print2ndLine();
     }
 

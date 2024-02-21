@@ -4,7 +4,7 @@
 void LED_init(int *terminate_flag);
 void LED_join();
 void LED_cleanUp();
-void LED_getPot();
-void LED_getPotHz();
+int LED_getPot();
+int LED_getPotHz();
 
 #endif

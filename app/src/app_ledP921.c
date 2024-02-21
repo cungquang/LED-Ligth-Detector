@@ -41,12 +41,12 @@ void LED_init(int *terminate_flag)
     }
 }
 
-void LED_getPot()
+int LED_getPot()
 {
     return potRaw;
 }
 
-void LED_getPotHz()
+int LED_getPotHz()
 {
     return potHz;
 }
