@@ -25,6 +25,7 @@ void testSampler()
 	UDP_join();
 	SAMPLER_join();
 
+	LED_cleanUp();
 	UDP_cleanup();
 	SAMPLER_cleanup();
 }
