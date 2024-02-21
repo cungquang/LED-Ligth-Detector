@@ -20,7 +20,7 @@ static void *SHUTDOWN_cleanUpThread();
 
 void SHUTDOWN_init(int *cleanUpFlag)
 {
-    *isTimeToCleanUp = cleanUpFlag;
+    isTimeToCleanUp = cleanUpFlag;
 
     //Create & start producer_thread
     if(pthread_create(&shutdown_id, NULL, SHUTDOWN_cleanUpThread, NULL) != 0) {
