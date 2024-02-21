@@ -4,6 +4,7 @@
 #include "../include/app_upd.h"
 #include "../include/app_ledP921.h"
 #include "../include/app_i2c.h"
+#include "../include/app_shutdown.h"
 
 int terminate_flag = 0;
 int cleanUp_flag = 0;

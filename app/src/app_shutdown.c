@@ -5,6 +5,7 @@
 #include "../include/app_upd.h"
 #include "../include/app_ledP921.h"
 #include "../include/app_i2c.h"
+#include "../include/app_helper.h"
 
 //Clean up flag
 static int *isTimeToCleanUp;
@@ -19,7 +20,7 @@ static void *SHUTDOWN_cleanUpThread();
 
 void SHUTDOWN_init(int cleanUpFlag)
 {
-    isTimeToCleanUp = cleanUpFlag;
+    *isTimeToCleanUp = cleanUpFlag;
 
     //Create & start producer_thread
     if(pthread_create(&shutdown_id, NULL, SHUTDOWN_cleanUpThread, NULL) != 0) {
@@ -36,6 +37,11 @@ void SHUTDOWN_join()
 
 void *SHUTDOWN_cleanUpThread()
 {
+    while(!*isTimeToCleanUp)
+    {
+        sleepForMs(1);
+    }
+
 	I2C_cleanUp();
 	LED_cleanUp();
 	UDP_cleanup();
