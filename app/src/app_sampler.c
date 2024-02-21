@@ -213,7 +213,7 @@ void *SAMPLER_producerThread()
         //Produce new data here
         rawData = A2D_convertVoltage(A2D_readFromVoltage1());
 
-        sleepForMs(1);
+        sleepForMs(60);
 
         //Unlock thread & increment sem_full -> ready to transfer
         pthread_mutex_unlock(&sampler_mutex);
@@ -234,12 +234,7 @@ void *SAMPLER_consumerThread()
         //Reset
         batch_size = 0;
         batch_dips = 0;
-        previous_avg = 0;
-        previous_voltage = 0;
-        current_avg = 0;
-        current_voltage = 0;
         currentTime = 0;
-        accumulate_sum = 0;
         startTime = getTimeInMs();
 
         //Consume data within 1000 ms OR 1 second
@@ -266,7 +261,7 @@ void *SAMPLER_consumerThread()
             SAMPLER_calculateAverage();
             SAMPLER_calculateDip();
 
-            printf("Length-%lld\tBatch-%d\tdips-%d\tCurr_Raw-%.3f\tCurr_Avg-%.3f\tPrev_Raw-%.3f\tPrev_Avg-%.3f\tSum-%.3f\n", length, batch_size, batch_dips, current_voltage, current_avg, previous_voltage, previous_avg, accumulate_sum);
+            //printf("dips-%d\t\tCurr_Raw-%.3f\t\tCurr_Avg-%.3f\t\tPrev_Raw-%.3f\t\tPrev_Avg-%.3f\n", batch_dips, current_voltage, current_avg, previous_voltage, previous_avg);
 
             //Unlock mutex -> increment sem_empty -> allow producer to generate more products
             pthread_mutex_unlock(&sampler_mutex);
@@ -320,22 +315,22 @@ void *SAMPLER_analyzerThread()
     return NULL;
 }
 
-
+//Average light level is independent from the batch
 void SAMPLER_calculateAverage()
 {
     //Update previous average - this is overall average - not tight to the batch
-    if(batch_size == 1){
-        current_avg = calculateSimpleAvg(batch_size, accumulate_sum);
+    if(length == 1){
+        current_avg = calculateSimpleAvg(length, accumulate_sum);
     }
     else{
-        current_avg = exponentSmoothAvg(calculateSimpleAvg(batch_size, accumulate_sum), previous_avg);   
+        current_avg = exponentSmoothAvg(calculateSimpleAvg(length, accumulate_sum), previous_avg);   
     }
 }
 
 void SAMPLER_calculateDip()
 {
     //Update the dips
-    if((previous_avg - previous_voltage) <= 0.03 && (current_avg - current_voltage) >= 0.1)
+    if((previous_avg - previous_voltage) < 0.03 && (current_avg - current_voltage) >= 0.1)
     {
         batch_dips += 1;
     }
