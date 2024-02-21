@@ -38,10 +38,14 @@ void testI2C()
 
 void testSampler()
 {
-	
+	SAMPLER_init(&terminate_flag);
+
+	SAMPLER_join();
+	SAMPLER_cleanup();
 }
 
 int main()
 {	
+	testSampler();
 	return 0;
 }

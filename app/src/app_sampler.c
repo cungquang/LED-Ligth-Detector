@@ -168,7 +168,7 @@ void SAMPLER_init(int *terminate_flag)
 void *SAMPLER_producerThread() 
 {
     //while isTerminated == false => keep executing
-    while(*isTerminated == 0){
+    while(!*isTerminated){
 
         //Wait for sem_empty -> 1 -> obtain -> decrement
         sem_wait(&sampler_empty);
@@ -191,7 +191,7 @@ void *SAMPLER_consumerThread()
     long long currentTime;
     long long startTime;
 
-    while(isTerminated == 0)
+    while(!*isTerminated)
     {
         batch_size = 0;
         currentTime = 0;
@@ -213,7 +213,7 @@ void *SAMPLER_consumerThread()
             sem_post(&sampler_empty);
 
             //Update sum & sample_size - need to do before calculate average           
-            previous_sum += rawData;
+            previous_sum += arr_rawData[batch_size - 1];
 
             //length need continuously update
             SAMPLER_calculateAverage();
