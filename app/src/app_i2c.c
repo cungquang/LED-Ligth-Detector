@@ -13,8 +13,8 @@ int *isTerminated;
 
 //Resources
 static int dipsToDisplay = 0;
-static int leftDigit = '0';
-static int rightDigit = '0';
+static int leftDigit = 0;
+static int rightDigit = 0;
 
 //Threadh
 pthread_t i2c_id;
@@ -44,13 +44,13 @@ void I2C_setDipsToDisplay(int dipsValue)
 {
     dipsToDisplay = dipsValue;
     //if the dips larger than 99 -> set to 99
-    if(dipsToDisplay > 99)
+    if(dipsValue > 99)
     {
         dipsToDisplay = 99;
     }
 
     //Convert dips to string
-    if(displayDigit > 9)
+    if(dipsToDisplay > 9)
     {
         char number[3];
         snprintf(number, sizeof(number), "%d", dipsToDisplay);
@@ -59,9 +59,9 @@ void I2C_setDipsToDisplay(int dipsValue)
         rightDigit = number[1] - '0';
     } else{
         char number[2];
-        snprintf(number, sizeof(number), "%d", displayDigit);
+        snprintf(number, sizeof(number), "%d", dipsToDisplay);
 
-        leftDigit = '0';
+        leftDigit = 0;
         rightDigit = number[0] - '0';
     }    
 }
