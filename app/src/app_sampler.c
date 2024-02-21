@@ -8,7 +8,7 @@
 #include "../include/periodTimer.h"
 #include "../include/app_helper.h"
 
-#define MAX_BUFFER_SIZE 1000
+#define MAX_BUFFER_SIZE 3000
 
 //Trigger
 static int *isTerminated;
@@ -17,12 +17,12 @@ static int *isTerminated;
 static Period_statistics_t stats;
 static double rawData;
 static double arr_rawData[MAX_BUFFER_SIZE];
-static double accumulate_sum;
-static double previous_voltage;
-static double previous_avg;
+static double accumulate_sum = 0;
+static double previous_voltage = 0;
+static double previous_avg = 0;
 static double current_voltage;
-static double current_avg;
-static int batch_dips;
+static double current_avg = 0;
+static int batch_dips = 0;
 static int batch_size;
 
 //Resources - for accessing
@@ -231,6 +231,10 @@ void *SAMPLER_consumerThread()
     {
         batch_size = 0;
         batch_dips = 0;
+        previous_avg = 0;
+        previous_voltage = 0;
+        current_avg = 0;
+        current_voltage = 0;
         currentTime = 0;
         startTime = getTimeInMs();
 
@@ -244,7 +248,7 @@ void *SAMPLER_consumerThread()
             //Wait sem_full > 0 -> obtain -> decrement & lock mutex to access resource
             sem_wait(&sampler_full);
             pthread_mutex_lock(&sampler_mutex);
-            
+
             //Transfer data
             arr_rawData[batch_size] = rawData;
             current_voltage = rawData;
@@ -254,13 +258,15 @@ void *SAMPLER_consumerThread()
             batch_size++;
             length++;       
 
-            //Unlock mutex -> increment sem_empty -> allow producer to generate more products
-            pthread_mutex_unlock(&sampler_mutex);
-            sem_post(&sampler_empty);
-
             //length need continuously update
             SAMPLER_calculateAverage();
             SAMPLER_calculateDip();
+
+            //printf("Length: %lld\tBatch: %d\tdips: %d\tAvg: %.3f\n", length, batch_size, batch_dips, current_avg);
+
+            //Unlock mutex -> increment sem_empty -> allow producer to generate more products
+            pthread_mutex_unlock(&sampler_mutex);
+            sem_post(&sampler_empty);
         }
 
         //Wait for old stats -> to calculate
@@ -288,6 +294,9 @@ void *SAMPLER_analyzerThread()
         sem_wait(&stats_new);
         pthread_mutex_lock(&stats_mutex);
 
+        //Move data to arr_historydata
+
+        //Get statistic
         Period_getStatisticsAndClear(PERIOD_EVENT_SAMPLE_LIGHT, &stats);
         min_period = stats.minPeriodInMs;
         max_period = stats.maxPeriodInMs;
@@ -299,10 +308,9 @@ void *SAMPLER_analyzerThread()
         sem_post(&stats_old);
 
         //Print line 1
-        printf("Smpl/s = %d\tPOT @\tavg = %.3fV\tdips = %d\tSmpl ms[%lld, %lld] avg %.3f/%d\n",count, current_avg, dips, min_period, max_period, avg_period, count);
+        printf("Smpl/s = %d\tPOT @\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n",count, current_avg, dips, min_period, max_period, avg_period, count);
 
         //Print line 2
-
     }
 
     return NULL;
@@ -323,7 +331,7 @@ void SAMPLER_calculateAverage()
 void SAMPLER_calculateDip()
 {
     //Update the dips
-    if((previous_voltage - previous_avg) > -0.03 && (current_voltage - current_avg) <= 0.1)
+    if((previous_avg - previous_voltage) <= 0.03 && (current_avg - current_voltage) >= 0.1)
     {
         batch_dips += 1;
     }
