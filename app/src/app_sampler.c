@@ -16,6 +16,7 @@ static int *isTerminated;
 
 //Resources - current
 static Period_statistics_t stats;
+static double rawPot;
 static double rawData;
 static double arr_rawData[MAX_BUFFER_SIZE];
 static double arr_historyData[MAX_BUFFER_SIZE];
@@ -28,6 +29,8 @@ static int batch_dips = 0;
 static int batch_size;
 
 //Resources - for accessing
+static double pot = 0;
+static int potToHz = 0;
 static int count = 0;
 static int dips = 0;
 static long long length = 0;
@@ -59,6 +62,7 @@ void *SAMPLER_consumerThread();
 void *SAMPLER_analyzerThread();
 void SAMPLER_calculateAverage();
 void SAMPLER_calculateDip();
+void SAMPLER_compose2ndLine();
 
 /////////////////////////////////////////// PUBLIC ///////////////////////////////////////////
 
@@ -217,7 +221,7 @@ void *SAMPLER_producerThread()
         //Produce new data here
         rawData = A2D_convertVoltage(A2D_readFromVoltage1());
 
-        sleepForMs(40);
+        //sleepForMs(40);
 
         //Unlock thread & increment sem_full -> ready to transfer
         pthread_mutex_unlock(&sampler_mutex);
@@ -254,6 +258,9 @@ void *SAMPLER_consumerThread()
             sem_wait(&sampler_full);
             pthread_mutex_lock(&sampler_mutex);
 
+            //pot data
+            pot = rawPot;
+
             //Transfer data
             arr_rawData[batch_size] = rawData;
             current_voltage = rawData;
@@ -267,7 +274,7 @@ void *SAMPLER_consumerThread()
             SAMPLER_calculateAverage();
             SAMPLER_calculateDip();
 
-            printf("dips-%d\t\tCurr_Raw-%.3f\t\tCurr_Avg-%.3f\t\tPrev_Raw-%.3f\t\tPrev_Avg-%.3f\n", batch_dips, current_voltage, current_avg, previous_voltage, previous_avg);
+            //printf("dips-%d\t\tCurr_Raw-%.3f\t\tCurr_Avg-%.3f\t\tPrev_Raw-%.3f\t\tPrev_Avg-%.3f\n", batch_dips, current_voltage, current_avg, previous_voltage, previous_avg);
 
             //Unlock mutex -> increment sem_empty -> allow producer to generate more products
             pthread_mutex_unlock(&sampler_mutex);
@@ -280,7 +287,8 @@ void *SAMPLER_consumerThread()
 
         count = batch_size;
         dips = batch_dips;
-        
+        potToHz = pot/40;
+
         //Create a new stats -> to trigger update
         pthread_mutex_unlock(&stats_mutex);
         sem_post(&stats_new);
@@ -319,9 +327,10 @@ void *SAMPLER_analyzerThread()
         sem_post(&stats_old);
 
         //Print line 1
-        printf("Smpl/s = %d\tPOT @\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n",count, current_avg, dips, min_period, max_period, avg_period, count);
+        printf("Smpl/s = %d\tPOT @ %.3f => %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, pot, potToHz, current_avg, dips, min_period, max_period, avg_period, count);
 
         //Print line 2
+        SAMPLER_compose2ndLine();
     }
 
     return NULL;
@@ -346,4 +355,22 @@ void SAMPLER_calculateDip()
     {
         batch_dips += 1;
     }
+}
+
+void SAMPLER_compose2ndLine()
+{
+    int batch_count = count;
+    int incre = batch_count/20;
+    if (incre < 1){
+        incre = 1;
+    }
+
+    //Get 20 items
+    for(int i = 0; i < batch_count; i += incre)
+    {
+        printf("\t%d:%.3f\t", i, arr_historyData[i]);
+    }
+
+    //Print new line
+    printf("\n");
 }
