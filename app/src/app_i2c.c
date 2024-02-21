@@ -6,7 +6,7 @@
 #include "../../hal/include/i2c.h"
 #include "../include/app_helper.h"
 
-#define SWITCH_TIME 2
+#define SWITCH_TIME 1
 
 //Termination key
 int *isTerminated;
