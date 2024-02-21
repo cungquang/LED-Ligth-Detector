@@ -250,10 +250,6 @@ void *SAMPLER_consumerThread()
         //Consume data within 1000 ms OR 1 second
         while((currentTime = getTimeInMs() - startTime) < 1000) 
         {
-            //Update previous value
-            previous_voltage = current_voltage;
-            previous_avg = current_avg;
-
             //Wait sem_full > 0 -> obtain -> decrement & lock mutex to access resource
             sem_wait(&sampler_full);
             pthread_mutex_lock(&sampler_mutex);
@@ -270,15 +266,18 @@ void *SAMPLER_consumerThread()
             batch_size++;
             length++;       
 
+            //Unlock mutex -> increment sem_empty -> allow producer to generate more products
+            pthread_mutex_unlock(&sampler_mutex);
+            sem_post(&sampler_empty);
+
             //length need continuously update
             SAMPLER_calculateAverage();
             SAMPLER_calculateDip();
 
+            //Update previous value
+            previous_voltage = current_voltage;
+            previous_avg = current_avg;
             //printf("dips-%d\t\tCurr_Raw-%.3f\t\tCurr_Avg-%.3f\t\tPrev_Raw-%.3f\t\tPrev_Avg-%.3f\n", batch_dips, current_voltage, current_avg, previous_voltage, previous_avg);
-
-            //Unlock mutex -> increment sem_empty -> allow producer to generate more products
-            pthread_mutex_unlock(&sampler_mutex);
-            sem_post(&sampler_empty);
         }
 
         //Wait for old stats -> to calculate
