@@ -36,6 +36,11 @@ void testI2C()
 	I2C_join();
 }
 
+void testSampler()
+{
+	
+}
+
 int main()
 {	
 	return 0;

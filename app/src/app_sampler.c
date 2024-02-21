@@ -20,7 +20,6 @@ static double previous_sum;
 static int batch_size;
 
 //Resources - history
-static double *arr_historyData;
 static int count = 0;
 static int dips = 0;
 static long long length = 0;
@@ -42,7 +41,7 @@ sem_t sampler_empty;
 //Initiate function
 void *SAMPLER_producerThread();
 void *SAMPLER_consumerThread();
-void SAMPLER_calculateAvg();
+void SAMPLER_calculateAverage();
 
 /////////////////////////////////////////// PUBLIC ///////////////////////////////////////////
 
@@ -100,7 +99,7 @@ double *SAMPLER_getHistory(int *size)
 
     for(int i = 0; i < *size; i++)
     {
-        arr_historyToSend[i] = arr_historyData[i];
+        arr_historyToSend[i] = arr_rawData[i];
     }
 
     pthread_mutex_unlock(&sampler_mutex);
@@ -114,13 +113,6 @@ void SAMPLER_cleanup(void)
     for(int i = 0; i < 1000; i++)
     {
         arr_rawData[i] = 0;
-    }
-
-    //free arr_historyData
-    if(arr_historyData) 
-    {
-        free(arr_historyData);
-        arr_historyData = NULL;
     }
 
     //free arr_historyToSend
@@ -175,49 +167,19 @@ void SAMPLER_init(int *terminate_flag)
 // thread to read input from A2D device
 void *SAMPLER_producerThread() 
 {
-    long long currentTime;
-    long long startTime;
-
     //while isTerminated == false => keep executing
     while(*isTerminated == 0){
-        batch_size = 0;
-        currentTime = 0;
-        startTime = getTimeInMs();
 
         //Wait for sem_empty -> 1 -> obtain -> decrement
         sem_wait(&sampler_empty);
         pthread_mutex_lock(&sampler_mutex);
 
-        //Keep reading data for 1000 ms
-        while((currentTime = getTimeInMs() - startTime) < 1000) 
-        {
-            //Produce new data here
-            int reading = A2D_readFromVoltage1();
-            double voltageToStore = A2D_convertVoltage(reading);
+        //Produce new data here
+        rawData = A2D_convertVoltage(A2D_readFromVoltage1());
 
-            //Store sample of current second
-            //This only need store single value -> each time write => move immediately into the buffer
-            rawData = voltageToStore;
-        
-            //Update sum & sample_size - need to do before calculate average           
-            previous_sum += voltageToStore;
-            batch_size++;
-            
-            //bring data to buffer
-            //length need continuously update
-            length++;       
-            calculateAvg();
-
-            //Add here function keep track of dip
-            printf("Time: %lld Sample size: %lld Value %5.3f ==> sum:%5.3f avg:%5.3fV\n", currentTime, length, voltageToStore, previous_sum, previous_avg);
-        }
-        
         //Unlock thread & increment sem_full -> ready to transfer
         pthread_mutex_unlock(&sampler_mutex);
         sem_post(&sampler_full);
-        
-        //sleep for 1ms - before next iteration
-        sleepForMs(1);
     }
 
     return NULL;
@@ -226,38 +188,51 @@ void *SAMPLER_producerThread()
 
 void *SAMPLER_consumerThread()
 {
+    long long currentTime;
+    long long startTime;
+
     while(isTerminated == 0)
     {
-        //Wait sem_full > 0 -> obtain -> decrement & lock mutex to access resource
-        sem_wait(&sampler_full);
-        pthread_mutex_lock(&sampler_mutex);
+        batch_size = 0;
+        currentTime = 0;
+        startTime = getTimeInMs();
 
-        //Update the batch size for the completed iteration
+        //Consume data within 1000 ms
+        while((currentTime = getTimeInMs() - startTime) < 1000) 
+        {
+            //Wait sem_full > 0 -> obtain -> decrement & lock mutex to access resource
+            sem_wait(&sampler_full);
+            pthread_mutex_lock(&sampler_mutex);
+            
+            //Transfer data
+            arr_rawData[batch_size++] = rawData;
+            length++;       
+
+            //Unlock mutex -> increment sem_empty -> allow producer to generate more products
+            pthread_mutex_unlock(&sampler_mutex);
+            sem_post(&sampler_empty);
+
+            //Update sum & sample_size - need to do before calculate average           
+            previous_sum += rawData;
+
+            //length need continuously update
+            SAMPLER_calculateAverage();
+        
+            //Add here function keep track of dip
+            printf("Time: %lld Sample size: %lld Value %5.3f ==> sum:%5.3f avg:%5.3fV\n", currentTime, length, arr_rawData[batch_size], previous_sum, previous_avg);
+        }
+        
+        //Update count
         count = batch_size;
-        
-        //free previous array - deallocate & allocate new memory
-        if(arr_historyData)
-        {
-            free(arr_historyData);
-            arr_historyData = NULL;
-        }
-        arr_historyData = (double *) malloc((count) * sizeof(double));
-        
-        //Transfer data
-        for(int i = 0; i < count; i++)
-        {
-            arr_historyData[i] = arr_rawData[i];
-        }
 
-        //Unlock mutex -> increment sem_empty -> allow producer to generate more products
-        pthread_mutex_unlock(&sampler_mutex);
-        sem_post(&sampler_empty);
+        //sleep for 1ms - before next iteration
+        sleepForMs(1);
     }
 
     return NULL;
 }
 
-void SAMPLER_calculateAvg()
+void SAMPLER_calculateAverage()
 {
     //Update previous average - this is overall average - not tight to the batch
     if(length == 1){

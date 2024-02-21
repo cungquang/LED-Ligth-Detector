@@ -193,7 +193,7 @@ const char *command_count(void)
 {
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer));
-    double num = Sampler_getHistorySize();
+    double num = SAMPLER_getHistorySize();
     snprintf(command_buffer, sizeof(command_buffer), "%5.3f\n", num);
     return command_buffer;
 }
@@ -202,7 +202,7 @@ const char *command_dips(void)
 {
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer));
-    int dips = Sampler_getDips();
+    int dips = SAMPLER_getDips();
     snprintf(command_buffer, sizeof(command_buffer), "%d\n", dips);
     return command_buffer;
 }
@@ -211,7 +211,7 @@ const char *command_length(void)
 {
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer)); 
-    long long length = Sampler_getNumSamplesTaken();
+    long long length = SAMPLER_getNumSamplesTaken();
     snprintf(command_buffer, sizeof(command_buffer), "%lld\n", length);
     return command_buffer;
 }
@@ -227,7 +227,7 @@ const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_l
     memset(command_buffer, 0, sizeof(command_buffer));
     
     //double *history = Sampler_getHistory(&history_size);
-    double *history = Sampler_testHistory(&history_size);
+    double *history = SAMPLER_testHistory(&history_size);
 
     for(int i = 0; i < history_size; i++)
     {

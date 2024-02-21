@@ -18,6 +18,6 @@ long long SAMPLER_getNumSamplesTaken(void);
 double *SAMPLER_getHistory(int *size);
 
 //test
-double * SAMPLER_testHistory(int *size);
+double *SAMPLER_testHistory(int *size);
 
 #endif

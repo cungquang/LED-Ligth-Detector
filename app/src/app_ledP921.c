@@ -77,7 +77,7 @@ void *Led_turnOn()
 {  
     while(!*isTerminated)
     {
-        gapTimeInBetween = getVoltage0Read()/40;
+        gapTimeInBetween = A2D_readFromVoltage0()/40;
         
         //Wait for led_on > 0 => decrement
         sem_wait(&led_on);
@@ -97,7 +97,7 @@ void *Led_turnOff()
 {
     while(!*isTerminated)
     {
-        gapTimeInBetween = getVoltage0Read()/40;
+        gapTimeInBetween = A2D_readFromVoltage0()/40;
 
         //Wait until led_off > 0 => decrement 
         sem_wait(&led_off);
