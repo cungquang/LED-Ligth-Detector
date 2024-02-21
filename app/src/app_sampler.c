@@ -110,6 +110,7 @@ double SAMPLER_getAverageReading(void)
 //Getter to get history data
 double *SAMPLER_getHistory(int *size)
 {
+    pthread_mutex_lock(&stats_mutex);
     *size = count;
     arr_historyToSend = (double *)malloc((*size) * sizeof(double));
 
@@ -117,6 +118,7 @@ double *SAMPLER_getHistory(int *size)
     {
         arr_historyToSend[i] = arr_historyData[i];
     }
+    pthread_mutex_unlock(&stats_mutex);
 
     return arr_historyToSend;
 }

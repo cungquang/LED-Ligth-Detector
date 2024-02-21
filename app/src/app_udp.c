@@ -227,7 +227,7 @@ const char *UDP_commandHistory(struct sockaddr_in *client_addr, socklen_t *clien
     memset(command_buffer, 0, sizeof(command_buffer));
     
     //double *history = Sampler_getHistory(&history_size);
-    double *history = SAMPLER_testHistory(&history_size);
+    double *history = SAMPLER_getHistory(&history_size);
     int itemPerLine = 0;
 
     //UDP Packet should include 20 number per line
