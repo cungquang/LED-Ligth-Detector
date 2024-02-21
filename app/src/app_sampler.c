@@ -179,7 +179,7 @@ void *SAMPLER_producerThread()
         Period_markEvent(PERIOD_EVENT_SAMPLE_LIGHT);
         
         //Produce new data here
-        rawData = A2D_convertVoltage(A2D_readFromVoltage1());
+        rawData = a2d_convertVoltage(a2d_readFromVoltage1());
 
         //sleep for 1ms - before next iteration
         sleepForMs(1);

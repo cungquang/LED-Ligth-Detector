@@ -6,6 +6,7 @@
         "app_sampler.h": "c",
         "i2c.h": "c",
         "app_ledp921.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "a2d.h": "c"
     }
 }

@@ -3,9 +3,9 @@
 #include <signal.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include "../include/app_helper.h"
 #include "../../hal/include/led_P921.h"
 #include "../../hal/include/a2d.h"
-#include "../include/app_helper.h"
 
 static int *isTerminated;
 static int potRaw;
@@ -89,7 +89,7 @@ void *LED_getPotThread()
 {
     while(!*isTerminated)
     {
-        potRaw = A2D_readFromVoltage0();
+        potRaw = a2d_readFromVoltage0();
         potHz = potRaw/40;
 
         //Sleep for 100 second before the next iteration
