@@ -2,12 +2,12 @@
 #define _APP_UDP_H_
 
 // Thread
-void Udp_initServer(int *terminate_flag);
+void UDP_initServer(int *terminate_flag);
 
 //Clean up
-void Udp_cleanup(void);
+void UDP_cleanup(void);
 
 //Join
-void Udp_join(void);
+void UDP_join(void);
 
 #endif

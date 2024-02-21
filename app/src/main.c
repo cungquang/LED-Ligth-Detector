@@ -12,15 +12,6 @@
 
 int terminate_flag = 0;
 
-void operation()
-{
-	Udp_initServer(&terminate_flag);
-
-	Udp_join();
-
-	Udp_cleanup();
-}
-
 void testLed()
 {
 	Led_init(&terminate_flag);
@@ -38,10 +29,14 @@ void testI2C()
 
 void testSampler()
 {
+	UDP_initServer(&terminate_flag);
 	SAMPLER_init(&terminate_flag);
 
 	SAMPLER_join();
+	UDP_join();
+
 	SAMPLER_cleanup();
+	UDP_cleanup();
 }
 
 int main()

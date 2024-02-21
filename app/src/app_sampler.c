@@ -219,7 +219,7 @@ void *SAMPLER_consumerThread()
             SAMPLER_calculateAverage();
         
             //Add here function keep track of dip
-            printf("Time: %lld Sample size: %lld Value %5.3f ==> sum:%5.3f avg:%5.3fV\n", currentTime, length, arr_rawData[batch_size], previous_sum, previous_avg);
+            //printf("Time: %lld Sample size: %d Raw Data: %5.3f ==> sum: %5.3f avg: %5.3fV\n", currentTime, batch_size, arr_rawData[batch_size - 1], previous_sum, previous_avg);
         }
         
         //Update count

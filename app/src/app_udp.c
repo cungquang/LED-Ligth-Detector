@@ -30,23 +30,23 @@ static char command_buffer[MAX_BUFFER_SIZE];
 static pthread_t udpSever_id;
 
 //Declare functions
-void *udpServer_thread();
-const char *command_help(void);
-const char *command_unsupport(void);
-const char *command_stop(void);
-const char *command_count(void);
-const char *command_dips(void);
-const char *command_length(void);
-const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_len);
+void *UDP_serverThread();
+const char *UDP_commandHelp(void);
+const char *UDP_commandUnsupport(void);
+const char *UDP_commandStop(void);
+const char *UDP_commandCount(void);
+const char *UDP_commandDips(void);
+const char *UDP_commandLength(void);
+const char *UDP_commandHistory(struct sockaddr_in *client_addr, socklen_t *client_len);
 
 /*-------------------------- Public -----------------------------*/
 
-void Udp_join(void)
+void UDP_join(void)
 {
     pthread_join(udpSever_id, NULL);
 }
 
-void Udp_cleanup(void) 
+void UDP_cleanup(void) 
 {
     if(serverSock) {
         close(serverSock);
@@ -56,7 +56,7 @@ void Udp_cleanup(void)
     memset(previousMessage, 0, sizeof(previousMessage));
 }
 
-void Udp_initServer(int *terminate_flag)
+void UDP_initServer(int *terminate_flag)
 {
     isTerminated = terminate_flag;
 
@@ -68,7 +68,7 @@ void Udp_initServer(int *terminate_flag)
 /*-------------------------- Private -----------------------------*/
 
 //Server side, receive: history, count, length, dips, help (or ?), stop, <Enter>
-void *udpServer_thread()
+void *UDP_serverThread()
 {
     printf("Setup server...\n");
     struct sockaddr_in server_addr, client_addr;
@@ -120,32 +120,32 @@ void *udpServer_thread()
         // Execute command according to request from client
         if(strcmp("help", previousMessage) == 0 || strcmp("?", previousMessage) == 0)
         {
-            responseMessage = command_help();
+            responseMessage = UDP_commandHelp();
         } 
         else if (strcmp("stop", previousMessage) == 0)
         {
-            responseMessage = command_stop();
+            responseMessage = UDP_commandStop();
         }
         else if (strcmp("dips", previousMessage) == 0)
         {
-            responseMessage = command_dips();
+            responseMessage = UDP_commandDips();
         }
         else if (strcmp("length", previousMessage) == 0)
         {
-            responseMessage = command_length();
+            responseMessage = UDP_commandLength();
         }
         else if (strcmp("count", previousMessage) == 0)
         {
-            responseMessage = command_count();
+            responseMessage = UDP_commandCount();
         }
         else if (strcmp("history", previousMessage) == 0)
         {
             //Send the remaining message
-            responseMessage = command_history(&client_addr, &client_len);
+            responseMessage = UDP_commandHistory(&client_addr, &client_len);
         }
         else
         {
-            responseMessage = command_unsupport();
+            responseMessage = UDP_commandUnsupport();
         }
 
         // Reply to the sender
@@ -167,7 +167,7 @@ void *udpServer_thread()
     return NULL;
 }
 
-const char *command_help(void)
+const char *UDP_commandHelp(void)
 {
     return "Accepted command examples:\n"
            "count\t\t-- get the total number of samples taken.\n"
@@ -178,18 +178,18 @@ const char *command_help(void)
            "<enter>\t\t-- repeat last command.\n";
 }
 
-const char *command_unsupport(void)
+const char *UDP_commandUnsupport(void)
 {
     return "Command is unsupported. Please type \"help\" or \"?\" for supporting command\n";
 }
 
-const char *command_stop(void)
+const char *UDP_commandStop(void)
 {
     *isTerminated = 1;
     return NULL;
 }
 
-const char *command_count(void)
+const char *UDP_commandCount(void)
 {
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer));
@@ -198,7 +198,7 @@ const char *command_count(void)
     return command_buffer;
 }
 
-const char *command_dips(void)
+const char *UDP_commandDips(void)
 {
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer));
@@ -207,7 +207,7 @@ const char *command_dips(void)
     return command_buffer;
 }
 
-const char *command_length(void) 
+const char *UDP_commandLength(void) 
 {
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer)); 
@@ -216,7 +216,7 @@ const char *command_length(void)
     return command_buffer;
 }
 
-const char *command_history(struct sockaddr_in *client_addr, socklen_t *client_len)
+const char *UDP_commandHistory(struct sockaddr_in *client_addr, socklen_t *client_len)
 {
     int temp_size;
     int history_size;
