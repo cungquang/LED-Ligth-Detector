@@ -94,4 +94,6 @@ void *LED_getPotThread()
         //Sleep for 100 second before the next iteration
         sleepForMs(100);
     }
+
+    return NULL;
 }

@@ -15,7 +15,6 @@ static int *isTerminated;
 
 //Resources - current
 static Period_statistics_t stats;
-static double rawPot = 0;
 static double rawData;
 static double arr_rawData[MAX_BUFFER_SIZE];
 static double arr_historyData[MAX_BUFFER_SIZE];
@@ -275,7 +274,7 @@ void *SAMPLER_analyzerThread()
 
         //Print message to screen
         //printf("Smpl/s = %d\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, current_avg, dips, min_period, max_period, avg_period, count);
-        printf("Smpl/s = %d\tPOT @ %.3f => %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, potRaw, potHz, current_avg, dips, min_period, max_period, avg_period, count);
+        printf("Smpl/s = %d\tPOT @ %d=> %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, potRaw, potHz, current_avg, dips, min_period, max_period, avg_period, count);
         SAMPLER_print2ndLine();
     }
 
