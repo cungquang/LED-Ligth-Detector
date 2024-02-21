@@ -38,7 +38,10 @@ void testSampler()
 	SAMPLER_join();
 	UDP_join();
 
+	printf("Start clean up\n");
+	printf("Cleanup SAMPLER");
 	SAMPLER_cleanup();
+	printf("Cleanup UDP");
 	UDP_cleanup();
 }
 
