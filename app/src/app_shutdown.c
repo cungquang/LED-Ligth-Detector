@@ -18,7 +18,7 @@ static void *SHUTDOWN_cleanUpThread();
 
 ////////////////////////////////////////////// PUBLIC //////////////////////////////////////////////
 
-void SHUTDOWN_init(int cleanUpFlag)
+void SHUTDOWN_init(int *cleanUpFlag)
 {
     *isTimeToCleanUp = cleanUpFlag;
 
@@ -46,4 +46,6 @@ void *SHUTDOWN_cleanUpThread()
 	LED_cleanUp();
 	UDP_cleanup();
 	SAMPLER_cleanup();
+
+    return NULL;
 }
