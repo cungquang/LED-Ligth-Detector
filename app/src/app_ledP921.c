@@ -38,14 +38,14 @@ void LED_join()
     pthread_join(led_flash_id, NULL);
 }
 
-void LED_cleanUp()
-{
-    isTerminated = NULL;
+// void LED_cleanUp()
+// {
+//     isTerminated = NULL;
 
-    //Setup for led
-    led_writeToEnable(0);
-    led_writeToDutyCycle(0);
-}
+//     //Setup for led
+//     led_writeToEnable(0);
+//     led_writeToDutyCycle(0);
+// }
 
 
 //////////////////////////////////////////// PRIVATE ////////////////////////////////////////////
@@ -54,7 +54,7 @@ void *LED_flashLed()
 {
     while(!*isTerminated)
     {
-        gapTimeInBetween = A2D_readFromVoltage0();
+        gapTimeInBetween = A2D_readFromVoltage0()/40;
         
         //turn on the led
         led_writeToDutyCycle(led_getDutyCycle());

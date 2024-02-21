@@ -56,8 +56,6 @@ int A2D_readRawVoltage(const char *a2dFilePath)
     }
 
     // Close file
-    if(fileToRead){
-        fclose(fileToRead);
-    }
+    fclose(fileToRead);
     return a2dReading;
 }
