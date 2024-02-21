@@ -1,19 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <string.h>
 #include "../include/app_sampler.h"
 #include "../include/app_upd.h"
-#include "../include/app_helper.h"
 #include "../include/app_ledP921.h"
 #include "../include/app_i2c.h"
-#include "../include/periodTimer.h"
-
 
 int terminate_flag = 0;
 
-void testSampler()
+void operation()
 {
 	I2C_init(&terminate_flag);
 	LED_init(&terminate_flag);
@@ -25,6 +19,7 @@ void testSampler()
 	UDP_join();
 	SAMPLER_join();
 
+	I2C_cleanUp();
 	LED_cleanUp();
 	UDP_cleanup();
 	SAMPLER_cleanup();
@@ -32,6 +27,6 @@ void testSampler()
 
 int main() 
 {
-	testSampler();
+	Operation();
     return 0;
 }

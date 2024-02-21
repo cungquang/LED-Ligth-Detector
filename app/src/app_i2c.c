@@ -23,7 +23,6 @@ pthread_t i2c_id;
 void displayDigit(int digit);
 void *I2C_thread();
 
-
 //////////////////////////////////////////////// PUBLIC ////////////////////////////////////////////////
 
 void I2C_init(int *terminate_flag)
@@ -38,6 +37,13 @@ void I2C_init(int *terminate_flag)
 void I2C_join()
 {
     pthread_join(i2c_id, NULL);
+}
+
+void I2C_cleanUp()
+{
+    //turn off both digits
+    i2c_disableLeftDigit();
+    i2c_disableRightDigit();
 }
 
 void I2C_setDipsToDisplay(int dipsValue)
