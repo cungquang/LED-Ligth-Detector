@@ -1,6 +1,11 @@
 #ifndef _I2C_H_
 #define _I2C_H_
 
+// This module manages the operation for I2C bus (hardware level)
+// - Enable digits display
+// - Disable digits display
+// - Set value/number to display
+
 void i2c_init();
 
 //Left digit

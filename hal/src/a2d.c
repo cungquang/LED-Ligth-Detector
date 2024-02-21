@@ -10,15 +10,6 @@
 static FILE *voltage0File;
 static FILE *voltage1File;
 
-
-// void closeFile() 
-// {
-//     if(fileToRead)
-//     {
-//         fclose(fileToRead);
-//     }
-// }
-
 int A2D_readFromVoltage0()
 {
     voltage0File = fopen(A2D_FILE_VOLTAGE0, "r");
