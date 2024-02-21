@@ -31,8 +31,10 @@ void testI2C()
 void testSampler()
 {
 	SAMPLER_init(&terminate_flag);
+	I2C_init(&terminate_flag);
 	UDP_initServer(&terminate_flag);
 
+	I2C_join();
 	SAMPLER_join();
 	UDP_join();
 

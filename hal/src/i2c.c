@@ -114,8 +114,6 @@ void i2c_set2()
 {
     constructCommand(command_1, I2C_SET_COMMAND, OXOO_2);
     constructCommand(command_2, I2C_SET_COMMAND, OXO1_2);
-    printf("%s\n", command_1);
-    printf("%s\n", command_2);
     system(command_1);
     system(command_2);
 }

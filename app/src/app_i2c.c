@@ -12,18 +12,19 @@
 int *isTerminated;
 
 //Resources
-static int dipsToDisplay = 100;
-static int leftDigit;
-static int rightDigit;
+static int dipsToDisplay = 0;
+static int leftDigit = '0';
+static int rightDigit = '0';
 
 //Threadh
 pthread_t i2c_id;
 
 //Initiate function
-void I2C_extractDigits();
 void displayDigit(int digit);
 void *I2C_thread();
 
+
+//////////////////////////////////////////////// PUBLIC ////////////////////////////////////////////////
 
 void I2C_init(int *terminate_flag)
 {
@@ -42,6 +43,27 @@ void I2C_join()
 void I2C_setDipsToDisplay(int dipsValue)
 {
     dipsToDisplay = dipsValue;
+    //if the dips larger than 99 -> set to 99
+    if(dipsToDisplay > 99)
+    {
+        dipsToDisplay = 99;
+    }
+
+    //Convert dips to string
+    if(displayDigit > 9)
+    {
+        char number[3];
+        snprintf(number, sizeof(number), "%d", dipsToDisplay);
+        
+        leftDigit = number[0] - '0';
+        rightDigit = number[1] - '0';
+    } else{
+        char number[2];
+        snprintf(number, sizeof(number), "%d", displayDigit);
+
+        leftDigit = '0';
+        rightDigit = number[0] - '0';
+    }    
 }
 
 //////////////////////////////////////////////// PRIVATE ////////////////////////////////////////////////
@@ -70,23 +92,6 @@ void *I2C_thread()
     }
 
     return NULL;
-}
-
-void I2C_extractDigits()
-{
-    char number[3];
-    //if the dips larger than 99 -> set to 99
-    if(dipsToDisplay > 99)
-    {
-        dipsToDisplay = 99;
-    }
-
-    //Convert dips to string
-    snprintf(number, sizeof(number), "%d", dipsToDisplay);
-
-    //Subtract from the char '0' to get value
-    leftDigit = number[0] - '0';
-    rightDigit = number[1] - '0';
 }
 
 void displayDigit(int digit)

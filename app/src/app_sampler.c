@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include "../../hal/include/a2d.h"
+#include "../include/app_i2c.h"
 #include "../include/periodTimer.h"
 #include "../include/app_helper.h"
 
@@ -17,6 +18,7 @@ static int *isTerminated;
 static Period_statistics_t stats;
 static double rawData;
 static double arr_rawData[MAX_BUFFER_SIZE];
+static double arr_historyData[MAX_BUFFER_SIZE];
 static double accumulate_sum = 0;
 static double previous_voltage = 0;
 static double previous_avg = 0;
@@ -108,16 +110,14 @@ double SAMPLER_getAverageReading(void)
 //Getter to get history data
 double *SAMPLER_getHistory(int *size)
 {
-    pthread_mutex_lock(&sampler_mutex);
     *size = count;
     arr_historyToSend = (double *)malloc((*size) * sizeof(double));
 
     for(int i = 0; i < *size; i++)
     {
-        arr_historyToSend[i] = arr_rawData[i];
+        arr_historyToSend[i] = arr_historyData[i];
     }
 
-    pthread_mutex_unlock(&sampler_mutex);
     return arr_historyToSend;
 }
 
@@ -125,12 +125,15 @@ double *SAMPLER_getHistory(int *size)
 void SAMPLER_cleanup(void)
 {   
     isTerminated = NULL;
-    for(int i = 0; i < 1000; i++)
+    
+    //Clear data
+    for(int i = 0; i < MAX_BUFFER_SIZE; i++)
     {
         arr_rawData[i] = 0;
+        arr_historyData[i] = 0;
     }
 
-    //free arr_historyToSend
+    //Free arr_historyToSend
     if(arr_historyToSend) 
     {
         free(arr_historyToSend);
@@ -148,7 +151,6 @@ void SAMPLER_cleanup(void)
 	sem_destroy(&sampler_empty);
     sem_destroy(&stats_new);
     sem_destroy(&stats_old);
-
 }
 
 //Join
@@ -213,7 +215,7 @@ void *SAMPLER_producerThread()
         //Produce new data here
         rawData = A2D_convertVoltage(A2D_readFromVoltage1());
 
-        sleepForMs(20);
+        sleepForMs(40);
 
         //Unlock thread & increment sem_full -> ready to transfer
         pthread_mutex_unlock(&sampler_mutex);
@@ -234,6 +236,8 @@ void *SAMPLER_consumerThread()
         //Reset
         batch_size = 0;
         batch_dips = 0;
+        previous_voltage = 0;
+        current_voltage = 0;
         currentTime = 0;
         startTime = getTimeInMs();
 
@@ -261,7 +265,7 @@ void *SAMPLER_consumerThread()
             SAMPLER_calculateAverage();
             SAMPLER_calculateDip();
 
-            //printf("dips-%d\t\tCurr_Raw-%.3f\t\tCurr_Avg-%.3f\t\tPrev_Raw-%.3f\t\tPrev_Avg-%.3f\n", batch_dips, current_voltage, current_avg, previous_voltage, previous_avg);
+            printf("dips-%d\t\tCurr_Raw-%.3f\t\tCurr_Avg-%.3f\t\tPrev_Raw-%.3f\t\tPrev_Avg-%.3f\n", batch_dips, current_voltage, current_avg, previous_voltage, previous_avg);
 
             //Unlock mutex -> increment sem_empty -> allow producer to generate more products
             pthread_mutex_unlock(&sampler_mutex);
@@ -272,6 +276,7 @@ void *SAMPLER_consumerThread()
         sem_wait(&stats_old);
         pthread_mutex_lock(&stats_mutex);
 
+        count = batch_size;
         dips = batch_dips;
         
         //Create a new stats -> to trigger update
@@ -294,13 +299,18 @@ void *SAMPLER_analyzerThread()
         pthread_mutex_lock(&stats_mutex);
 
         //Move data to arr_historydata
+        for(int i = 0; i < count; i++)
+        {
+            arr_historyData[i] = arr_rawData[i];
+        }
+
+        I2C_setDipsToDisplay(dips);
 
         //Get statistic
         Period_getStatisticsAndClear(PERIOD_EVENT_SAMPLE_LIGHT, &stats);
         min_period = stats.minPeriodInMs;
         max_period = stats.maxPeriodInMs;
         avg_period = stats.avgPeriodInMs;
-        count = stats.numSamples;
 
         //Create one new old stats
         pthread_mutex_unlock(&stats_mutex);
@@ -329,8 +339,8 @@ void SAMPLER_calculateAverage()
 
 void SAMPLER_calculateDip()
 {
-    //Update the dips
-    if((previous_avg - previous_voltage) <= 0.03 && (current_avg - current_voltage) >= 0.1)
+    //Update the dips - when at least 2 data points && previous already rise && current reduce by 0.1
+    if(batch_size > 1 && (previous_avg - previous_voltage) <= 0.03 && (current_avg - current_voltage) >= 0.1)
     {
         batch_dips += 1;
     }
