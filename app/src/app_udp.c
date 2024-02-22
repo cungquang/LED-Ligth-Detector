@@ -180,7 +180,7 @@ const char *UDP_commandHelp(void)
 
 const char *UDP_commandUnsupport(void)
 {
-    return "Command is unsupported. Please type \"help\" or \"?\" for supporting command\n";
+    return "Opps, command is unsupported. Please type \"help\" or \"?\" for supporting command\n";
 }
 
 const char *UDP_commandStop(void)
