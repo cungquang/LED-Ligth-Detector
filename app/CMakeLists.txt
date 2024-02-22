@@ -13,9 +13,3 @@ add_custom_command(TARGET assignment2 POST_BUILD
      "$<TARGET_FILE:assignment2>"
      "~/cmpt433/public/myApps/assignment2" 
   COMMENT "Copying ARM executable to public NFS directory")
-
-# Add Valgrind target
-add_custom_target(run_valgrind
-  COMMAND valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes $<TARGET_FILE:assignment2>
-  COMMENT "Running Valgrind on assignment2"
-)
