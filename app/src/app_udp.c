@@ -226,7 +226,7 @@ const char *UDP_commandHistory(struct sockaddr_in *client_addr, socklen_t *clien
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer));
     
-    //double *history = Sampler_getHistory(&history_size);
+    //Get history data
     double *history = SAMPLER_getHistory(&history_size);
     int itemPerLine = 0;
 
@@ -237,7 +237,7 @@ const char *UDP_commandHistory(struct sockaddr_in *client_addr, socklen_t *clien
         temp_size = 0;
         temp_response = convertDataToString(&temp_size, history[i]);
 
-        //if fit into current size - need to + 1 for ','
+        //if fit into current size - need to + 1 for ', '
         if(itemPerLine < 20)
         {
             mergeToBuffer(command_buffer, &current_buffer_size, temp_response, temp_size);
