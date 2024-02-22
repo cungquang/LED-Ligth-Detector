@@ -29,9 +29,9 @@ static int batch_size;
 //Resources - for accessing
 static int potRaw = 0;
 static int potHz = 0;
-static int count = 0;
 static int dips = 0;
-static long long length = 0;
+static int length = 0;
+static long long count = 0;
 static double min_period = 0;
 static double max_period = 0;
 static double avg_period = 0;
@@ -63,7 +63,7 @@ void SAMPLER_print2ndLine();
 /////////////////////////////////////////// PUBLIC ///////////////////////////////////////////
 
 //Getter to get previous count
-int SAMPLER_getHistorySize(void)
+long long SAMPLER_getCount(void)
 {
     return count;
 }
@@ -75,7 +75,7 @@ int SAMPLER_getDips(void)
 }
 
 //Getter to get length
-long long SAMPLER_getNumSamplesTaken(void) 
+int SAMPLER_getLength(void) 
 {
     return length;
 }
@@ -90,7 +90,7 @@ double SAMPLER_getAverageReading(void)
 double *SAMPLER_getHistory(int *size)
 {
     pthread_mutex_lock(&stats_mutex);
-    *size = count;
+    *size = length;
     arr_historyToSend = (double *)malloc((*size) * sizeof(double));
 
     for(int i = 0; i < *size; i++)
@@ -195,8 +195,6 @@ void *SAMPLER_producerThread()
 //Consume data from Producer
 void *SAMPLER_consumerThread()
 {
-    // long long currentTime;
-    // long long startTime;
 
     while(!*isTerminated)
     {
@@ -215,9 +213,9 @@ void *SAMPLER_consumerThread()
         
         //Update length & batch_size
         batch_size++;
-        length++;       
+        count++;       
 
-        //length need continuously update
+        //Calculate average & dips
         SAMPLER_calculateAverage();
         SAMPLER_calculateDip();
 
@@ -237,7 +235,7 @@ void *SAMPLER_analyzerThread()
 
         //get dips and count
         dips = batch_dips;
-        count = batch_size;
+        length = batch_size;
 
         //Reset
         batch_size = 0;
@@ -252,12 +250,12 @@ void *SAMPLER_analyzerThread()
         pthread_mutex_lock(&stats_mutex);
 
         //Copy data to arr_historydata
-        for(int i = 0; i < count; i++)
+        for(int i = 0; i < length; i++)
         {
             arr_historyData[i] = arr_rawData[i];
         }
 
-        count = stats.numSamples;
+        //length = stats.numSamples;
         min_period = stats.minPeriodInMs;
         max_period = stats.maxPeriodInMs;
         avg_period = stats.avgPeriodInMs;
@@ -273,8 +271,7 @@ void *SAMPLER_analyzerThread()
         I2C_setDipsToDisplay(dips);
 
         //Print message to screen
-        //printf("Smpl/s = %d\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, current_avg, dips, min_period, max_period, avg_period, count);
-        printf("Smpl/s = %d\tPOT @ %d=> %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", count, potRaw, potHz, current_avg, dips, min_period, max_period, avg_period, count);
+        printf("Smpl/s = %d\tPOT @ %d=> %dHz\tavg = %.3fV\tdips = %d\tSmpl ms[%.3f, %.3f] avg %.3f/%d\n", length, potRaw, potHz, current_avg, dips, min_period, max_period, avg_period, length);
         SAMPLER_print2ndLine();
     }
 
@@ -285,11 +282,11 @@ void *SAMPLER_analyzerThread()
 void SAMPLER_calculateAverage()
 {
     //Update previous average - this is overall average - not tight to the batch
-    if(length == 1){
-        current_avg = calculateSimpleAvg(length, accumulate_sum);
+    if(count == 1){
+        current_avg = calculateSimpleAvg(count, accumulate_sum);
     }
     else{
-        current_avg = exponentSmoothAvg(calculateSimpleAvg(length, accumulate_sum), previous_avg);   
+        current_avg = exponentSmoothAvg(calculateSimpleAvg(count, accumulate_sum), previous_avg);   
     }
 }
 
@@ -306,16 +303,21 @@ void SAMPLER_calculateDip()
 
 void SAMPLER_print2ndLine()
 {
-    int batch_count = count;
+    int itemCount = 0;
+    int batch_count = length;
     int incre = batch_count/20;
-    if (incre < 1){
+    if (batch_count <= 20){
         incre = 1;
     }
 
     //Get 20 items
     for(int i = 0; i < batch_count; i += incre)
     {
-        printf("\t%d:%.3f\t", i, arr_historyData[i]);
+        if(itemCount < 20){
+            printf("\t%d:%.3f\t", i, arr_historyData[i]);
+        }
+
+        itemCount++;
     }
 
     //Print new line

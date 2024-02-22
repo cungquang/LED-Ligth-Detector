@@ -79,6 +79,7 @@ void mergeToBuffer(char *buffer, int *buffer_size, const char *number, int numbe
     else{
         //add ',' between number
         buffer[(*buffer_size)++] = ',';
+        buffer[(*buffer_size)++] = ' ';
         memcpy(buffer + *buffer_size, number, number_size);
     }
 

@@ -17,13 +17,10 @@ void SAMPLER_cleanup(void);
 void SAMPLER_join(void);
 
 // Getter
-int SAMPLER_getHistorySize(void);
+long long SAMPLER_getCount(void);
 int SAMPLER_getDips(void);
 double SAMPLER_getAverageReading(void);
-long long SAMPLER_getNumSamplesTaken(void); 
+int SAMPLER_getLength(void); 
 double *SAMPLER_getHistory(int *size);
-
-//test
-double *SAMPLER_testHistory(int *size);
 
 #endif
