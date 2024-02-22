@@ -1,43 +1,36 @@
-/*
- * noworky.c
- *
- * This program tries to create two arrays of data, and then swap their
- * contents. However, not all seems to go according to plan...
- */
 #include <stdio.h>
 #include <stdlib.h>
-#include <a2d.h>
-#include <stdbool.h>
-#include <signal.h>
-#include "../include/app_helper.h"
-#include "../include/app_pthread.h"
-#include "../include/app_helper.h"
+#include "../include/app_sampler.h"
+#include "../include/app_upd.h"
+#include "../include/app_ledP921.h"
+#include "../include/app_i2c.h"
+#include "../include/app_shutdownP.h"
 
+int terminate_flag = 0;
+int cleanUp_flag = 0;
 
-/*
- * Create two arrays; populate them; swap them; display them.
- */
-int main()
+void operation()
 {
-	bool isStart = true;
+	I2C_init(&terminate_flag);
+	LED_init(&terminate_flag);
+	UDP_initServer(&terminate_flag);
+	SAMPLER_init(&terminate_flag);
+	SHUTDOWN_init(&cleanUp_flag);
 
-	//Register signal handl shutdown
-	if(signal(SIGINT, handle_shutdown) == SIG_ERR) {
-		fprintf(stderr, "Error: fail to register signal hanlder\n");
-		return 1;
-	}
+	//Terminate all main threads
+	I2C_join();
+	LED_join();
+	UDP_join();
+	SAMPLER_join();
 
-	//init & run all slave threads
-	init_thread(isStart);
-
-	// main process
-	while(isStart)
-	{
-		//do some logic
-		printf("main is sleep");
-		sleepForMs(1);
-	}
-
-	return 0;
+	//Trigger shutdown thread -> clean up
+	cleanUp_flag = 1;
+	SHUTDOWN_join();
+	
 }
 
+int main() 
+{
+	operation();
+    return 0;
+}
