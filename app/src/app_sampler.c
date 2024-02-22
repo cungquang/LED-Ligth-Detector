@@ -303,16 +303,21 @@ void SAMPLER_calculateDip()
 
 void SAMPLER_print2ndLine()
 {
+    int itemCount = 0;
     int batch_count = length;
     int incre = batch_count/20;
-    if (incre < 1){
+    if (batch_count <= 20){
         incre = 1;
     }
 
     //Get 20 items
     for(int i = 0; i < batch_count; i += incre)
     {
-        printf("\t%d:%.3f\t", i, arr_historyData[i]);
+        if(itemCount <= 20){
+            printf("\t%d:%.3f\t", i, arr_historyData[i]);
+        }
+
+        itemCount++;
     }
 
     //Print new line
