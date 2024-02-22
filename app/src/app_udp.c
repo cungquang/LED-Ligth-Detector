@@ -194,7 +194,7 @@ const char *UDP_commandCount(void)
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer));
     double num = SAMPLER_getCount();
-    snprintf(command_buffer, sizeof(command_buffer), "samples taken total: %5.3f\n", num);
+    snprintf(command_buffer, sizeof(command_buffer), "# samples taken total: %5.3f\n", num);
     return command_buffer;
 }
 
@@ -203,7 +203,7 @@ const char *UDP_commandDips(void)
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer));
     int dips = SAMPLER_getDips();
-    snprintf(command_buffer, sizeof(command_buffer), "Dips: %d\n", dips);
+    snprintf(command_buffer, sizeof(command_buffer), "# Dips: %d\n", dips);
     return command_buffer;
 }
 
@@ -212,7 +212,7 @@ const char *UDP_commandLength(void)
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer)); 
     long long length = SAMPLER_getLength();
-    snprintf(command_buffer, sizeof(command_buffer), "samples taken last second: %lld\n", length);
+    snprintf(command_buffer, sizeof(command_buffer), "# samples taken last second: %lld\n", length);
     return command_buffer;
 }
 
