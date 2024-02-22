@@ -63,9 +63,9 @@ void SAMPLER_print2ndLine();
 /////////////////////////////////////////// PUBLIC ///////////////////////////////////////////
 
 //Getter to get previous count
-int SAMPLER_getHistorySize(void)
+long long SAMPLER_getCount(void)
 {
-    return length;
+    return count;
 }
 
 //Getter to get dips
@@ -75,9 +75,9 @@ int SAMPLER_getDips(void)
 }
 
 //Getter to get length
-long long SAMPLER_getNumSamplesTaken(void) 
+int SAMPLER_getLength(void) 
 {
-    return count;
+    return length;
 }
 
 //Getter to get previous avg
@@ -90,7 +90,7 @@ double SAMPLER_getAverageReading(void)
 double *SAMPLER_getHistory(int *size)
 {
     pthread_mutex_lock(&stats_mutex);
-    *size = count;
+    *size = length;
     arr_historyToSend = (double *)malloc((*size) * sizeof(double));
 
     for(int i = 0; i < *size; i++)
@@ -195,8 +195,6 @@ void *SAMPLER_producerThread()
 //Consume data from Producer
 void *SAMPLER_consumerThread()
 {
-    // long long currentTime;
-    // long long startTime;
 
     while(!*isTerminated)
     {
@@ -252,7 +250,7 @@ void *SAMPLER_analyzerThread()
         pthread_mutex_lock(&stats_mutex);
 
         //Copy data to arr_historydata
-        for(int i = 0; i < count; i++)
+        for(int i = 0; i < length; i++)
         {
             arr_historyData[i] = arr_rawData[i];
         }

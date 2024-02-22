@@ -193,7 +193,7 @@ const char *UDP_commandCount(void)
 {
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer));
-    double num = SAMPLER_getHistorySize();
+    double num = SAMPLER_getCount();
     snprintf(command_buffer, sizeof(command_buffer), "samples taken total: %5.3f\n", num);
     return command_buffer;
 }
@@ -211,7 +211,7 @@ const char *UDP_commandLength(void)
 {
     //Clear data from previous call
     memset(command_buffer, 0, sizeof(command_buffer)); 
-    long long length = SAMPLER_getNumSamplesTaken();
+    long long length = SAMPLER_getLength();
     snprintf(command_buffer, sizeof(command_buffer), "samples taken last second: %lld\n", length);
     return command_buffer;
 }
