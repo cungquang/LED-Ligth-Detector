@@ -313,7 +313,7 @@ void SAMPLER_print2ndLine()
     //Get 20 items
     for(int i = 0; i < batch_count; i += incre)
     {
-        if(itemCount <= 20){
+        if(itemCount < 20){
             printf("\t%d:%.3f\t", i, arr_historyData[i]);
         }
 
