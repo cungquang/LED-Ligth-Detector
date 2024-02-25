@@ -9,15 +9,15 @@ The main purpose of this application is simulating the process of LED light Dip 
 - The application display the number of dips are detected within 1 second (sampling batch), and display on (14 segments) 2 digits on BeagleBone (Single-board computer developed by Texas Instruments - featured an ARM-based microprocessor)
 - Any clients device can contact the simulator to retrieve number of dips, historical (sampling) data, and sampling batch size of previous second via sending UDP message.  
 
-This is a multi-threading application which includes several major threads:
-- Shutdown thread: Manage the operation of shutting down the program after all other threads complete their operation.
-- UDP Server thread: Allows client to contact/retrieve data from Light Dip Detector
-- LED Light thread: Manage the flashing frequency of the LED light. The flashing frequency is controlled by PWM on BeagleBone, and the voltage value from PWM will be read by POT (a potentiometer)
-- Digital digit display thread: Manage the operation of displaying number of dips on BeagleBone.
-- Sampling:
-  - Producer sample thread: Read sampling data from the light sensor
-  - Consumer sample thread: Calculate the average exponential smoothing average voltage, detect number of dip light level within a sampling batch
-  - Analyze sample thread: Analyze statistic time period including: average time between events, min/max time between events, total events count
+This multi-threading application is designed to manage various tasks related to light detection and display on the BeagleBone platform. It consists of several major threads:
+1. Shutdown Thread: Manages the orderly shutdown of the program once all other threads have completed their operations.
+2. UDP Server Thread: Facilitates communication with clients, allowing them to retrieve data from the Light Dip Detector.
+3. LED Light Thread: Controls the flashing frequency of an LED light using Pulse Width Modulation (PWM) on the BeagleBone. The flashing frequency is adjusted based on the voltage value read from a potentiometer (POT).
+4. Digital Digit Display Thread: Handles the operation of displaying the number of light dips detected on the BeagleBone.
+5. Sampling:
+  - Producer Sample Thread: Reads sampling data from the light sensor.
+  - Consumer Sample Thread: Calculates the average exponential smoothing average voltage and detects the number of light dip events within a sampling batch.
+  - Analyze Sample Thread: Analyzes statistical time periods, including the average time between events, the minimum/maximum time between events, and the total count of events.
 
 ## General File Sturcture
 
