@@ -9,7 +9,7 @@ The main purpose of this application is simulating the process of LED light Dip 
 - The application display the number of dips are detected within 1 second (sampling batch), and display on (14 segments) 2 digits on BeagleBone (Single-board computer developed by Texas Instruments - featured an ARM-based microprocessor)
 - Any clients device can contact the simulator to retrieve number of dips, historical (sampling) data, and sampling batch size of previous second via sending UDP message.  
 
-This is an multi-threading application which includes several major threads:
+This is a multi-threading application which includes several major threads:
 - Shutdown thread: Manage the operation of shutting down the program after all other threads complete their operation.
 - UDP Server thread: Allows client to contact/retrieve data from Light Dip Detector
 - LED Light thread: Manage the flashing frequency of the LED light. The flashing frequency is controlled by PWM on BeagleBone, and the voltage value from PWM will be read by POT (a potentiometer)
