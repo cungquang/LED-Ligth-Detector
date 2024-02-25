@@ -1,13 +1,18 @@
-#Simulation of Light Dips Detector
+# Simulation of Light Dip Detector
 
 ## Project Description
 
-The purpose of this application is simulation process of LED light Dip Detector.
+The main purpose of this application is simulating the process of LED light Dip Detector.
 - A "Dip" is when the light level drops below a threshold light value (0.1V below the current average light level):
   - A "Dip" can be detected when the voltage is 0.1V or more away from the current average light level.
   - Another "Dip" cannot be detected until the light level return above the threshold (use hyteresis 0.03V to prevent the noise to re-trigger incorrectly)
+- The application display the number of dips are detected within 1 second (sampling batch), and display on the (14 segments) 2 digit on BeagleBone (Single-board computer developed by Texas Instruments - featured an ARM-based microprocessor)
+- Any clients device can contact the simulator to retrieve number of dips, historical (sampling) data, and sampling batch size of previous second via sending UDP message.  
 
-The application includes 
+This is an multi-threading application which includes several major threads:
+- UDP Server thread: allows client to contact/retrieve data from Light Dip Detector
+- LED Light thread: manage the flashing frequency of the LED light. The flashing frequency is controlled by PWM on BeagleBone, and the voltage value from PWM will be read by POT (a potentiometer)
+- Sampler thread: collect data
 
 ## Sturcture
 
@@ -19,17 +24,17 @@ The application includes
   .
   ├── app
   │   ├── include
-  │   │   └── badmath.h
+  │   │   └── <file_name>.h
   │   ├── src
-  │   │   ├── badmath.c
+  │   │   ├── <file_name>.c
   │   │   └── main.c
   │   └── CMakeLists.txt           # Sub CMake file, just for app/
   ├── hal
   │   ├── include
   │   │   └── hal
-  │   │       └── button.h
+  │   │       └── <hardware_filename>.h
   │   ├── src
-  │   │   └── button.c
+  │   │   └── <hardware_filename>.c
   │   └── CMakeLists.txt           # Sub CMake file, just for hal/
   ├── CMakeLists.txt               # Main CMake file for the project
   └── README.md
