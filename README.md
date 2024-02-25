@@ -2,12 +2,18 @@
 
 ## Project Description
 
-The main purpose of this application is simulating the process of LED light Dip Detector.
-- A "Dip" is when the light level drops below a threshold light value (0.1V below the current average light level):
-  - A "Dip" can be detected when the voltage is 0.1V or more away from the current average light level.
-  - Another "Dip" cannot be detected until the light level return above the threshold (use hyteresis 0.03V to prevent the noise to re-trigger incorrectly)
-- The application display the number of dips are detected within 1 second (sampling batch), and display on (14 segments) 2 digits on BeagleBone (Single-board computer developed by Texas Instruments - featured an ARM-based microprocessor)
-- Any clients device can contact the simulator to retrieve number of dips, historical (sampling) data, and sampling batch size of previous second via sending UDP message.  
+The primary objective of this application is to simulate the operation of an LED Light Dip Detector. Key features include:
+
+- Definition of a "Dip":
+  - A "Dip" occurs when the light level drops below a threshold value, specifically 0.1V below the current average light level.
+  - Detection of a "Dip" requires a voltage difference of 0.1V or more from the current average light level.
+  - To prevent incorrect re-triggering due to noise, a hysteresis of 0.03V is applied, ensuring that another "Dip" cannot be detected until the light level returns above the threshold.
+- Display Functionality:
+  - The application displays the number of dips detected within a 1-second sampling batch.
+  - The display utilizes 14-segment digits and is presented on the BeagleBone, a single-board computer developed by Texas Instruments, featuring an ARM-based microprocessor.
+- Communication Interface:
+  - The simulator allows communication with client devices via UDP messaging.
+  - Clients can retrieve information such as the number of dips detected, historical sampling data, and the sampling batch size from the previous second.
 
 This multi-threading application is designed to manage various tasks related to light detection and display on the BeagleBone platform. It consists of several major threads:
 1. Shutdown Thread: Manages the orderly shutdown of the program once all other threads have completed their operations.
@@ -18,6 +24,8 @@ This multi-threading application is designed to manage various tasks related to 
   - Producer Sample Thread: Reads sampling data from the light sensor.
   - Consumer Sample Thread: Calculates the average exponential smoothing average voltage and detects the number of light dip events within a sampling batch.
   - Analyze Sample Thread: Analyzes statistical time periods, including the average time between events, the minimum/maximum time between events, and the total count of events.
+
+This application aims to provide comprehensive functionality for monitoring and analyzing light data, facilitating communication with external clients, and controlling LED output based on sensor readings.
 
 ## General File Sturcture
 
