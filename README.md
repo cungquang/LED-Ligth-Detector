@@ -1,4 +1,4 @@
-**#Simulation of Light Dips Detector**
+#Simulation of Light Dips Detector
 
 ## Project Description
 
