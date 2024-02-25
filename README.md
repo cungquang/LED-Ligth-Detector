@@ -16,11 +16,12 @@ The primary objective of this application is to simulate the operation of an LED
   - Clients can retrieve information such as the number of dips detected, historical sampling data, and the sampling batch size from the previous second.
 
 This multi-threading application is designed to manage various tasks related to light detection and display on the BeagleBone platform. It consists of several major threads:
-1. Shutdown Thread: Manages the orderly shutdown of the program once all other threads have completed their operations.
-2. UDP Server Thread: Facilitates communication with clients, allowing them to retrieve data from the Light Dip Detector.
-3. LED Light Thread: Controls the flashing frequency of an LED light using Pulse Width Modulation (PWM) on the BeagleBone. The flashing frequency is adjusted based on the voltage value read from a potentiometer (POT).
-4. Digital Digit Display Thread: Handles the operation of displaying the number of light dips detected on the BeagleBone.
-5. Sampling:
+
+- Shutdown Thread: Manages the orderly shutdown of the program once all other threads have completed their operations.
+- UDP Server Thread: Facilitates communication with clients, allowing them to retrieve data from the Light Dip Detector.
+- LED Light Thread: Controls the flashing frequency of an LED light using Pulse Width Modulation (PWM) on the BeagleBone. The flashing frequency is adjusted based on the voltage value read from a potentiometer (POT).
+- Digital Digit Display Thread: Handles the operation of displaying the number of light dips detected on the BeagleBone.
+- Sampling:
   - Producer Sample Thread: Reads sampling data from the light sensor.
   - Consumer Sample Thread: Calculates the average exponential smoothing average voltage and detects the number of light dip events within a sampling batch.
   - Analyze Sample Thread: Analyzes statistical time periods, including the average time between events, the minimum/maximum time between events, and the total count of events.
