@@ -1,6 +1,13 @@
-# CMPT 433 Sample Assignment Build Structure
+**#Simulation of Light Dips Detector**
 
-This is a working project that you can use as the basis for your assignments.
+## Project Description
+
+The purpose of this application is simulation process of LED light Dip Detector.
+- A "Dip" is when the light level drops below a threshold light value (0.1V below the current average light level):
+  - A "Dip" can be detected when the voltage is 0.1V or more away from the current average light level.
+  - Another "Dip" cannot be detected until the light level return above the threshold (use hyteresis 0.03V to prevent the noise to re-trigger incorrectly)
+
+The application includes 
 
 ## Sturcture
 
