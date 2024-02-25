@@ -12,7 +12,11 @@ The main purpose of this application is simulating the process of LED light Dip 
 This is an multi-threading application which includes several major threads:
 - UDP Server thread: allows client to contact/retrieve data from Light Dip Detector
 - LED Light thread: manage the flashing frequency of the LED light. The flashing frequency is controlled by PWM on BeagleBone, and the voltage value from PWM will be read by POT (a potentiometer)
-- Sampler thread: collect data
+- Sampler:
+  - Producer sample thread: Read sampling data from the light sensor
+  - Consumer sample thread: Calculate the average exponential smoothing average voltage, detect number of dip light level within a sampling batch
+  - Analyze sample statistics thread: analyze statistic time period including: average time between events, min/max time between events, total events count
+- Digital digit display thread: manage the operation of displaying number of dips on computer board 
 
 ## Sturcture
 
