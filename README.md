@@ -19,7 +19,6 @@ This is an multi-threading application which includes several major threads:
   - Consumer sample thread: Calculate the average exponential smoothing average voltage, detect number of dip light level within a sampling batch
   - Analyze sample thread: Analyze statistic time period including: average time between events, min/max time between events, total events count
 
-
 ## General File Sturcture
 
 - `hal/`: Contains all low-level hardware abstraction layer (HAL) modules
