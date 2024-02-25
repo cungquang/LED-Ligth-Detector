@@ -55,20 +55,6 @@ Note: This application is just to help you get started! It also has a bug in its
   - Without this installed, you'll get an error:   
     "error while loading shared libraries: libasan.so.6: cannot open shared object file: No such file or directory"
 
-## Suggested addons
-
-- "CMake Tools" automatically suggested when you open a `CMakeLists.txt` file
-- "Output Colourizer" by IBM 
-    --> Adds colour to the OUTPUT panel in VS Code; useful for seeing CMake messages
-
-## Other Suggestions
-
-- If you are trying to build with 3rd party libraries, you may want to consider the 
-  build setup suggested at the following link. Specificall, see the part on 
-  extracting the BB image to a folder, and then using chroot to run commands like
-  `apt` on that image, which allows you to get libraries for the target on the build system.
-  https://takeofftechnical.com/x-compile-cpp-bbb/
-
 ## Manually Running CMake
 
 To manually run CMake from the command line use:
