@@ -17,7 +17,7 @@ The primary objective of this application is to simulate the operation of an LED
 
 This multi-threading application is designed to manage various tasks related to light detection and display on the BeagleBone platform. It consists of several major threads:
 
-- Shutdown Thread: Manages the orderly shutdown of the program once all other threads have completed their operations.
+- Shutdown Thread: Manages the orderly shutdown of the program once all other threads have completed their operations, and re-capture all resources.
 - UDP Server Thread: Facilitates communication with clients, allowing them to retrieve data from the Light Dip Detector.
 - LED Light Thread: Controls the flashing frequency of an LED light using Pulse Width Modulation (PWM) on the BeagleBone. The flashing frequency is adjusted based on the voltage value read from a potentiometer (POT).
 - Digital Digit Display Thread: Handles the operation of displaying the number of light dips detected on the BeagleBone.
