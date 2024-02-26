@@ -10,7 +10,7 @@
 #include <unistd.h>     // for close()
 
 
-static double weighted = 0.999;
+static double weighted = 0.001;
 
 long long getTimeInMs(void)
 {
