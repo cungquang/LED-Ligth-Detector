@@ -1,8 +1,34 @@
-# CMPT 433 Sample Assignment Build Structure
+# Simulation of Light Dip Detector
 
-This is a working project that you can use as the basis for your assignments.
+## Project Description
 
-## Sturcture
+The primary objective of this application is to simulate the operation of an LED Light Dip Detector. Key features include:
+
+- Definition of a "Dip":
+  - A "Dip" occurs when the light level drops below a threshold value, specifically 0.1V below the current average light level.
+  - Detection of a "Dip" requires a voltage difference of 0.1V or more from the current average light level.
+  - To prevent incorrect re-triggering due to noise, a hysteresis of 0.03V is applied, ensuring that another "Dip" cannot be detected until the light level returns above the threshold.
+- Display Functionality:
+  - The application displays the number of dips detected within a 1-second sampling batch.
+  - The display utilizes 14-segment digits and is presented on the BeagleBone, a single-board computer developed by Texas Instruments, featuring an ARM-based microprocessor.
+- Communication Interface:
+  - The simulator allows communication with client devices via UDP messaging.
+  - Clients can retrieve information such as the number of dips detected, historical sampling data, and the sampling batch size from the previous second.
+
+This multi-threading application is designed to manage various tasks related to light detection and display on the BeagleBone platform. It consists of several major threads:
+
+- Shutdown Thread: Manages the orderly shutdown of the program once all other threads have completed their operations, and re-capture all resources.
+- UDP Server Thread: Facilitates communication with clients, allowing them to retrieve data from the Light Dip Detector.
+- LED Light Thread: Controls the flashing frequency of an LED light using Pulse Width Modulation (PWM) on the BeagleBone. The flashing frequency is adjusted based on the voltage value read from a potentiometer (POT).
+- Digital Digit Display Thread: Handles the operation of displaying the number of light dips detected on the BeagleBone.
+- Sampling:
+  - Producer Sample Thread: Reads sampling data from the light sensor.
+  - Consumer Sample Thread: Calculates the average exponential smoothing average voltage and detects the number of light dip events within a sampling batch.
+  - Analyze Sample Thread: Analyzes statistical time periods, including the average time between events, the minimum/maximum time between events, and the total count of events.
+
+This application aims to provide comprehensive functionality for monitoring and analyzing light data, facilitating communication with external clients, and controlling LED output based on sensor readings.
+
+## General File Sturcture
 
 - `hal/`: Contains all low-level hardware abstraction layer (HAL) modules
 - `app/`: Contains all application-specific code. Broken into modules and a main file
@@ -12,17 +38,17 @@ This is a working project that you can use as the basis for your assignments.
   .
   ├── app
   │   ├── include
-  │   │   └── badmath.h
+  │   │   └── <file_name>.h
   │   ├── src
-  │   │   ├── badmath.c
+  │   │   ├── <file_name>.c
   │   │   └── main.c
   │   └── CMakeLists.txt           # Sub CMake file, just for app/
   ├── hal
   │   ├── include
   │   │   └── hal
-  │   │       └── button.h
+  │   │       └── <hardware_filename>.h
   │   ├── src
-  │   │   └── button.c
+  │   │   └── <hardware_filename>.c
   │   └── CMakeLists.txt           # Sub CMake file, just for hal/
   ├── CMakeLists.txt               # Main CMake file for the project
   └── README.md
@@ -54,20 +80,6 @@ Note: This application is just to help you get started! It also has a bug in its
   `sudo apt install libasan6`
   - Without this installed, you'll get an error:   
     "error while loading shared libraries: libasan.so.6: cannot open shared object file: No such file or directory"
-
-## Suggested addons
-
-- "CMake Tools" automatically suggested when you open a `CMakeLists.txt` file
-- "Output Colourizer" by IBM 
-    --> Adds colour to the OUTPUT panel in VS Code; useful for seeing CMake messages
-
-## Other Suggestions
-
-- If you are trying to build with 3rd party libraries, you may want to consider the 
-  build setup suggested at the following link. Specificall, see the part on 
-  extracting the BB image to a folder, and then using chroot to run commands like
-  `apt` on that image, which allows you to get libraries for the target on the build system.
-  https://takeofftechnical.com/x-compile-cpp-bbb/
 
 ## Manually Running CMake
 
