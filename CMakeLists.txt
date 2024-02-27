@@ -8,9 +8,10 @@ add_compile_options(-Wall -g -Werror -Wpedantic -Wextra)
 add_compile_options(-fdiagnostics-color)
 
 # Enable address sanitizer
-# (Comment this out to make your code faster)
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
+# (Comment this out for production)
+#add_compile_options(-fsanitize=address)
+#add_link_options(-fsanitize=address)
+add_link_options(-pthread)
 
 # What folders to build
 add_subdirectory(hal)  
