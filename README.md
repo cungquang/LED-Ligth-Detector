@@ -1,10 +1,13 @@
 # Simulation of Light Dip Detector
 
 ## Project Description
+The primary objective of this application is to simulate the operation of an LED Light Dip Detector. The application consists of two main components: the Server and the Client side.The primary objective of this application is to simulate the operation of an LED Light Dip Detector. There are two part of the application which are Server and Client side
 
-The primary objective of this application is to simulate the operation of an LED Light Dip Detector. Key features include:
+### Server
 
-- Definition of a "Dip":
+The Server is written in C and serves as the core component of the application. It is responsible for controlling the hardware and detecting light dips. 
+Key features of the Server include:
+- Dip Detection:
   - A "Dip" occurs when the light level drops below a threshold value, specifically 0.1V below the current average light level.
   - Detection of a "Dip" requires a voltage difference of 0.1V or more from the current average light level.
   - To prevent incorrect re-triggering due to noise, a hysteresis of 0.03V is applied, ensuring that another "Dip" cannot be detected until the light level returns above the threshold.
@@ -15,7 +18,7 @@ The primary objective of this application is to simulate the operation of an LED
   - The simulator allows communication with client devices via UDP messaging.
   - Clients can retrieve information such as the number of dips detected, historical sampling data, and the sampling batch size from the previous second.
 
-This multi-threading application is designed to manage various tasks related to light detection and display on the BeagleBone platform. It consists of several major threads:
+The Server is a multi-threaded application designed to efficiently handle various tasks associated with light detection and display on the BeagleBone platform. It comprises several major threads, each responsible for specific functionalities:
 
 - Shutdown Thread: Manages the orderly shutdown of the program once all other threads have completed their operations, and re-capture all resources.
 - UDP Server Thread: Facilitates communication with clients, allowing them to retrieve data from the Light Dip Detector.
@@ -27,6 +30,14 @@ This multi-threading application is designed to manage various tasks related to 
   - Analyze Sample Thread: Analyzes statistical time periods, including the average time between events, the minimum/maximum time between events, and the total count of events.
 
 This application aims to provide comprehensive functionality for monitoring and analyzing light data, facilitating communication with external clients, and controlling LED output based on sensor readings.
+
+###Client
+
+The client was written in Python which is a Graphical User Interface application which allow user to retrieve data from server and stop the server remotely
+Key functionality of clients:
+- Sending Message: This component manages communication between the client and server. It allows users to send commands to the server, including commands such as "help", "?", "length", "count", and "history".
+- Listening Thread: A dedicated thread constantly listens for responses from the server. It retrieves data from the server and stores it for subsequent plotting and visualization.
+- Data Visualization: The client application displays both raw data received from the server and visualizes this data on a graph, providing users with a comprehensive view of the information.
 
 ## General File Sturcture
 
