@@ -31,7 +31,7 @@ The Server is a multi-threaded application designed to efficiently handle variou
 
 This application aims to provide comprehensive functionality for monitoring and analyzing light data, facilitating communication with external clients, and controlling LED output based on sensor readings.
 
-###Client
+### Client
 
 The client was written in Python which is a Graphical User Interface application which allow user to retrieve data from server and stop the server remotely
 Key functionality of clients:
